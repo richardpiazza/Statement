@@ -1,7 +1,9 @@
 struct Translation: Identifiable, Table {
     
-    static let tableName: String = "translation"
-    static var columns: [Column] { Schema.allCases }
+    static let schema: TableSchema = .init(
+        name: "translation",
+        columns: Schema.allCases.map { $0.rawValue }
+    )
     
     enum Schema: String, Column, CaseIterable {
         case id
@@ -10,7 +12,7 @@ struct Translation: Identifiable, Table {
         case region = "region_code"
         case value
         
-        static var tableName: String { Translation.tableName }
+        static var tableName: String { Translation.schema.name }
     }
     
     /// Unique/Primary Key

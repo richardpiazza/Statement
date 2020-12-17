@@ -1,13 +1,13 @@
 import Foundation
 
-class ClauseRenderer<Context> {
-    let keyword: Keyword<Context>
+class ClauseRenderer {
+    let keyword: Keyword
     private var rendered: String = ""
     private var lastElement: AnyElement?
     
-    init(_ keyword: Keyword<Context>) {
+    init(_ keyword: Keyword) {
         self.keyword = keyword
-        rendered = keyword.rawValue
+        rendered = keyword.value
     }
     
     func render() -> String {
@@ -19,7 +19,7 @@ extension ClauseRenderer {
     func addElement<C>(_ element: Element<C>) {
         switch element {
         case .table(let table):
-            addTable(table)
+            addTable(table.schema.name)
         case .column(let column):
             addColumn(column)
         case .on(let c1, let c2):

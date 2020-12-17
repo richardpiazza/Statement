@@ -7,10 +7,10 @@ let statement = SQLiteStatement(
         .column(Expression.Schema.feature)
     ),
     .FROM(
-        .table(Expression.tableName)
+        .table(Expression.self)
     ),
     .JOIN(
-        .table(Translation.tableName),
+        .table(Translation.self),
         .on(Expression.Schema.id, Translation.Schema.expressionID)
     ),
     .WHERE(
@@ -22,4 +22,19 @@ let statement = SQLiteStatement(
 )
 
 print(statement.render())
+print("")
+
+let update = SQLiteStatement(
+    .UPDATE(
+        .table(Translation.self)
+    ),
+    .SET(
+        .predicate(Translation.Schema.value, .equal("Corrected Translation"))
+    ),
+    .WHERE(
+        .predicate(Translation.Schema.id, .equal(123))
+    )
+)
+
+print(update.render())
 print("")

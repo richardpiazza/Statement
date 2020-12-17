@@ -1,7 +1,9 @@
 struct Expression: Identifiable, Table {
     
-    static let tableName: String = "expression"
-    static var columns: [Column] { Schema.allCases }
+    static let schema: TableSchema = .init(
+        name: "expression",
+        columns: Schema.allCases.map { $0.rawValue }
+    )
     
     enum Schema: String, Column, CaseIterable {
         case id
@@ -10,7 +12,7 @@ struct Expression: Identifiable, Table {
         case comment
         case feature
         
-        static var tableName: String { Expression.tableName }
+        static var tableName: String { Expression.schema.name }
     }
     
     /// Unique/Primary Key

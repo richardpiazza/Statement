@@ -1,16 +1,20 @@
 import Foundation
 
-struct Keyword<Context>: Codable, RawRepresentable {
-    var rawValue: String
+struct Keyword: ExpressibleByStringLiteral, Codable {
+    var value: String
+    
+    init(stringLiteral value: String) {
+        self.value = value
+    }
 }
 
-extension Keyword where Context == SQLiteStatement.StatementContext {
-    static let SELECT: Keyword = Keyword(rawValue: "SELECT")
-    static let FROM: Keyword = Keyword(rawValue: "FROM")
-    static let JOIN: Keyword = Keyword(rawValue: "JOIN")
-    static let WHERE: Keyword = Keyword(rawValue: "WHERE")
-}
-
-extension Keyword where Context == SQLiteStatement.JoinContext {
-    static let ON: Keyword = Keyword(rawValue: "ON")
+extension Keyword {
+    static let and: Self = "AND"
+    static let from: Self = "FROM"
+    static let join: Self = "JOIN"
+    static let or: Self = "OR"
+    static let select: Self = "SELECT"
+    static let set: Self = "SET"
+    static let update: Self = "UPDATE"
+    static let `where`: Self = "WHERE"
 }

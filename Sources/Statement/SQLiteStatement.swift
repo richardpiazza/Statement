@@ -21,4 +21,6 @@ extension SQLiteStatement {
     enum FromContext {}
     enum JoinContext {}
     enum WhereContext {}
+    enum UpdateContext {}
+    enum SetContext {}
 }
