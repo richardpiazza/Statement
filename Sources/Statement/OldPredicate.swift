@@ -1,6 +1,7 @@
 import Foundation
 
-enum Predicate {
+@available(*, deprecated, message: "Use `LogicalOperator` and `ComparisonOperator`.")
+enum OldPredicate {
     case equal(Encodable)
     case notEqual(Encodable)
     case greaterThan(Encodable)

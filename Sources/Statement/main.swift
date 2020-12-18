@@ -14,9 +14,9 @@ let statement = SQLiteStatement(
         .on(Expression.Schema.id, Translation.Schema.expressionID)
     ),
     .WHERE(
-        .predicate(Translation.Schema.language, .equal("en")),
-        .and(
-            .predicate(Translation.Schema.region, .equal("US"))
+        .AND(
+            Element.expression(Translation.Schema.language, .equal("en")),
+            Element.expression(Translation.Schema.region, .equal("US"))
         )
     )
 )
@@ -29,12 +29,30 @@ let update = SQLiteStatement(
         .table(Translation.self)
     ),
     .SET(
-        .predicate(Translation.Schema.value, .equal("Corrected Translation"))
+        .expression(Translation.Schema.value, .equal("Corrected Translation"))
     ),
     .WHERE(
-        .predicate(Translation.Schema.id, .equal(123))
+        .predicate(Predicate(Translation.Schema.id, .equal(123)))
+//        Element.expression(Translation.Schema.id, .equal(123))
     )
 )
+
+struct Predicate<Context>: AnyElement {
+    let column: Column
+    let comparison: ComparisonOperator
+    
+    init(_ column: Column, _ comparison: ComparisonOperator) {
+        self.column = column
+        self.comparison = comparison
+    }
+    
+    func render(into renderer: Renderer) {
+        var expression: String = ""
+        expression += "\(type(of: column).tableName).\(column.stringValue)"
+        expression += " \(comparison.expression)"
+        renderer.addRaw(expression)
+    }
+}
 
 print(update.render())
 print("")

@@ -1,5 +1,5 @@
 import Foundation
 
 protocol AnyElement {
-    func render(into renderer: ClauseRenderer)
+    func render(into renderer: Renderer)
 }

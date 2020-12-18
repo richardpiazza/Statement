@@ -1,6 +1,11 @@
 import Foundation
 
-class ClauseRenderer {
+protocol Renderer {
+    func addRaw(_ text: String)
+    func addElement(_ element: Element)
+}
+
+class ClauseRenderer: Renderer {
     let keyword: Keyword
     private var rendered: String = ""
     private var lastElement: AnyElement?
@@ -16,7 +21,11 @@ class ClauseRenderer {
 }
 
 extension ClauseRenderer {
-    func addElement<C>(_ element: Element<C>) {
+    func addRaw(_ text: String) {
+        rendered += text
+    }
+    
+    func addElement(_ element: Element) {
         switch element {
         case .table(let table):
             addTable(table.schema.name)
@@ -24,14 +33,24 @@ extension ClauseRenderer {
             addColumn(column)
         case .on(let c1, let c2):
             addOn(c1, c2)
-        case .predicate(let column, let predicate):
+        case .expression(let column, let predicate):
             addPredicate(column, predicate)
-        case .and(let element):
-            rendered += " AND"
-            addElement(element)
-        case .or(let element):
-            rendered += " OR"
-            addElement(element)
+        case .and(let elements):
+            let count = elements.count
+            elements.enumerated().forEach {
+                addElement($1)
+                if $0 < count - 1 {
+                    rendered += " AND"
+                }
+            }
+        case .or(let elements):
+            let count = elements.count
+            elements.enumerated().forEach {
+                addElement($1)
+                if $0 < count - 1 {
+                    rendered += " OR"
+                }
+            }
         }
         
         lastElement = element
@@ -60,7 +79,7 @@ private extension ClauseRenderer {
         rendered += line
     }
     
-    func addPredicate(_ column: Column, _ predicate: Predicate) {
+    func addPredicate(_ column: Column, _ predicate: OldPredicate) {
         var line: String = " "
         line += "\(type(of: column).tableName).\(column.stringValue)"
         line += " \(predicate.operator) "

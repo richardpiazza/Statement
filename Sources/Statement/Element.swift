@@ -1,14 +1,14 @@
 import Foundation
 
-indirect enum Element<Context>: AnyElement {
+indirect enum Element: AnyElement {
     case table(Table.Type)
     case column(Column)
     case on(Column, Column)
-    case predicate(Column, Predicate)
-    case and(Element<Context>)
-    case or(Element<Context>)
+    case expression(Column, OldPredicate)
+    case and([Element])
+    case or([Element])
     
-    func render(into renderer: ClauseRenderer) {
+    func render(into renderer: Renderer) {
         renderer.addElement(self)
     }
 }
