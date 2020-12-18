@@ -1,21 +1,23 @@
 import Foundation
 
-class LogicalRenderer {
-    let `operator`: LogicalOperator
+class GroupRenderer {
+    let prefix: String
+    let suffix: String
     let separator: String
     private var components: [String] = []
     
-    init(_ op: LogicalOperator) {
-        self.operator = op
-        self.separator = " \(op.operator) "
+    init(prefix: String, suffix: String, separator: String) {
+        self.prefix = prefix
+        self.suffix = suffix
+        self.separator = separator
     }
     
     func render() -> String {
-        components.joined(separator: separator)
+        return prefix + " " + components.joined(separator: separator) + " " + suffix
     }
 }
 
-extension LogicalRenderer: Renderer {
+extension GroupRenderer: Renderer {
     func addRaw(_ text: String) {
         components.append(text)
     }

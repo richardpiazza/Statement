@@ -15,6 +15,6 @@ extension LogicalPredicate {
 
 extension LogicalPredicate: AnyRenderable {
     func render(into renderer: Renderer) {
-        renderer.addRaw(render())
+        renderer.addLogicalPredicate(self)
     }
 }

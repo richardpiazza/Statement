@@ -1,6 +1,6 @@
 import Foundation
 
-struct Predicate<Context>: AnyRenderable {
+struct Predicate<Context> {
     let column: Column
     let comparison: ComparisonOperator
     
@@ -9,10 +9,16 @@ struct Predicate<Context>: AnyRenderable {
         self.comparison = comparison
     }
     
-    func render(into renderer: Renderer) {
+    func render() -> String {
         var expression: String = ""
         expression += "\(type(of: column).tableName).\(column.stringValue)"
         expression += " \(comparison.expression)"
-        renderer.addRaw(expression)
+        return expression
+    }
+}
+
+extension Predicate: AnyRenderable {
+    func render(into renderer: Renderer) {
+        renderer.addPredicate(self)
     }
 }

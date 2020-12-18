@@ -1,44 +1,56 @@
 import Foundation
 
 enum Segment<Context> {
-    case keyword(Keyword)
-    case identifier(String)
+    case raw(String)
     case clause(Clause<Context>)
     case predicate(Predicate<Context>)
     case logicalPredicate(LogicalPredicate<Context>)
+    case group(Group<Context>)
 }
 
 extension Segment: AnyRenderable {
     func render(into renderer: Renderer) {
         switch self {
-        case .keyword(let keyword):
-            renderer.addRaw(keyword.value)
-        case .identifier(let identifier):
+        case .raw(let identifier):
             renderer.addRaw(identifier)
         case .clause(let clause):
-            renderer.addRaw(clause.render())
+            renderer.addClause(clause)
         case .predicate(let predicate):
-            predicate.render(into: renderer)
+            renderer.addPredicate(predicate)
         case .logicalPredicate(let predicate):
-            renderer.addRaw(predicate.render())
+            renderer.addLogicalPredicate(predicate)
+        case .group(let group):
+            renderer.addGroup(group)
         }
     }
 }
 
 extension Segment {
+    static func keyword(_ keyword: Keyword) -> Self {
+        .raw(keyword.value)
+    }
+    
     static func column(_ column: Column) -> Self {
         let id = "\(type(of: column).tableName).\(column.stringValue)"
-        return .identifier(id)
+        return .raw(id)
     }
     
     static func table<T: Table>(_ table: T.Type) -> Self {
         let id = table.schema.name
-        return .identifier(id)
+        return .raw(id)
     }
     
     static func expression(_ column: Column, _ op: ComparisonOperator) -> Self {
         let predicate = Predicate<Context>(column, op)
         return .predicate(predicate)
+    }
+    
+    static func limit(_ limit: Int) -> Self {
+        .raw("\(limit)")
+    }
+    
+    static func value(_ encodable: Encodable) -> Self {
+        .raw(encodable.sqlString)
     }
 }
 

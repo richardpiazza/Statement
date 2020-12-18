@@ -20,7 +20,19 @@ extension ClauseRenderer: Renderer {
         components.append(text)
     }
     
-    func addSegment<C>(_ segment: Segment<C>) {
-        segment.render(into: self)
+    func addClause<C>(_ clause: Clause<C>) {
+        components.append(clause.render())
+    }
+    
+    func addPredicate<C>(_ predicate: Predicate<C>) {
+        components.append(predicate.render())
+    }
+    
+    func addLogicalPredicate<C>(_ logicalPredicate: LogicalPredicate<C>) {
+        components.append(logicalPredicate.render())
+    }
+    
+    func addGroup<C>(_ group: Group<C>) {
+        components.append(group.render())
     }
 }

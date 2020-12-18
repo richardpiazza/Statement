@@ -30,28 +30,9 @@ enum ComparisonOperator {
              .lessThan(let encodable),
              .lessThanEqualTo(let encodable):
             
-            components.append(stringFrom(encodable))
+            components.append(encodable.sqlString)
         }
         
         return components.joined(separator: " ")
-    }
-    
-    private func stringFrom(_ encodable: Encodable) -> String {
-        switch encodable {
-        case let value as String: return "\"\(value)\""
-        case let value as Int: return "\(value)"
-        case let value as Double: return "\(value)"
-        case is NSNull: return "NULL"
-        default:
-            //TODO
-            return ""
-        }
-    }
-}
-
-extension NSNull: Encodable {
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encodeNil()
     }
 }

@@ -8,9 +8,7 @@ let statement = SQLiteStatement(
         .column(Expression.Schema.comment),
         .column(Expression.Schema.feature)
     ),
-    .FROM(
-        .table(Expression.self)
-    ),
+    .FROM(Expression.self),
     .JOIN(
         .table(Translation.self),
         .ON(Expression.Schema.id, Translation.Schema.expressionID)
@@ -28,9 +26,7 @@ print(statement.render())
 print("")
 
 let update = SQLiteStatement(
-    .UPDATE(
-        .table(Translation.self)
-    ),
+    .UPDATE(Translation.self),
     .SET(
         .expression(Translation.Schema.value, .equal("Corrected Translation")),
         .expression(Translation.Schema.region, .equal(NSNull()))
@@ -41,4 +37,19 @@ let update = SQLiteStatement(
 )
 
 print(update.render())
+print("")
+
+let insert = SQLiteStatement(
+    .INSERT_INTO(
+        Translation.self,
+        .column(Translation.Schema.language),
+        .column(Translation.Schema.region)
+    ),
+    .VALUES(
+        .value(LanguageCode.en.rawValue),
+        .value(RegionCode.US.rawValue)
+    )
+)
+
+print(insert.render())
 print("")

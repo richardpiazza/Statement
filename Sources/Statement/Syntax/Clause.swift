@@ -23,6 +23,13 @@ extension Clause where Context == SQLiteStatement.StatementContext {
         Clause(keyword: .from, segments: segments)
     }
     
+    static func FROM<T: Table>(_ table: T.Type, _ segments: Segment<SQLiteStatement.FromContext>...) -> Clause {
+        let tab = Segment<Context>.table(table)
+        var allSegments: [AnyRenderable] = [tab]
+        allSegments.append(contentsOf: segments)
+        return Clause(keyword: .from, segments: allSegments)
+    }
+    
     static func JOIN(_ segments: Segment<SQLiteStatement.JoinContext>...) -> Clause {
         return Clause(keyword: .join, segments: segments)
     }
@@ -33,7 +40,7 @@ extension Clause where Context == SQLiteStatement.StatementContext {
     
     static func LIMIT(_ limit: Int) -> Clause {
         Clause(keyword: .limit, segments: [
-            Segment<Context>.identifier("\(limit)")
+            Segment<Context>.limit(limit)
         ])
     }
     
@@ -41,7 +48,30 @@ extension Clause where Context == SQLiteStatement.StatementContext {
         Clause(keyword: .update, segments: segments)
     }
     
+    static func UPDATE<T: Table>(_ table: T.Type, _ segments: Segment<SQLiteStatement.UpdateContext>...) -> Clause {
+        let tab = Segment<Context>.table(table)
+        var allSegments: [AnyRenderable] = [tab]
+        allSegments.append(contentsOf: segments)
+        return Clause(keyword: .update, segments: allSegments)
+    }
+    
     static func SET(_ segments: Segment<SQLiteStatement.SetContext>...) -> Clause {
         Clause(keyword: .set, segments: segments, separator: ", ")
+    }
+    
+    static func INSERT_INTO<T: Table>(_ table: T.Type, _ segments: Segment<SQLiteStatement.InsertIntoContext>...) -> Clause {
+        let tab = Segment<Context>.table(table)
+        let group = Group<Context>(segments: segments)
+        let into = Clause(keyword: .into, segments: [tab, group])
+        return Clause(keyword: .insert, segments: [
+            Segment.clause(into)
+        ])
+    }
+    
+    static func VALUES(_ segments: Segment<SQLiteStatement.ValuesContext>...) -> Clause {
+        let group = Group<Context>(segments: segments)
+        return Clause(keyword: .values, segments: [
+            Segment.group(group)
+        ])
     }
 }

@@ -11,6 +11,8 @@ struct Keyword: ExpressibleByStringLiteral, Codable {
 extension Keyword {
     static let and: Self = "AND"
     static let from: Self = "FROM"
+    static let insert: Self = "INSERT"
+    static let into: Self = "INTO"
     static let join: Self = "JOIN"
     static let limit: Self = "LIMIT"
     static let on: Self = "ON"
@@ -18,5 +20,6 @@ extension Keyword {
     static let select: Self = "SELECT"
     static let set: Self = "SET"
     static let update: Self = "UPDATE"
+    static let values: Self = "VALUES"
     static let `where`: Self = "WHERE"
 }
