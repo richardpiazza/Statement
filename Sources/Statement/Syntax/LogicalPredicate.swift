@@ -2,18 +2,18 @@ import Foundation
 
 struct LogicalPredicate<Context> {
     var logicalOperator: LogicalOperator
-    var elements: [AnyElement]
+    var elements: [AnyRenderable]
 }
 
 extension LogicalPredicate {
     func render() -> String {
         let renderer = LogicalRenderer(logicalOperator)
-        elements.forEach { $0.render(into: renderer)}
+        elements.forEach { $0.render(into: renderer) }
         return renderer.render()
     }
 }
 
-extension LogicalPredicate: AnyElement {
+extension LogicalPredicate: AnyRenderable {
     func render(into renderer: Renderer) {
         renderer.addRaw(render())
     }

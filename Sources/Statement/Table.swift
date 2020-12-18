@@ -6,6 +6,5 @@ struct TableSchema {
 }
 
 protocol Table {
-//    associatedtype Schema: Column
     static var schema: TableSchema { get }
 }

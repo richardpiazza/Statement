@@ -4,12 +4,12 @@ enum LogicalOperator {
     case all
     case and
     case any
-    case between(Encodable, Encodable)
+    case between
     case exists
-    case `in`([Encodable])
+    case `in`
     case isNotNull
     case isNull
-    case like(Encodable)
+    case like
     case not
     case or
     case some

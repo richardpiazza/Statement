@@ -1,3 +1,5 @@
+import Foundation
+
 let statement = SQLiteStatement(
     .SELECT(
         .column(Expression.Schema.id),
@@ -11,14 +13,15 @@ let statement = SQLiteStatement(
     ),
     .JOIN(
         .table(Translation.self),
-        .on(Expression.Schema.id, Translation.Schema.expressionID)
+        .ON(Expression.Schema.id, Translation.Schema.expressionID)
     ),
     .WHERE(
         .AND(
-            Element.expression(Translation.Schema.language, .equal("en")),
-            Element.expression(Translation.Schema.region, .equal("US"))
+            .expression(Translation.Schema.language, .equal("en")),
+            .expression(Translation.Schema.region, .equal("US"))
         )
-    )
+    ),
+    .LIMIT(1)
 )
 
 print(statement.render())
@@ -29,30 +32,13 @@ let update = SQLiteStatement(
         .table(Translation.self)
     ),
     .SET(
-        .expression(Translation.Schema.value, .equal("Corrected Translation"))
+        .expression(Translation.Schema.value, .equal("Corrected Translation")),
+        .expression(Translation.Schema.region, .equal(NSNull()))
     ),
     .WHERE(
-        .predicate(Predicate(Translation.Schema.id, .equal(123)))
-//        Element.expression(Translation.Schema.id, .equal(123))
+        .expression(Translation.Schema.id, .equal(123))
     )
 )
-
-struct Predicate<Context>: AnyElement {
-    let column: Column
-    let comparison: ComparisonOperator
-    
-    init(_ column: Column, _ comparison: ComparisonOperator) {
-        self.column = column
-        self.comparison = comparison
-    }
-    
-    func render(into renderer: Renderer) {
-        var expression: String = ""
-        expression += "\(type(of: column).tableName).\(column.stringValue)"
-        expression += " \(comparison.expression)"
-        renderer.addRaw(expression)
-    }
-}
 
 print(update.render())
 print("")
