@@ -9,10 +9,7 @@ let statement = SQLiteStatement(
         .column(Expression.Schema.feature)
     ),
     .FROM(Expression.self),
-    .JOIN(
-        .table(Translation.self),
-        .ON(Expression.Schema.id, Translation.Schema.expressionID)
-    ),
+    .JOIN(Translation.self, on: Expression.Schema.id, equals: Translation.Schema.expressionID),
     .WHERE(
         .AND(
             .expression(Translation.Schema.language, .equal("en")),
@@ -52,4 +49,24 @@ let insert = SQLiteStatement(
 )
 
 print(insert.render())
+print("")
+
+let create = SQLiteStatement(
+    .CREATE(
+        .TABLE(
+            Translation.self,
+            ifNotExists: true,
+            segments:
+            .COLUMN(Translation.Schema.id, dataType: .integer, notNull: true, unique: true),
+            .COLUMN(Translation.Schema.expressionID, dataType: .integer, notNull: true),
+            .COLUMN(Translation.Schema.language, dataType: .text, notNull: true),
+            .COLUMN(Translation.Schema.region, dataType: .text),
+            .COLUMN(Translation.Schema.value, dataType: .text, notNull: true),
+            .PRIMARY_KEY(Translation.Schema.id, autoIncrement: true),
+            .FOREIGN_KEY(Translation.Schema.expressionID, references: Expression.Schema.id)
+        )
+    )
+)
+
+print(create.render())
 print("")

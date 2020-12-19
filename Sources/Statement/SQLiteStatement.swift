@@ -3,6 +3,13 @@ import Foundation
 struct SQLiteStatement: StatementSyntax {
     enum StatementContext {}
     
+    enum DataType: String {
+        case integer = "INTEGER"
+        case real = "REAL"
+        case text = "TEXT"
+        case blob = "BLOB"
+    }
+    
     private let statement: Statement<SQLiteStatement>
     
     init(_ clauses: Clause<SQLiteStatement.StatementContext>...) {
@@ -25,4 +32,5 @@ extension SQLiteStatement {
     enum SetContext {}
     enum InsertIntoContext {}
     enum ValuesContext {}
+    enum CreateContext {}
 }
