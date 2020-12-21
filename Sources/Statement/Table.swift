@@ -5,6 +5,7 @@ struct TableSchema {
     var columns: [String]
 }
 
+@available(*, deprecated)
 protocol Table {
     static var schema: TableSchema { get }
 }

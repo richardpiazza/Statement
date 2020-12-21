@@ -33,6 +33,14 @@ extension Segment {
         .raw(keyword.value)
     }
     
+    static func schemaTable<T: SchemaTable>(_ table: T) -> Self {
+        return .raw(T.schema.name)
+    }
+    
+    static func schemaColumn<C: AnyColumn>(_ column: C) -> Self {
+        return .raw(column.identifier)
+    }
+    
     static func column(_ column: Column) -> Self {
         let id = "\(type(of: column).tableName).\(column.stringValue)"
         return .raw(id)
