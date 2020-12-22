@@ -18,9 +18,7 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     }
     
     static func LIMIT(_ limit: Int) -> Clause {
-        Clause(keyword: .limit, segments: [
-            Segment<Context>.limit(limit)
-        ])
+        Clause(keyword: .limit, segments: [Segment<Context>.limit(limit)])
     }
     
     static func UPDATE(_ segments: Segment<SQLiteStatement.UpdateContext>...) -> Clause {
@@ -31,7 +29,19 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
         Clause(keyword: .set, segments: segments, separator: ", ")
     }
     
-    static func INSERT_INTO<T: Table>(_ type: T.Type, _ segments: Segment<SQLiteStatement.InsertIntoContext>...) -> Clause {
+    static func VALUES(_ segments: Segment<SQLiteStatement.ValuesContext>...) -> Clause {
+        Clause(keyword: .values, segments: [Segment.group(Group<Context>(segments: segments))])
+    }
+    
+    static func CREATE(_ segments: Segment<SQLiteStatement.CreateContext>...) -> Clause {
+        return Clause(keyword: .create, segments: segments)
+    }
+}
+
+// MARK: - Compound Clause
+public extension Clause where Context == SQLiteStatement.StatementContext {
+    ///
+    static func INSERT_INTO_TABLE<T: Table>(_ type: T.Type, _ segments: Segment<SQLiteStatement.InsertIntoContext>...) -> Clause {
         let table = Segment<Context>.table(type)
         let group = Group<Context>(segments: segments)
         let into = Clause(keyword: .into, segments: [table, group])
@@ -40,20 +50,6 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
         ])
     }
     
-    static func VALUES(_ segments: Segment<SQLiteStatement.ValuesContext>...) -> Clause {
-        let group = Group<Context>(segments: segments)
-        return Clause(keyword: .values, segments: [
-            Segment.group(group)
-        ])
-    }
-    
-    static func CREATE(_ segments: Segment<SQLiteStatement.CreateContext>...) -> Clause {
-        return Clause(keyword: .create, segments: segments)
-    }
-}
-
-// MARK: - Conveniences
-public extension Clause where Context == SQLiteStatement.StatementContext {
     /// A convenience for
     /// ```
     /// .FROM(
@@ -61,7 +57,7 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     ///     ...
     /// )
     /// ```
-    static func FROM<T: Table>(_ type: T.Type, _ segments: Segment<SQLiteStatement.FromContext>...) -> Clause {
+    static func FROM_TABLE<T: Table>(_ type: T.Type, _ segments: Segment<SQLiteStatement.FromContext>...) -> Clause {
         let table = Segment<Context>.table(type)
         var allSegments: [AnyRenderable] = [table]
         allSegments.append(contentsOf: segments)
@@ -75,7 +71,7 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     ///     .ON(Column1, Column2)
     /// )
     /// ```
-    static func JOIN<T: Table>(_ type: T.Type, on c1: AnyColumn, equals c2: AnyColumn) -> Clause {
+    static func JOIN_TABLE<T: Table>(_ type: T.Type, on c1: AnyColumn, equals c2: AnyColumn) -> Clause {
         return Clause(keyword: .join, segments: [
             Segment.table(type),
             Segment.ON(c1, c2)
@@ -89,7 +85,7 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     ///     ...
     /// )
     /// ```
-    static func UPDATE<T: Table>(_ type: T.Type, _ segments: Segment<SQLiteStatement.UpdateContext>...) -> Clause {
+    static func UPDATE_TABLE<T: Table>(_ type: T.Type, _ segments: Segment<SQLiteStatement.UpdateContext>...) -> Clause {
         let table = Segment<Context>.table(type)
         var allSegments: [AnyRenderable] = [table]
         allSegments.append(contentsOf: segments)

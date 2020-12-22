@@ -3,6 +3,7 @@ import Foundation
 public protocol AnyColumn {
     var table: Table.Type { get set }
     var name: String { get set }
+    var dataType: String { get set }
     var notNull: Bool { get set }
     var unique: Bool { get set }
     var provideDefault: Bool { get set }

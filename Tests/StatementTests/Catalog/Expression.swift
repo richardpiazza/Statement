@@ -28,7 +28,7 @@ public struct Expression: Identifiable {
     
     /// The default/development language code.
     @Column(key: .defaultLanguage, notNull: true)
-    public var defaultLanguage: LanguageCode = .en
+    public var defaultLanguage: String = LanguageCode.en.rawValue
     
     /// Contextual information that guides translators.
     @Column(key: .comment)
@@ -40,6 +40,11 @@ public struct Expression: Identifiable {
     
     /// Associated translations.
     public var translations: [Translation] = []
+    
+    public var languageCode: LanguageCode {
+        get { LanguageCode(rawValue: defaultLanguage) ?? .en }
+        set { defaultLanguage = newValue.rawValue }
+    }
 }
 
 extension Expression: Table {
@@ -66,6 +71,11 @@ private extension Schema {
 
 private extension Column {
     init(wrappedValue: T, key: Expression.CodingKeys, notNull: Bool = false, unique: Bool = false, provideDefault: Bool = false, primaryKey: Bool = false, autoIncrement: Bool = false, foreignKey: AnyColumn? = nil) {
-        self.init(wrappedValue: wrappedValue, table: Expression.self, name: key.stringValue, notNull: notNull, unique: unique, provideDefault: provideDefault, primaryKey: primaryKey, autoIncrement: autoIncrement, foreignKey: foreignKey)
+        switch T.self {
+        case is Int.Type:
+            self.init(wrappedValue: wrappedValue, table: Expression.self, name: key.stringValue, dataType: "INTEGER", notNull: notNull, unique: unique, provideDefault: provideDefault, primaryKey: primaryKey, autoIncrement: autoIncrement, foreignKey: foreignKey)
+        default:
+            self.init(wrappedValue: wrappedValue, table: Expression.self, name: key.stringValue, dataType: "TEXT", notNull: notNull, unique: unique, provideDefault: provideDefault, primaryKey: primaryKey, autoIncrement: autoIncrement, foreignKey: foreignKey)
+        }
     }
 }

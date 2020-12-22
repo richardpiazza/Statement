@@ -27,15 +27,25 @@ public struct Translation: Identifiable {
     
     /// Language of the translation
     @Column(key: .language, notNull: true)
-    public var language: LanguageCode = .en
+    public var language: String = LanguageCode.en.rawValue
     
     /// Region code specifier
     @Column(key: .region)
-    public var region: RegionCode? = nil
+    public var region: String? = nil
     
     /// The translated string
     @Column(key: .value, notNull: true)
     public var value: String = ""
+    
+    public var languageCode: LanguageCode {
+        get { LanguageCode(rawValue: language) ?? .en }
+        set { language = newValue.rawValue }
+    }
+    
+    public var regionCode: RegionCode? {
+        get { (region != nil) ? RegionCode(rawValue: region!) : nil }
+        set { region = newValue?.rawValue }
+    }
 }
 
 extension Translation: Table {
@@ -62,6 +72,11 @@ private extension Schema {
 
 private extension Column {
     init(wrappedValue: T, key: Translation.CodingKeys, notNull: Bool = false, unique: Bool = false, provideDefault: Bool = false, primaryKey: Bool = false, autoIncrement: Bool = false, foreignKey: AnyColumn? = nil) {
-        self.init(wrappedValue: wrappedValue, table: Translation.self, name: key.stringValue, notNull: notNull, unique: unique, provideDefault: provideDefault, primaryKey: primaryKey, autoIncrement: autoIncrement, foreignKey: foreignKey)
+        switch T.self {
+        case is Int.Type:
+            self.init(wrappedValue: wrappedValue, table: Translation.self, name: key.stringValue, dataType: "INTEGER", notNull: notNull, unique: unique, provideDefault: provideDefault, primaryKey: primaryKey, autoIncrement: autoIncrement, foreignKey: foreignKey)
+        default:
+            self.init(wrappedValue: wrappedValue, table: Translation.self, name: key.stringValue, dataType: "TEXT", notNull: notNull, unique: unique, provideDefault: provideDefault, primaryKey: primaryKey, autoIncrement: autoIncrement, foreignKey: foreignKey)
+        }
     }
 }

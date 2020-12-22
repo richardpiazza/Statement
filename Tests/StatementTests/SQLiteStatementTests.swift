@@ -17,8 +17,8 @@ final class SQLiteStatementTests: XCTestCase {
                 .column(Expression.comment),
                 .column(Expression.feature)
             ),
-            .FROM(Expression.self),
-            .JOIN(Translation.self, on: Expression.id, equals: Translation.expressionID),
+            .FROM_TABLE(Expression.self),
+            .JOIN_TABLE(Translation.self, on: Expression.id, equals: Translation.expressionID),
             .WHERE(
                 .AND(
                     .comparison(Translation.language, .equal("en")),
@@ -39,7 +39,7 @@ final class SQLiteStatementTests: XCTestCase {
     
     func testUpdate() {
         let statement = SQLiteStatement(
-            .UPDATE(Translation.self),
+            .UPDATE_TABLE(Translation.self),
             .SET(
                 .comparison(Translation.value, .equal("Corrected Translation")),
                 .comparison(Translation.region, .equal(NSNull()))
@@ -58,7 +58,7 @@ final class SQLiteStatementTests: XCTestCase {
     
     func testInsert() {
         let statement = SQLiteStatement(
-            .INSERT_INTO(
+            .INSERT_INTO_TABLE(
                 Translation.self,
                 .column(Translation.language),
                 .column(Translation.region)
