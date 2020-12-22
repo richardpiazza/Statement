@@ -14,6 +14,10 @@ public extension Schema {
     subscript(columnName: String) -> AnyColumn? {
         columns.first { $0.name == columnName }
     }
+    
+    subscript(codingKey: CodingKey) -> AnyColumn? {
+        self[codingKey.stringValue]
+    }
 }
 
 extension Schema: CustomStringConvertible {

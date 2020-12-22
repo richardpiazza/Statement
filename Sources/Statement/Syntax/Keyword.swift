@@ -1,14 +1,14 @@
 import Foundation
 
-struct Keyword: ExpressibleByStringLiteral, Codable {
-    var value: String
+public struct Keyword: ExpressibleByStringLiteral, Codable {
+    public var value: String
     
-    init(stringLiteral value: String) {
+    public init(stringLiteral value: String) {
         self.value = value
     }
 }
 
-extension Keyword {
+public extension Keyword {
     static let and: Self = "AND"
     static let autoIncrement: Self = "AUTOINCREMENT"
     static let create: Self = "CREATE"

@@ -26,7 +26,7 @@ extension GroupRenderer: Renderer {
         components.append(clause.render())
     }
     
-    func addPredicate<C>(_ predicate: Predicate<C>) {
+    func addComparisonPredicate<C>(_ predicate: ComparisonPredicate<C>) {
         components.append(predicate.render())
     }
     

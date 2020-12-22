@@ -1,6 +1,6 @@
 import Foundation
 
-extension Encodable {
+public extension Encodable {
     var sqlString: String {
         switch self {
         case let value as String: return "\"\(value)\""

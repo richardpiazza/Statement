@@ -1,5 +1,5 @@
 import Foundation
 
-public protocol SchemaTable {
+public protocol Table {
     static var schema: Schema { get }
 }

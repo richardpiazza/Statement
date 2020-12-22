@@ -1,23 +1,23 @@
 import Foundation
 
-enum Segment<Context> {
+public enum Segment<Context> {
     case raw(String)
     case clause(Clause<Context>)
-    case predicate(Predicate<Context>)
+    case comparisonPredicate(ComparisonPredicate<Context>)
     case logicalPredicate(LogicalPredicate<Context>)
     case group(Group<Context>)
     case empty
 }
 
 extension Segment: AnyRenderable {
-    func render(into renderer: Renderer) {
+    public func render(into renderer: Renderer) {
         switch self {
         case .raw(let identifier):
             renderer.addRaw(identifier)
         case .clause(let clause):
             renderer.addClause(clause)
-        case .predicate(let predicate):
-            renderer.addPredicate(predicate)
+        case .comparisonPredicate(let predicate):
+            renderer.addComparisonPredicate(predicate)
         case .logicalPredicate(let predicate):
             renderer.addLogicalPredicate(predicate)
         case .group(let group):
@@ -28,32 +28,25 @@ extension Segment: AnyRenderable {
     }
 }
 
-extension Segment {
+public extension Segment {
     static func keyword(_ keyword: Keyword) -> Self {
         .raw(keyword.value)
     }
     
-    static func schemaTable<T: SchemaTable>(_ table: T) -> Self {
+    static func table<T: Table>(_ type: T.Type) -> Self {
         return .raw(T.schema.name)
     }
     
-    static func schemaColumn<C: AnyColumn>(_ column: C) -> Self {
+    static func column(_ column: AnyColumn?) -> Self {
+        guard let column = column else {
+            return .empty
+        }
+        
         return .raw(column.identifier)
     }
     
-    static func column(_ column: Column) -> Self {
-        let id = "\(type(of: column).tableName).\(column.stringValue)"
-        return .raw(id)
-    }
-    
-    static func table<T: Table>(_ table: T.Type) -> Self {
-        let id = table.schema.name
-        return .raw(id)
-    }
-    
-    static func expression(_ column: Column, _ op: ComparisonOperator) -> Self {
-        let predicate = Predicate<Context>(column, op)
-        return .predicate(predicate)
+    static func comparison(_ column: AnyColumn, _ op: ComparisonOperator) -> Self {
+        return .comparisonPredicate(ComparisonPredicate<Context>(column: column, comparison: op))
     }
     
     static func limit(_ limit: Int) -> Self {
@@ -65,7 +58,7 @@ extension Segment {
     }
 }
 
-extension Segment {
+public extension Segment {
     static func `if`(_ condition: Bool, _ segment: Segment, else fallback: Segment? = nil) -> Segment {
         guard condition else {
             return fallback ?? .empty
@@ -80,108 +73,5 @@ extension Segment {
     
     static func forEach<S: Sequence>(_ sequence: S, _ transform: (S.Element) throws -> Segment) rethrows -> Segment {
         try .group(Group(segments: sequence.map(transform)))
-    }
-}
-
-extension Segment where Context == SQLiteStatement.JoinContext {
-    static func ON(_ c1: Column, _ c2: Column) -> Segment {
-        .clause(
-            Clause<SQLiteStatement.JoinContext>(
-                keyword: .on,
-                segments: [
-                    Segment.column(c1),
-                    Segment.column(c2)
-                ],
-                separator: " = "
-            )
-        )
-    }
-}
-
-extension Segment where Context == SQLiteStatement.WhereContext {
-    static func AND(_ segments: Segment<Context>...) -> Segment {
-        .logicalPredicate(
-            LogicalPredicate(logicalOperator: .and, elements: segments)
-        )
-    }
-}
-
-extension Segment where Context == SQLiteStatement.CreateContext {
-    static func TABLE<T: Table>(_ table: T.Type, ifNotExists: Bool = true, segments: Segment<Context>...) -> Segment {
-        .clause(
-            Clause(
-                keyword: .table,
-                segments: [
-                    Segment.if(ifNotExists, .raw("IF NOT EXISTS")),
-                    Segment.table(table),
-                    Group<Context>(segments: segments, separator: ",\n")
-                ]
-            )
-        )
-    }
-    
-    static func COLUMN<C: Column>(
-        _ column: C,
-        dataType: SQLiteStatement.DataType,
-        notNull: Bool = false,
-        unique: Bool = false,
-        segments: Segment<Context>...
-    ) -> Segment {
-        .clause(
-            Clause(
-                keyword: Keyword(stringLiteral: "\(column.stringValue)"),
-                segments: [
-                    Segment.raw(dataType.rawValue),
-                    .if(notNull, .raw("NOT NULL")),
-                    .if(unique, .raw("UNIQUE"))
-                ]
-            )
-        )
-    }
-    
-    static func PRIMARY_KEY(_ column: Column, autoIncrement: Bool = true) -> Segment {
-        .clause(
-            Clause(
-                keyword: .primary,
-                segments: [
-                    Segment.clause(
-                        Clause(
-                            keyword: .key,
-                            segments: [
-                                Segment.group(Group<Context>(segments: [
-                                    Segment.raw(column.stringValue),
-                                    Segment.if(autoIncrement, .keyword(.autoIncrement))
-                                ]))
-                            ]
-                        )
-                    )
-                ]
-            )
-        )
-    }
-    
-    static func FOREIGN_KEY(_ column: Column, references reference: Column) -> Segment {
-        .clause(
-            Clause(
-                keyword: .foreign,
-                segments: [
-                    Segment.clause(
-                        Clause(
-                            keyword: .key,
-                            segments: [
-                                Segment.group(Group<Context>(segments: [
-                                    Segment.raw(column.stringValue)
-                                ]))
-                            ]
-                        )
-                    ),
-                    .keyword(.references),
-                    .raw(type(of: reference).tableName),
-                    .group(Group<Context>(segments: [
-                        Segment.raw(reference.stringValue)
-                    ]))
-                ]
-            )
-        )
     }
 }

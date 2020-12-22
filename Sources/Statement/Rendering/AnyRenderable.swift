@@ -1,5 +1,5 @@
 import Foundation
 
-protocol AnyRenderable {
+public protocol AnyRenderable {
     func render(into renderer: Renderer)
 }

@@ -1,6 +1,6 @@
 import Foundation
 
-enum ComparisonOperator {
+public enum ComparisonOperator {
     case equal(Encodable)
     case notEqual(Encodable)
     case greaterThan(Encodable)
@@ -8,7 +8,7 @@ enum ComparisonOperator {
     case lessThan(Encodable)
     case lessThanEqualTo(Encodable)
     
-    var op: String {
+    public var op: String {
         switch self {
         case .equal: return "="
         case .notEqual: return "<>"
@@ -19,7 +19,7 @@ enum ComparisonOperator {
         }
     }
     
-    var expression: String {
+    public var expression: String {
         var components: [String] = [op]
         
         switch self {

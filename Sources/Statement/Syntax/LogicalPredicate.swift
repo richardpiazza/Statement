@@ -1,20 +1,25 @@
 import Foundation
 
-struct LogicalPredicate<Context> {
-    var logicalOperator: LogicalOperator
-    var elements: [AnyRenderable]
+public struct LogicalPredicate<Context> {
+    public var op: LogicalOperator
+    public var elements: [AnyRenderable]
+    
+    public init(_ op: LogicalOperator, elements: [AnyRenderable]) {
+        self.op = op
+        self.elements = elements
+    }
 }
 
-extension LogicalPredicate {
+public extension LogicalPredicate {
     func render() -> String {
-        let renderer = LogicalRenderer(logicalOperator)
+        let renderer = LogicalRenderer(op)
         elements.forEach { $0.render(into: renderer) }
         return renderer.render()
     }
 }
 
 extension LogicalPredicate: AnyRenderable {
-    func render(into renderer: Renderer) {
+    public func render(into renderer: Renderer) {
         renderer.addLogicalPredicate(self)
     }
 }

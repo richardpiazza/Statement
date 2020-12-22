@@ -1,5 +1,5 @@
 import Foundation
 
-protocol StatementSyntax {
+public protocol StatementSyntax {
     associatedtype StatementContext
 }

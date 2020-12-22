@@ -5,6 +5,16 @@ import PackageDescription
 
 let package = Package(
     name: "Statement",
+    products: [
+        .library(
+            name: "Statement",
+            targets: ["Statement"]
+        ),
+        .library(
+            name: "StatementSQLite",
+            targets: ["StatementSQLite"]
+        ),
+    ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
@@ -15,8 +25,11 @@ let package = Package(
         .target(
             name: "Statement",
             dependencies: []),
+        .target(
+            name: "StatementSQLite",
+            dependencies: ["Statement"]),
         .testTarget(
             name: "StatementTests",
-            dependencies: ["Statement"]),
+            dependencies: ["Statement", "StatementSQLite"]),
     ]
 )

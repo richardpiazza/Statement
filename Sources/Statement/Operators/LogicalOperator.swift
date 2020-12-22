@@ -1,6 +1,6 @@
 import Foundation
 
-enum LogicalOperator {
+public enum LogicalOperator {
     case all
     case and
     case any
@@ -15,7 +15,7 @@ enum LogicalOperator {
     case some
     
     
-    var `operator`: String {
+    public var `operator`: String {
         switch self {
         case .all: return "ALL"
         case .and: return "AND"
