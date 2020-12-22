@@ -37,7 +37,22 @@ public struct Column<T: Encodable>: AnyColumn {
     }
     
     public var defaultValue: Encodable? {
-        return nil
+        guard provideDefault else {
+            return nil
+        }
+        
+        switch self {
+        case let cast as Column<Optional<String>>:
+            return (cast.wrappedValue != nil) ? cast.wrappedValue : NSNull()
+        case let cast as Column<Optional<Int>>:
+            return (cast.wrappedValue != nil) ? cast.wrappedValue : NSNull()
+        case let cast as Column<Optional<Double>>:
+            return (cast.wrappedValue != nil) ? cast.wrappedValue : NSNull()
+        default:
+            break
+        }
+        
+        return initialValue
     }
     
     public var description: String {

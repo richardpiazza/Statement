@@ -1,9 +1,9 @@
 import Foundation
 
-class ClauseRenderer {
+class ClauseRenderer: Renderer {
     let keyword: Keyword
     let separator: String
-    private var components: [String] = []
+    var components: [String] = []
     
     init(_ keyword: Keyword, separator: String) {
         self.keyword = keyword
@@ -12,27 +12,5 @@ class ClauseRenderer {
     
     func render() -> String {
         keyword.value + " " + components.joined(separator: separator)
-    }
-}
-
-extension ClauseRenderer: Renderer {
-    func addRaw(_ text: String) {
-        components.append(text)
-    }
-    
-    func addClause<C>(_ clause: Clause<C>) {
-        components.append(clause.render())
-    }
-    
-    func addComparisonPredicate<C>(_ predicate: ComparisonPredicate<C>) {
-        components.append(predicate.render())
-    }
-    
-    func addLogicalPredicate<C>(_ logicalPredicate: LogicalPredicate<C>) {
-        components.append(logicalPredicate.render())
-    }
-    
-    func addGroup<C>(_ group: Group<C>) {
-        components.append(group.render())
     }
 }

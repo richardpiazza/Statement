@@ -1,9 +1,28 @@
 import Foundation
 
-public protocol Renderer {
-    func addRaw(_ text: String)
-    func addClause<C>(_ clause: Clause<C>)
-    func addComparisonPredicate<C>(_ predicate: ComparisonPredicate<C>)
-    func addLogicalPredicate<C>(_ logicalPredicate: LogicalPredicate<C>)
-    func addGroup<C>(_ group: Group<C>)
+public protocol Renderer: class {
+    var components: [String] { get set }
+    func render() -> String
+}
+
+public extension Renderer {
+    func addRaw(_ text: String) {
+        components.append(text)
+    }
+    
+    func addClause<C>(_ clause: Clause<C>) {
+        components.append(clause.render())
+    }
+    
+    func addComparisonPredicate<C>(_ predicate: ComparisonPredicate<C>) {
+        components.append(predicate.render())
+    }
+    
+    func addLogicalPredicate<C>(_ logicalPredicate: LogicalPredicate<C>) {
+        components.append(logicalPredicate.render())
+    }
+    
+    func addGroup<C>(_ group: Group<C>) {
+        components.append(group.render())
+    }
 }

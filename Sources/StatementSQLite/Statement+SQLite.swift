@@ -163,7 +163,7 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
                     Segment.raw(dataType),
                     .if(column.notNull, .raw("NOT NULL")),
                     .if(column.unique, .raw("UNIQUE")),
-//                    .if(column.defaultValue != nil, .raw(column.defaultValue!.sqlString))
+                    .unwrap(column.defaultValue, transform: { .raw("DEFAULT \($0.sqlString)") })
                 ]
             )
         )

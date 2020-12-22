@@ -1,10 +1,10 @@
 import Foundation
 
-class GroupRenderer {
+class GroupRenderer: Renderer {
     let prefix: String
     let suffix: String
     let separator: String
-    private var components: [String] = []
+    var components: [String] = []
     
     init(prefix: String, suffix: String, separator: String) {
         self.prefix = prefix
@@ -14,27 +14,5 @@ class GroupRenderer {
     
     func render() -> String {
         return prefix + " " + components.joined(separator: separator) + " " + suffix
-    }
-}
-
-extension GroupRenderer: Renderer {
-    func addRaw(_ text: String) {
-        components.append(text)
-    }
-    
-    func addClause<C>(_ clause: Clause<C>) {
-        components.append(clause.render())
-    }
-    
-    func addComparisonPredicate<C>(_ predicate: ComparisonPredicate<C>) {
-        components.append(predicate.render())
-    }
-    
-    func addLogicalPredicate<C>(_ logicalPredicate: LogicalPredicate<C>) {
-        components.append(logicalPredicate.render())
-    }
-    
-    func addGroup<C>(_ group: Group<C>) {
-        components.append(group.render())
     }
 }

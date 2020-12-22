@@ -8,7 +8,14 @@ public extension Encodable {
         case let value as Double: return "\(value)"
         case is NSNull: return "NULL"
         default:
-            //TODO
+            break
+        }
+        
+        do {
+            let data = try JSONEncoder().encode(self)
+            return String(data: data, encoding: .utf8) ?? ""
+        } catch {
+            print(error)
             return ""
         }
     }
