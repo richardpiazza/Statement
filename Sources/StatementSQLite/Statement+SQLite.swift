@@ -1,7 +1,5 @@
 import Statement
 
-
-
 public extension Segment where Context == SQLiteStatement.CreateContext {
     static func TABLE<T: Table>(_ type: T.Type, ifNotExists: Bool = true, segments: Segment<Context>...) -> Segment {
         .clause(

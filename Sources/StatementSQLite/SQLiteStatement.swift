@@ -3,13 +3,6 @@ import Statement
 public struct SQLiteStatement: StatementSyntax {
     public enum StatementContext {}
     
-//    public enum DataTypes: String {
-//        case integer = "INTEGER"
-//        case real = "REAL"
-//        case text = "TEXT"
-//        case blob = "BLOB"
-//    }
-    
     private let statement: StructuredStatement<SQLiteStatement>
     private let terminator: String = ";"
     
