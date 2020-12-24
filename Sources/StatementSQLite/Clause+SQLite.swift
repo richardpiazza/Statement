@@ -36,11 +36,24 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     static func CREATE(_ segments: Segment<SQLiteStatement.CreateContext>...) -> Clause {
         return Clause(keyword: .create, segments: segments)
     }
+    
+    static func DELETE(_ segments: Segment<SQLiteStatement.DeleteContext>...) -> Clause {
+        return Clause(keyword: .delete, segments: segments)
+    }
+    
+    static func HAVING(_ segments: Segment<SQLiteStatement.HavingContext>...) -> Clause {
+        return Clause(keyword: .having, segments: segments)
+    }
 }
 
 // MARK: - Compound Clause
 public extension Clause where Context == SQLiteStatement.StatementContext {
-    ///
+    /// ```
+    /// .INSERT(
+    ///     .keyword(.into),
+    ///     .table(type)
+    /// )
+    /// ```
     static func INSERT_INTO_TABLE<T: Table>(_ type: T.Type, _ segments: Segment<SQLiteStatement.InsertIntoContext>...) -> Clause {
         let table = Segment<Context>.table(type)
         let group = Group<Context>(segments: segments)
@@ -90,5 +103,18 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
         var allSegments: [AnyRenderable] = [table]
         allSegments.append(contentsOf: segments)
         return Clause(keyword: .update, segments: allSegments)
+    }
+    
+    /// ```
+    /// .DELETE(
+    ///     .keyword(.from),
+    ///     .table(type)
+    /// )
+    /// ```
+    static func DELETE_FROM_TABLE<T:Table>(_ type: T.Type, _segments: Segment<SQLiteStatement.DeleteContext>...) -> Clause {
+        .DELETE(
+            .keyword(.from),
+            .table(type)
+        )
     }
 }
