@@ -88,7 +88,7 @@ final class SQLiteStatementTests: XCTestCase {
         language_code TEXT NOT NULL,
         region_code TEXT,
         value TEXT NOT NULL,
-        PRIMARY KEY ( id, AUTOINCREMENT ),
+        PRIMARY KEY ( id AUTOINCREMENT ),
         FOREIGN KEY ( expression_id ) REFERENCES expression ( id ) );
         """)
     }

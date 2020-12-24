@@ -40,7 +40,7 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
                                 Segment.group(Group<Context>(segments: [
                                     Segment.raw(column.name),
                                     Segment.if(column.autoIncrement, .keyword(.autoIncrement))
-                                ]))
+                                ], separator: " "))
                             ]
                         )
                     )
