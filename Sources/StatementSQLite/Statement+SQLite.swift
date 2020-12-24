@@ -81,8 +81,8 @@ public extension Segment where Context == SQLiteStatement.JoinContext {
             Clause<SQLiteStatement.JoinContext>(
                 keyword: .on,
                 segments: [
-                    Segment.column(c1),
-                    Segment.column(c2)
+                    Segment.column(c1, tablePrefix: true),
+                    Segment.column(c2, tablePrefix: true)
                 ],
                 separator: " = "
             )

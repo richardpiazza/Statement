@@ -37,12 +37,12 @@ public extension Segment {
         return .raw(T.schema.name)
     }
     
-    static func column(_ column: AnyColumn?) -> Self {
+    static func column(_ column: AnyColumn?, tablePrefix: Bool = false) -> Self {
         guard let column = column else {
             return .empty
         }
         
-        return .raw(column.identifier)
+        return .raw(tablePrefix ? column.identifier : column.name)
     }
     
     static func comparison(_ column: AnyColumn, _ op: ComparisonOperator) -> Self {
