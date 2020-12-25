@@ -22,7 +22,7 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
                     Segment.raw(column.dataType),
                     .if(column.notNull, .raw("NOT NULL")),
                     .if(column.unique, .raw("UNIQUE")),
-                    .unwrap(column.defaultValue, transform: { .raw("DEFAULT \($0.sqlString)") })
+                    .unwrap(column.defaultValue, transform: { .raw("DEFAULT \($0.sqlArgument())") })
                 ]
             )
         )

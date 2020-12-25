@@ -32,7 +32,7 @@ final class SQLiteStatementTests: XCTestCase {
         SELECT expression.id, name, default_language, comment, feature
         FROM expression
         JOIN translation ON expression.id = translation.expression_id
-        WHERE translation.language_code = "en" AND translation.region_code = "US"
+        WHERE translation.language_code = 'en' AND translation.region_code = 'US'
         LIMIT 1;
         """)
     }
@@ -51,7 +51,7 @@ final class SQLiteStatementTests: XCTestCase {
         
         XCTAssertEqual(statement.render(), """
         UPDATE translation
-        SET translation.value = "Corrected Translation", translation.region_code = NULL
+        SET translation.value = 'Corrected Translation', translation.region_code = NULL
         WHERE translation.id = 123;
         """)
     }
@@ -71,7 +71,7 @@ final class SQLiteStatementTests: XCTestCase {
         
         XCTAssertEqual(statement.render(), """
         INSERT INTO translation ( language_code, region_code )
-        VALUES ( "en", "US" );
+        VALUES ( 'en', 'US' );
         """)
     }
     

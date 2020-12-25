@@ -54,7 +54,7 @@ public extension Segment {
     }
     
     static func value(_ encodable: Encodable) -> Self {
-        .raw(encodable.sqlString)
+        .raw(encodable.sqlArgument())
     }
 }
 

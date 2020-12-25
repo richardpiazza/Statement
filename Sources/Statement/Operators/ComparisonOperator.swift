@@ -30,7 +30,7 @@ public enum ComparisonOperator {
              .lessThan(let encodable),
              .lessThanEqualTo(let encodable):
             
-            components.append(encodable.sqlString)
+            components.append(encodable.sqlArgument())
         }
         
         return components.joined(separator: " ")
