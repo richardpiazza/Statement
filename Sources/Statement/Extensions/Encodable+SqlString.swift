@@ -1,43 +1,26 @@
 import Foundation
 
-private var encoder: JSONEncoder = {
-    let encoder = JSONEncoder()
-    return encoder
-}()
-
 public extension Encodable {
+    private var singleQuote: String { "'" }
+    private var doubleQuote: String { "''" }
+    
     /// A string representation the instance suitable for using as an argument in SQL statements.
     ///
     /// Rules apply to various types:
     /// * A `NSNull` will output _NULL_.
     /// * Integers and Doubles will be outputted as is.
-    /// * Strings will be bracketed by the prefix/suffix characters.
-    ///
-    /// - parameter stringPrefixCharacter:
-    /// - parameter stringSuffixCharacter:
-    func sqlArgument(stringPrefixCharacter: Character = "'", stringSuffixCharacter: Character = "'") -> String {
+    /// * Strings will be bracketed by the single _'_ quotes.
+    func sqlArgument() -> String {
         switch self {
         case is NSNull: return "NULL"
         case let value as Int: return "\(value)"
         case let value as Double: return "\(value)"
+        case let value as String:
+            let newValue = value
+                .replacingOccurrences(of: singleQuote, with: doubleQuote)
+            return "\(singleQuote)\(newValue)\(singleQuote)"
         default:
-            break
-        }
-        
-        guard let data = try? encoder.encode(self) else {
-            return ""
-        }
-        
-        guard let value = String(data: data, encoding: .utf8) else {
-            return ""
-        }
-        
-        switch self {
-        case is String:
-            let output = value.dropFirst().dropLast()
-            return "\(stringPrefixCharacter)\(output)\(stringSuffixCharacter)"
-        default:
-            return value
+            return String(describing: self)
         }
     }
     

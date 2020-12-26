@@ -34,9 +34,9 @@ final class EncodedValuesTests: XCTestCase {
     
     func testSpecialCharacterString() {
         let value: String = """
-        A "Special" String
+        A 'Special' String
         With a line-break.
         """
-        XCTAssertEqual(value.sqlArgument(), "'A \\\"Special\\\" String\\nWith a line-break.'")
+        XCTAssertEqual(value.sqlArgument(), "'A ''Special'' String\nWith a line-break.'")
     }
 }
