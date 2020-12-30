@@ -22,7 +22,7 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
                     Segment.raw(column.dataType),
                     .if(column.notNull, .raw("NOT NULL")),
                     .if(column.unique, .raw("UNIQUE")),
-                    .unwrap(column.defaultValue, transform: { .raw("DEFAULT \($0.sqlString)") })
+                    .unwrap(column.defaultValue, transform: { .raw("DEFAULT \($0.sqlArgument())") })
                 ]
             )
         )
@@ -40,7 +40,7 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
                                 Segment.group(Group<Context>(segments: [
                                     Segment.raw(column.name),
                                     Segment.if(column.autoIncrement, .keyword(.autoIncrement))
-                                ]))
+                                ], separator: " "))
                             ]
                         )
                     )
@@ -81,8 +81,8 @@ public extension Segment where Context == SQLiteStatement.JoinContext {
             Clause<SQLiteStatement.JoinContext>(
                 keyword: .on,
                 segments: [
-                    Segment.column(c1),
-                    Segment.column(c2)
+                    Segment.column(c1, tablePrefix: true),
+                    Segment.column(c2, tablePrefix: true)
                 ],
                 separator: " = "
             )

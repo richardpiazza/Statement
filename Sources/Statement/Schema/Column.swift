@@ -70,7 +70,7 @@ public struct Column<T: Encodable>: AnyColumn {
             descriptors.append("UNIQUE")
         }
         if let value = defaultValue {
-            descriptors.append("DEFAULT \(value.sqlString)")
+            descriptors.append("DEFAULT \(value.sqlArgument())")
         }
         if primaryKey {
             descriptors.append("PRIMARY KEY")
@@ -84,7 +84,7 @@ public struct Column<T: Encodable>: AnyColumn {
         if let value = wrappedValue as? String, value.isEmpty {
             descriptors.append("VALUE: {empty}")
         } else {
-            descriptors.append("VALUE: \(wrappedValue.sqlString)")
+            descriptors.append("VALUE: \(wrappedValue.sqlArgument())")
         }
         
         return descriptors.joined(separator: " ")

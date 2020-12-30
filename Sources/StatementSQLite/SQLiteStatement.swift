@@ -27,4 +27,6 @@ public extension SQLiteStatement {
     enum InsertIntoContext {}
     enum ValuesContext {}
     enum CreateContext {}
+    enum DeleteContext {}
+    enum HavingContext {}
 }

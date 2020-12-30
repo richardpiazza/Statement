@@ -6,6 +6,7 @@ final class DefaultValuesTests: XCTestCase {
     
     static var allTests = [
         ("testOptionalDefault", testOptionalDefault),
+        ("testDescription", testDescription),
     ]
     
     private struct Entity: Table {

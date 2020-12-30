@@ -11,7 +11,7 @@ final class SQLiteStatementTests: XCTestCase {
     func testSelect() {
         let statement = SQLiteStatement(
             .SELECT(
-                .column(Expression.id),
+                .column(Expression.id, tablePrefix: true),
                 .column(Expression.name),
                 .column(Expression.defaultLanguage),
                 .column(Expression.comment),
@@ -29,10 +29,10 @@ final class SQLiteStatementTests: XCTestCase {
         )
         
         XCTAssertEqual(statement.render(), """
-        SELECT expression.id, expression.name, expression.default_language, expression.comment, expression.feature
+        SELECT expression.id, name, default_language, comment, feature
         FROM expression
         JOIN translation ON expression.id = translation.expression_id
-        WHERE translation.language_code = "en" AND translation.region_code = "US"
+        WHERE translation.language_code = 'en' AND translation.region_code = 'US'
         LIMIT 1;
         """)
     }
@@ -51,7 +51,7 @@ final class SQLiteStatementTests: XCTestCase {
         
         XCTAssertEqual(statement.render(), """
         UPDATE translation
-        SET translation.value = "Corrected Translation", translation.region_code = NULL
+        SET translation.value = 'Corrected Translation', translation.region_code = NULL
         WHERE translation.id = 123;
         """)
     }
@@ -70,8 +70,8 @@ final class SQLiteStatementTests: XCTestCase {
         )
         
         XCTAssertEqual(statement.render(), """
-        INSERT INTO translation ( translation.language_code, translation.region_code )
-        VALUES ( "en", "US" );
+        INSERT INTO translation ( language_code, region_code )
+        VALUES ( 'en', 'US' );
         """)
     }
     
@@ -88,7 +88,7 @@ final class SQLiteStatementTests: XCTestCase {
         language_code TEXT NOT NULL,
         region_code TEXT,
         value TEXT NOT NULL,
-        PRIMARY KEY ( id, AUTOINCREMENT ),
+        PRIMARY KEY ( id AUTOINCREMENT ),
         FOREIGN KEY ( expression_id ) REFERENCES expression ( id ) );
         """)
     }

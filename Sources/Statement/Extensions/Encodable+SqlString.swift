@@ -1,23 +1,32 @@
 import Foundation
 
 public extension Encodable {
-    var sqlString: String {
+    private var singleQuote: String { "'" }
+    private var doubleQuote: String { "''" }
+    
+    /// A string representation the instance suitable for using as an argument in SQL statements.
+    ///
+    /// Rules apply to various types:
+    /// * A `NSNull` will output _NULL_.
+    /// * Integers and Doubles will be outputted as is.
+    /// * Strings will be bracketed by the single _'_ quotes.
+    func sqlArgument() -> String {
         switch self {
-        case let value as String: return "\"\(value)\""
+        case is NSNull: return "NULL"
         case let value as Int: return "\(value)"
         case let value as Double: return "\(value)"
-        case is NSNull: return "NULL"
+        case let value as String:
+            let newValue = value
+                .replacingOccurrences(of: singleQuote, with: doubleQuote)
+            return "\(singleQuote)\(newValue)\(singleQuote)"
         default:
-            break
+            return String(describing: self)
         }
-        
-        do {
-            let data = try JSONEncoder().encode(self)
-            return String(data: data, encoding: .utf8) ?? ""
-        } catch {
-            print(error)
-            return ""
-        }
+    }
+    
+    @available(*, deprecated, renamed: "sqlArgument()")
+    var sqlString: String {
+        return sqlArgument()
     }
 }
 
