@@ -1,16 +1,20 @@
 import Foundation
 
 class LogicalRenderer: Renderer {
-    let `operator`: LogicalOperator
+    let op: LogicalOperator
     let separator: String
     var components: [String] = []
     
     init(_ op: LogicalOperator) {
-        self.operator = op
+        self.op = op
         self.separator = " \(op.operator) "
     }
     
     func render() -> String {
-        components.joined(separator: separator)
+        if components.count == 1 {
+            return components.joined() + " " + op.operator
+        } else {
+            return components.joined(separator: separator)
+        }
     }
 }

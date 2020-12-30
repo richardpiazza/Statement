@@ -49,6 +49,11 @@ public extension Segment {
         return .comparisonPredicate(ComparisonPredicate<Context>(column: column, comparison: op))
     }
     
+    /// Convenience for creating 'IS NULL' / 'IS NOT NULL' checks for a single column.
+    static func logical(_ column: AnyColumn, _ op: LogicalOperator) -> Self {
+        return .logicalPredicate(LogicalPredicate<Context>(op, elements: [Segment.raw(column.identifier)]))
+    }
+    
     static func limit(_ limit: Int) -> Self {
         .raw("\(limit)")
     }
