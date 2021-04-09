@@ -1,5 +1,9 @@
 import Statement
 
+public extension SQLiteStatement {
+    enum CreateContext {}
+}
+
 public extension Segment where Context == SQLiteStatement.CreateContext {
     static func TABLE<T: Table>(_ type: T.Type, ifNotExists: Bool = true, segments: Segment<Context>...) -> Segment {
         .clause(
@@ -31,17 +35,15 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
     static func PRIMARY_KEY(_ column: AnyColumn) -> Segment {
         .clause(
             Clause(
-                keyword: .primary,
+                keyword: .compound(.primary, .key),
                 segments: [
-                    Segment.clause(
-                        Clause(
-                            keyword: .key,
+                    Segment.group(
+                        Group<Context>(
                             segments: [
-                                Segment.group(Group<Context>(segments: [
-                                    Segment.raw(column.name),
-                                    Segment.if(column.autoIncrement, .keyword(.autoIncrement))
-                                ], separator: " "))
-                            ]
+                                Segment.raw(column.name),
+                                Segment.if(column.autoIncrement, .keyword(.autoIncrement))
+                            ],
+                            separator: " "
                         )
                     )
                 ]
@@ -52,15 +54,12 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
     static func FOREIGN_KEY(_ column: AnyColumn, references reference: AnyColumn) -> Segment {
         .clause(
             Clause(
-                keyword: .foreign,
+                keyword: .compound(.foreign, .key),
                 segments: [
-                    Segment.clause(
-                        Clause(
-                            keyword: .key,
+                    Segment.group(
+                        Group<Context>(
                             segments: [
-                                Segment.group(Group<Context>(segments: [
-                                    Segment.raw(column.name)
-                                ]))
+                                Segment.raw(column.name)
                             ]
                         )
                     ),
@@ -71,29 +70,6 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
                     ]))
                 ]
             )
-        )
-    }
-}
-
-public extension Segment where Context == SQLiteStatement.JoinContext {
-    static func ON(_ c1: AnyColumn, _ c2: AnyColumn) -> Segment {
-        .clause(
-            Clause<SQLiteStatement.JoinContext>(
-                keyword: .on,
-                segments: [
-                    Segment.column(c1, tablePrefix: true),
-                    Segment.column(c2, tablePrefix: true)
-                ],
-                separator: " = "
-            )
-        )
-    }
-}
-
-public extension Segment where Context == SQLiteStatement.WhereContext {
-    static func AND(_ segments: Segment<Context>...) -> Segment {
-        .logicalPredicate(
-            LogicalPredicate(.and, elements: segments)
         )
     }
 }

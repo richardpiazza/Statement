@@ -1,6 +1,7 @@
 import Foundation
 
 public struct Clause<Context> {
+    
     public var keyword: Keyword
     public var segments: [AnyRenderable]
     public var separator: String

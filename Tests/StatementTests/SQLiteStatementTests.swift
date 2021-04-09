@@ -92,4 +92,70 @@ final class SQLiteStatementTests: XCTestCase {
         FOREIGN KEY ( expression_id ) REFERENCES expression ( id ) );
         """)
     }
+    
+    func testAlterContext() {
+        var statement: SQLiteStatement
+        var render: String
+        
+        statement = .init(
+            .ALTER(
+                .keyword(.table),
+                .table(Translation.self),
+                .RENAME_TO(Expression.self)
+            )
+        )
+        
+        render = statement.render()
+        XCTAssertEqual(render, """
+        ALTER TABLE translation RENAME TO expression;
+        """)
+        
+        statement = .init(
+            .ALTER_TABLE(
+                Translation.self,
+                .RENAME_TO(Expression.self)
+            )
+        )
+        
+        render = statement.render()
+        XCTAssertEqual(render, """
+        ALTER TABLE translation RENAME TO expression;
+        """)
+        
+        statement = .init(
+            .ALTER_TABLE(
+                Translation.self,
+                .RENAME_COLUMN(Translation.language, to: Translation.region)
+            )
+        )
+        
+        render = statement.render()
+        XCTAssertEqual(render, """
+        ALTER TABLE translation RENAME COLUMN language_code TO region_code;
+        """)
+        
+        statement = .init(
+            .ALTER_TABLE(
+                Translation.self,
+                .ADD_COLUMN(Translation.language)
+            )
+        )
+        
+        render = statement.render()
+        XCTAssertEqual(render, """
+        ALTER TABLE translation ADD COLUMN language_code TEXT NOT NULL;
+        """)
+        
+        statement = .init(
+            .ALTER_TABLE(
+                Translation.self,
+                .DROP_COLUMN(Translation.language)
+            )
+        )
+        
+        render = statement.render()
+        XCTAssertEqual(render, """
+        ALTER TABLE translation DROP COLUMN language_code;
+        """)
+    }
 }

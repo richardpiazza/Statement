@@ -18,15 +18,12 @@ public extension SQLiteStatement {
 }
 
 public extension SQLiteStatement {
+    enum DeleteContext {}
     enum SelectContext {}
     enum FromContext {}
-    enum JoinContext {}
-    enum WhereContext {}
+    enum HavingContext {}
+    enum InsertIntoContext {}
     enum UpdateContext {}
     enum SetContext {}
-    enum InsertIntoContext {}
     enum ValuesContext {}
-    enum CreateContext {}
-    enum DeleteContext {}
-    enum HavingContext {}
 }

@@ -111,7 +111,7 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     ///     .table(type)
     /// )
     /// ```
-    static func DELETE_FROM_TABLE<T:Table>(_ type: T.Type, _segments: Segment<SQLiteStatement.DeleteContext>...) -> Clause {
+    static func DELETE_FROM_TABLE<T:Table>(_ type: T.Type, _ segments: Segment<SQLiteStatement.DeleteContext>...) -> Clause {
         .DELETE(
             .keyword(.from),
             .table(type)
