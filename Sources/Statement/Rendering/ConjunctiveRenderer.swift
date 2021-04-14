@@ -5,7 +5,7 @@ class ConjunctiveRenderer: Renderer {
     
     init(_ op: ConjunctiveOperator) {
         self.op = op
-        self.separator = " \(op.sqlArgument()) "
+        self.separator = " \(op.rawValue) "
     }
     
     func render() -> String {

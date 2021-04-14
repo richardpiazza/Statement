@@ -1,5 +1,3 @@
-import Foundation
-
 class ClauseRenderer: Renderer {
     let keyword: Keyword
     let separator: String
@@ -11,6 +9,6 @@ class ClauseRenderer: Renderer {
     }
     
     func render() -> String {
-        keyword.value + " " + components.joined(separator: separator)
+        keyword.rawValue + " " + components.joined(separator: separator)
     }
 }

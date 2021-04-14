@@ -20,18 +20,9 @@ public extension ComparisonPredicate {
     }
     
     func render() -> String {
-        guard elements.count > 1 else {
-            return ""
-        }
-        
-        let renderer = TempRenderer()
-        elements[0].render(into: renderer)
-        elements[1].render(into: renderer)
-        
-        let lhs = renderer.components[0]
-        let rhs = renderer.components[1]
-        
-        return lhs + " \(op.op) " + rhs
+        let renderer = ComparisonRenderer(op)
+        elements.forEach { $0.render(into: renderer) }
+        return renderer.render()
     }
 }
 

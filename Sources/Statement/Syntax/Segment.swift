@@ -54,7 +54,7 @@ public extension Segment {
     
     /// A `Segment` that represents a SQL keyword.
     static func keyword(_ keyword: Keyword) -> Self {
-        .raw(keyword.value)
+        .raw(keyword.rawValue)
     }
     
     /// A `Segment` that outputs the provided table name.
@@ -63,17 +63,8 @@ public extension Segment {
     }
     
     /// A `Segment` that outputs the provided column name with an optional table prefix.
-    static func column(_ column: AnyColumn?, tablePrefix: Bool = false) -> Self {
-        guard let column = column else {
-            return .empty
-        }
-        
-        return .raw(tablePrefix ? column.identifier : column.name)
-    }
-    
-    /// Convenience wrapper for specifying an integer limit.
-    static func limit(_ limit: Int) -> Self {
-        .value(limit)
+    static func column(_ column: AnyColumn, tablePrefix: Bool = false) -> Self {
+        .raw(tablePrefix ? column.identifier : column.name)
     }
     
     /// Convenience wrapper that outputs the `.sqlArgument()` of the provided value.

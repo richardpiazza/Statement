@@ -19,7 +19,6 @@ public extension SQLiteStatement {
 
 public extension SQLiteStatement {
     enum DeleteContext {}
-    enum SelectContext {}
     enum FromContext {}
     enum HavingContext {}
     enum InsertIntoContext {}

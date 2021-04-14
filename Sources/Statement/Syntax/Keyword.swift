@@ -1,19 +1,17 @@
-import Foundation
-
-public struct Keyword: ExpressibleByStringLiteral, Codable {
-    public var value: String
+public struct Keyword: ExpressibleByStringLiteral, Equatable, Codable {
+    public let rawValue: String
     
     public init(stringLiteral value: String) {
-        self.value = value
-    }
-    
-    /// Creates a multi-word keyword (separated by spaces).
-    public static func compound(_ keywords: Keyword...) -> Keyword {
-        Keyword(stringLiteral: keywords.map { $0.value }.joined(separator: " "))
+        self.rawValue = value
     }
 }
 
 public extension Keyword {
+    /// Creates a multi-word keyword (separated by spaces).
+    static func compound(_ keywords: Keyword...) -> Keyword {
+        Keyword(stringLiteral: keywords.map { $0.rawValue }.joined(separator: " "))
+    }
+    
     static let add: Self = "ADD"
     static let alter: Self = "ALTER"
     static let and: Self = "AND"

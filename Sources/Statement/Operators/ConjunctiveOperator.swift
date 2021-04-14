@@ -1,11 +1,12 @@
-public enum ConjunctiveOperator {
-    case and
-    case or
+public struct ConjunctiveOperator: ExpressibleByStringLiteral, Equatable {
+    public let rawValue: String
     
-    public func sqlArgument() -> String {
-        switch self {
-        case .and: return Keyword.and.value
-        case .or: return Keyword.or.value
-        }
+    public init(stringLiteral value: String) {
+        self.rawValue = value
     }
+}
+
+public extension ConjunctiveOperator {
+    static let and: Self = "AND"
+    static let or: Self = "OR"
 }

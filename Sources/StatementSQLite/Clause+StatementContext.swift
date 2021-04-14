@@ -18,7 +18,9 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     }
     
     static func LIMIT(_ limit: Int) -> Clause {
-        Clause(keyword: .limit, segments: [Segment<Context>.limit(limit)])
+        Clause(keyword: .limit, segments: [
+            Segment<Context>.raw("\(limit)")
+        ])
     }
     
     static func UPDATE(_ segments: Segment<SQLiteStatement.UpdateContext>...) -> Clause {
@@ -30,7 +32,9 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     }
     
     static func VALUES(_ segments: Segment<SQLiteStatement.ValuesContext>...) -> Clause {
-        Clause(keyword: .values, segments: [Segment.group(Group<Context>(segments: segments))])
+        Clause(keyword: .values, segments: [
+            Segment.group(Group<Context>(segments: segments))
+        ])
     }
     
     static func CREATE(_ segments: Segment<SQLiteStatement.CreateContext>...) -> Clause {

@@ -46,7 +46,7 @@ public extension Segment where Context == SQLiteStatement.AlterTableContext {
                 Segment.raw(column.dataType),
                 .if(column.notNull, .keyword(.compound(.not, .null))),
                 .if(column.unique, .keyword(.unique)),
-                .unwrap(column.defaultValue, transform: { .raw("\(Keyword.default.value) \($0.sqlArgument())") })
+                .unwrap(column.defaultValue, transform: { .raw("\(Keyword.default.rawValue) \($0.sqlArgument())") })
             ]
         )
     }
