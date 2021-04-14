@@ -21,8 +21,8 @@ final class SQLiteStatement_SelectContextTests: XCTestCase {
             .JOIN_TABLE(Translation.self, on: Expression.id, equals: Translation.expressionID),
             .WHERE(
                 .AND(
-                    .comparison(Translation.language, .equal("en")),
-                    .comparison(Translation.region, .equal("US"))
+                    .column(Translation.language, op: .equal, value: "en"),
+                    .column(Translation.region, op: .equal, value: "US")
                 )
             ),
             .LIMIT(1)
@@ -35,9 +35,5 @@ final class SQLiteStatement_SelectContextTests: XCTestCase {
         WHERE translation.language_code = 'en' AND translation.region_code = 'US'
         LIMIT 1;
         """)
-    }
-    
-    func testMagic() {
-        
     }
 }

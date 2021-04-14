@@ -14,4 +14,12 @@ public extension Segment where Context == SQLiteStatement.WhereContext {
     static func OR(_ segments: Segment<Context>...) -> Segment {
         .conjunctive(op: .or, segments: segments)
     }
+    
+    /// Convenience that builds a comparison predicate.
+    static func column(_ column: AnyColumn, op: ComparisonOperator, value: Encodable) -> Segment {
+        .comparison(op: op, segments: [
+            Segment<SQLiteStatement.SetContext>.column(column, tablePrefix: true),
+            .value(value)
+        ])
+    }
 }

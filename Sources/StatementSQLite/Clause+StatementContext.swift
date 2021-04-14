@@ -10,7 +10,7 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     }
     
     static func JOIN(_ segments: Segment<SQLiteStatement.JoinContext>...) -> Clause {
-        return Clause(keyword: .join, segments: segments)
+        Clause(keyword: .join, segments: segments)
     }
     
     static func WHERE(_ segments: Segment<SQLiteStatement.WhereContext>...) -> Clause {
@@ -34,15 +34,15 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     }
     
     static func CREATE(_ segments: Segment<SQLiteStatement.CreateContext>...) -> Clause {
-        return Clause(keyword: .create, segments: segments)
+        Clause(keyword: .create, segments: segments)
     }
     
     static func DELETE(_ segments: Segment<SQLiteStatement.DeleteContext>...) -> Clause {
-        return Clause(keyword: .delete, segments: segments)
+        Clause(keyword: .delete, segments: segments)
     }
     
     static func HAVING(_ segments: Segment<SQLiteStatement.HavingContext>...) -> Clause {
-        return Clause(keyword: .having, segments: segments)
+        Clause(keyword: .having, segments: segments)
     }
 }
 

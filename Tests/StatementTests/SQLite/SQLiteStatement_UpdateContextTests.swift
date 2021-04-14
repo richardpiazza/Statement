@@ -12,11 +12,11 @@ final class SQLiteStatement_UpdateContextTests: XCTestCase {
         let statement = SQLiteStatement(
             .UPDATE_TABLE(Translation.self),
             .SET(
-                .comparison(Translation.value, .equal("Corrected Translation")),
-                .comparison(Translation.region, .equal(NSNull()))
+                .column(Translation.value, op: .equal, value: "Corrected Translation"),
+                .column(Translation.region, op: .equal, value: NSNull())
             ),
             .WHERE(
-                .comparison(Translation.id, .equal(123))
+                .column(Translation.id, op: .equal, value: 123)
             )
         )
         

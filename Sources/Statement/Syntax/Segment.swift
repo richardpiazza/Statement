@@ -36,12 +36,20 @@ public extension Segment {
         .clause(Clause(keyword: keyword, segments: segments))
     }
     
+    static func comparison<C>(op: ComparisonOperator, segments: [Segment<C>]) -> Segment {
+        .comparisonPredicate(ComparisonPredicate(op, elements: segments))
+    }
+    
     static func logical<C>(op: LogicalOperator, segments: [Segment<C>]) -> Segment {
         .logicalPredicate(LogicalPredicate(op, elements: segments))
     }
     
     static func conjunctive<C>(op: ConjunctiveOperator, segments: [Segment<C>]) -> Segment {
         .conjunctivePredicate(ConjunctivePredicate(op, elements: segments))
+    }
+    
+    static func group<C>(segments: [Segment<C>]) -> Segment {
+        .group(Group(segments: segments))
     }
     
     /// A `Segment` that represents a SQL keyword.
@@ -63,18 +71,9 @@ public extension Segment {
         return .raw(tablePrefix ? column.identifier : column.name)
     }
     
-    static func comparison(_ column: AnyColumn, _ op: ComparisonOperator) -> Self {
-        return .comparisonPredicate(ComparisonPredicate<Context>(column: column, comparison: op))
-    }
-    
-    /// Convenience for creating 'IS NULL' / 'IS NOT NULL' checks for a single column.
-    static func logical(_ column: AnyColumn, _ op: LogicalOperator) -> Self {
-        return .logicalPredicate(LogicalPredicate<Context>(op, elements: [Segment.raw(column.identifier)]))
-    }
-    
     /// Convenience wrapper for specifying an integer limit.
     static func limit(_ limit: Int) -> Self {
-        .raw("\(limit)")
+        .value(limit)
     }
     
     /// Convenience wrapper that outputs the `.sqlArgument()` of the provided value.
