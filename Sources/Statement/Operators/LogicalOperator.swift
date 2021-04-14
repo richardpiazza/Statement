@@ -2,6 +2,7 @@ import Foundation
 
 public enum LogicalOperator {
     case all
+    @available(*, deprecated, message: "Use ConjunctiveOperator.and")
     case and
     case any
     case between
@@ -11,6 +12,7 @@ public enum LogicalOperator {
     case isNull
     case like
     case not
+    @available(*, deprecated, message: "Use ConjunctiveOperator.or")
     case or
     case some
     

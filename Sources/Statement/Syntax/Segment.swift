@@ -5,6 +5,7 @@ public enum Segment<Context> {
     case clause(Clause<Context>)
     case comparisonPredicate(ComparisonPredicate<Context>)
     case logicalPredicate(LogicalPredicate<Context>)
+    case conjunctivePredicate(ConjunctivePredicate<Context>)
     case group(Group<Context>)
     case empty
 }
@@ -20,6 +21,8 @@ extension Segment: AnyRenderable {
             renderer.addComparisonPredicate(predicate)
         case .logicalPredicate(let predicate):
             renderer.addLogicalPredicate(predicate)
+        case .conjunctivePredicate(let predicate):
+            renderer.addConjunctivePredicate(predicate)
         case .group(let group):
             renderer.addGroup(group)
         case .empty:
@@ -31,6 +34,14 @@ extension Segment: AnyRenderable {
 public extension Segment {
     static func clause<C>(keyword: Keyword, segments: [Segment<C>]) -> Segment {
         .clause(Clause(keyword: keyword, segments: segments))
+    }
+    
+    static func logical<C>(op: LogicalOperator, segments: [Segment<C>]) -> Segment {
+        .logicalPredicate(LogicalPredicate(op, elements: segments))
+    }
+    
+    static func conjunctive<C>(op: ConjunctiveOperator, segments: [Segment<C>]) -> Segment {
+        .conjunctivePredicate(ConjunctivePredicate(op, elements: segments))
     }
     
     /// A `Segment` that represents a SQL keyword.
