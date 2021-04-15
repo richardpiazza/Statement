@@ -18,8 +18,12 @@ public extension Renderer {
         components.append(predicate.render())
     }
     
-    func addLogicalPredicate<C>(_ logicalPredicate: LogicalPredicate<C>) {
-        components.append(logicalPredicate.render())
+    func addLogicalPredicate<C>(_ predicate: LogicalPredicate<C>) {
+        components.append(predicate.render())
+    }
+    
+    func addConjunctivePredicate<C>(_ predicate: ConjunctivePredicate<C>) {
+        components.append(predicate.render())
     }
     
     func addGroup<C>(_ group: Group<C>) {

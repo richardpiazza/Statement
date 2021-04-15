@@ -1,34 +1,22 @@
-import Foundation
-
-public enum LogicalOperator {
-    case all
-    case and
-    case any
-    case between
-    case exists
-    case `in`
-    case isNotNull
-    case isNull
-    case like
-    case not
-    case or
-    case some
+public struct LogicalOperator: ExpressibleByStringLiteral, Equatable {
+    public let rawValue: String
     
-    
-    public var `operator`: String {
-        switch self {
-        case .all: return "ALL"
-        case .and: return "AND"
-        case .any: return "ANY"
-        case .between: return "BETWEEN"
-        case .exists: return "EXISTS"
-        case .`in`: return "IN"
-        case .isNotNull: return "IS NOT NULL"
-        case .isNull: return "IS NULL"
-        case .like: return "LIKE"
-        case .not: return "NOT"
-        case .or: return "OR"
-        case .some: return "SOME"
-        }
+    public init(stringLiteral value: String) {
+        self.rawValue = value
     }
+}
+
+public extension LogicalOperator {
+    static let all: Self = "ALL"
+    static let and: Self = "AND"
+    static let any: Self = "ANY"
+    static let between: Self = "BETWEEN"
+    static let exists: Self = "EXISTS"
+    static let `in`: Self = "IN"
+    static let isNotNull: Self = "IS NOT NULL"
+    static let isNull: Self = "IS NULL"
+    static let like: Self = "LIKE"
+    static let not: Self = "NOT"
+    static let or: Self = "OR"
+    static let some: Self = "SOME"
 }

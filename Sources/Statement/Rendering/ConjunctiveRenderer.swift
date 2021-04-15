@@ -1,18 +1,16 @@
-import Foundation
-
-class LogicalRenderer: Renderer {
-    let op: LogicalOperator
+class ConjunctiveRenderer: Renderer {
+    let op: ConjunctiveOperator
     let separator: String
     var components: [String] = []
     
-    init(_ op: LogicalOperator) {
+    init(_ op: ConjunctiveOperator) {
         self.op = op
         self.separator = " \(op.rawValue) "
     }
     
     func render() -> String {
         if components.count == 1 {
-            return components.joined() + " " + op.rawValue
+            return components[0]
         } else {
             return components.joined(separator: separator)
         }

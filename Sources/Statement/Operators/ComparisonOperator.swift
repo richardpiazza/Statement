@@ -1,38 +1,16 @@
-import Foundation
+public struct ComparisonOperator: ExpressibleByStringLiteral, Equatable {
+    public let rawValue: String
+    
+    public init(stringLiteral value: String) {
+        self.rawValue = value
+    }
+}
 
-public enum ComparisonOperator {
-    case equal(Encodable)
-    case notEqual(Encodable)
-    case greaterThan(Encodable)
-    case greaterThanEqualTo(Encodable)
-    case lessThan(Encodable)
-    case lessThanEqualTo(Encodable)
-    
-    public var op: String {
-        switch self {
-        case .equal: return "="
-        case .notEqual: return "<>"
-        case .greaterThan: return ">"
-        case .greaterThanEqualTo: return ">="
-        case .lessThan: return "<"
-        case .lessThanEqualTo: return "<="
-        }
-    }
-    
-    public var expression: String {
-        var components: [String] = [op]
-        
-        switch self {
-        case .equal(let encodable),
-             .notEqual(let encodable),
-             .greaterThan(let encodable),
-             .greaterThanEqualTo(let encodable),
-             .lessThan(let encodable),
-             .lessThanEqualTo(let encodable):
-            
-            components.append(encodable.sqlArgument())
-        }
-        
-        return components.joined(separator: " ")
-    }
+public extension ComparisonOperator {
+    static let equal: Self = "="
+    static let notEqual: Self = "<>"
+    static let greaterThan: Self = ">"
+    static let greaterThanEqualTo: Self = ">="
+    static let lessThan: Self = "<"
+    static let lessThanEqualTo: Self = "<="
 }

@@ -12,7 +12,7 @@ public extension Encodable {
     /// * Strings will be bracketed by the single _'_ quotes.
     func sqlArgument() -> String {
         switch self {
-        case is NSNull: return "NULL"
+        case is NSNull: return Keyword.null.rawValue
         case let value as Int: return "\(value)"
         case let value as Double: return "\(value)"
         case let value as String:
