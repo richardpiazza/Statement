@@ -4,6 +4,12 @@ public extension SQLiteStatement {
     enum CreateContext {}
 }
 
+public extension Clause where Context == SQLiteStatement.StatementContext {
+    static func CREATE(_ segments: Segment<SQLiteStatement.CreateContext>...) -> Clause {
+        Clause(keyword: .create, segments: segments)
+    }
+}
+
 public extension Segment where Context == SQLiteStatement.CreateContext {
     static func TABLE<T: Table>(_ type: T.Type, ifNotExists: Bool = true, segments: Segment<Context>...) -> Segment {
         .clause(

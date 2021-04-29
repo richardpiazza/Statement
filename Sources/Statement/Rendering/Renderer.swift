@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol Renderer: class {
+public protocol Renderer: AnyObject {
     var components: [String] { get set }
     func render() -> String
 }
