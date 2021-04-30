@@ -16,7 +16,7 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
             Clause(
                 keyword: .table,
                 segments: [
-                    Segment.if(ifNotExists, .raw("IF NOT EXISTS")),
+                    Segment.if(ifNotExists, .keyword(.compound(.if, .not, .exists))),
                     Segment.table(type),
                     Group<Context>(segments: segments, separator: ",\n")
                 ]
@@ -30,9 +30,9 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
                 keyword: Keyword(stringLiteral: "\(column.name)"),
                 segments: [
                     Segment.raw(column.dataType),
-                    .if(column.notNull, .raw("NOT NULL")),
-                    .if(column.unique, .raw("UNIQUE")),
-                    .unwrap(column.defaultValue, transform: { .raw("DEFAULT \($0.sqlArgument())") })
+                    .if(column.notNull, .keyword(.compound(.not, .null))),
+                    .if(column.unique, .keyword(.unique)),
+                    .unwrap(column.defaultValue, transform: { .raw("\(Keyword.default.rawValue) \($0.sqlArgument())") })
                 ]
             )
         )
@@ -102,7 +102,7 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
     /// ```
     static func SCHEMA<T: Table>(_ type: T.Type, ifNotExists: Bool = true, segments: Segment<Context>...) -> Segment {
         var allSegments: [Segment] = []
-        allSegments.append(Segment.if(ifNotExists, .raw("IF NOT EXISTS")))
+        allSegments.append(Segment.if(ifNotExists, .keyword(.compound(.if, .not, .exists))))
         allSegments.append(Segment.table(type))
         
         var columnSegments = type.schema.columns.map { COLUMN($0) }
