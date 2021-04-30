@@ -16,12 +16,3 @@ public extension SQLiteStatement {
         statement.render() + terminator
     }
 }
-
-public extension SQLiteStatement {
-    enum DeleteContext {}
-    enum FromContext {}
-    enum HavingContext {}
-    enum InsertIntoContext {}
-    enum UpdateContext {}
-    enum ValuesContext {}
-}
