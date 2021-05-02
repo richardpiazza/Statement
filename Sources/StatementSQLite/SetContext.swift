@@ -11,9 +11,9 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
 }
 
 public extension Segment where Context == SQLiteStatement.SetContext {
-    static func column(_ column: AnyColumn, op: ComparisonOperator, value: Encodable) -> Segment {
+    static func column(_ column: AnyColumn, tablePrefix: Bool = false, op: ComparisonOperator, value: Encodable) -> Segment {
         .comparison(op: op, segments: [
-            Segment<SQLiteStatement.SetContext>.column(column, tablePrefix: true),
+            Segment<SQLiteStatement.SetContext>.column(column, tablePrefix: tablePrefix),
             .value(value)
         ])
     }
