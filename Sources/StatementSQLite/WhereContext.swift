@@ -22,10 +22,17 @@ public extension Segment where Context == SQLiteStatement.WhereContext {
     }
     
     /// Convenience that builds a comparison predicate.
-    static func column(_ column: AnyColumn, tablePrefix: Bool = true, op: ComparisonOperator, value: Encodable) -> Segment {
+    static func column(_ column: AnyColumn, tablePrefix: Bool = false, op: ComparisonOperator, value: Encodable) -> Segment {
         .comparison(op: op, segments: [
-            // TODO: This context should probably not be set here.
-            Segment<SQLiteStatement.SetContext>.column(column, tablePrefix: tablePrefix),
+            Segment<Context>.column(column, tablePrefix: tablePrefix),
+            .value(value)
+        ])
+    }
+    
+    /// Convenience that builds a logical predicate.
+    static func column(_ column: AnyColumn, tablePrefix: Bool = false, op: LogicalOperator, value: Encodable) -> Segment {
+        .logical(op: op, segments: [
+            Segment<Context>.column(column, tablePrefix: tablePrefix),
             .value(value)
         ])
     }

@@ -11,29 +11,18 @@ final class SQLiteStatement_SelectContextTests: XCTestCase {
     func testSelect() {
         var statement: SQLiteStatement = .init(
             .SELECT(
-                .column(Expression.id, tablePrefix: true),
+                .column(Expression.id),
                 .column(Expression.name),
                 .column(Expression.defaultLanguage),
                 .column(Expression.comment),
                 .column(Expression.feature)
             ),
-            .FROM_TABLE(Expression.self),
-            .JOIN_TABLE(Translation.self, on: Expression.id, equals: Translation.expressionID),
-            .WHERE(
-                .AND(
-                    .column(Translation.language, op: .equal, value: "en"),
-                    .column(Translation.region, op: .equal, value: "US")
-                )
-            ),
-            .LIMIT(1)
+            .FROM_TABLE(Expression.self)
         )
         
         XCTAssertEqual(statement.render(), """
-        SELECT expression.id, name, default_language, comment, feature
-        FROM expression
-        JOIN translation ON expression.id = translation.expression_id
-        WHERE translation.language_code = 'en' AND translation.region_code = 'US'
-        LIMIT 1;
+        SELECT id, name, default_language, comment, feature
+        FROM expression;
         """)
         
         statement = .init(
@@ -47,22 +36,15 @@ final class SQLiteStatement_SelectContextTests: XCTestCase {
             .FROM(
                 .TABLE(Expression.self)
             ),
-            .JOIN_TABLE(Translation.self, on: Expression.id, equals: Translation.expressionID),
             .WHERE(
-                .AND(
-                    .column(Translation.language, op: .equal, value: "en"),
-                    .column(Translation.region, op: .equal, value: "US")
-                )
-            ),
-            .LIMIT(1)
+                .column(Expression.name, op: .equal, value: "Setup")
+            )
         )
         
         XCTAssertEqual(statement.render(), """
         SELECT expression.id, name, default_language, comment, feature
         FROM expression
-        JOIN translation ON expression.id = translation.expression_id
-        WHERE translation.language_code = 'en' AND translation.region_code = 'US'
-        LIMIT 1;
+        WHERE name = 'Setup';
         """)
         
         statement = .init(
@@ -79,8 +61,8 @@ final class SQLiteStatement_SelectContextTests: XCTestCase {
             ),
             .WHERE(
                 .AND(
-                    .column(Translation.language, op: .equal, value: "en"),
-                    .column(Translation.region, op: .equal, value: "US")
+                    .column(Translation.language, tablePrefix: true, op: .equal, value: "en"),
+                    .column(Translation.region, tablePrefix: true, op: .equal, value: "US")
                 )
             ),
             .LIMIT(1)

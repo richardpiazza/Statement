@@ -10,23 +10,6 @@ final class SQLiteStatement_InsertContextTests: XCTestCase {
     
     func testInsert() {
         var statement: SQLiteStatement = .init(
-            .INSERT_INTO_TABLE(
-                Translation.self,
-                .column(Translation.language),
-                .column(Translation.region)
-            ),
-            .VALUES(
-                .value(LanguageCode.en.rawValue),
-                .value(RegionCode.US.rawValue)
-            )
-        )
-        
-        XCTAssertEqual(statement.render(), """
-        INSERT INTO translation ( language_code, region_code )
-        VALUES ( 'en', 'US' );
-        """)
-        
-        statement = .init(
             .INSERT_INTO(
                 Translation.self,
                 .column(Translation.language),

@@ -19,6 +19,8 @@ public extension Encodable {
             let newValue = value
                 .replacingOccurrences(of: singleQuote, with: doubleQuote)
             return "\(singleQuote)\(newValue)\(singleQuote)"
+        case let value as UUID:
+            return "\(singleQuote)\(value.uuidString)\(singleQuote)"
         default:
             return String(describing: self)
         }

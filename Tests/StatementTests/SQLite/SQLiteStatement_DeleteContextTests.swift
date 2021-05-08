@@ -30,7 +30,7 @@ final class SQLiteStatement_DeleteContextTests: XCTestCase {
         
         XCTAssertEqual(statement.render(), """
         DELETE FROM expression
-        WHERE expression.id = 123;
+        WHERE id = 123;
         """)
         
         statement = .init(

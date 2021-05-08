@@ -9,7 +9,7 @@ final class SQLiteStatement_UpdateContextTests: XCTestCase {
     ]
     
     func testUpdate() {
-        let statement = SQLiteStatement(
+        var statement: SQLiteStatement = .init(
             .UPDATE_TABLE(Translation.self),
             .SET(
                 .column(Translation.value, op: .equal, value: "Corrected Translation"),
@@ -22,8 +22,25 @@ final class SQLiteStatement_UpdateContextTests: XCTestCase {
         
         XCTAssertEqual(statement.render(), """
         UPDATE translation
-        SET translation.value = 'Corrected Translation', translation.region_code = NULL
-        WHERE translation.id = 123;
+        SET value = 'Corrected Translation', region_code = NULL
+        WHERE id = 123;
+        """)
+        
+        statement = .init(
+            .UPDATE_TABLE(Translation.self),
+            .SET(
+                .column(Translation.value, op: .equal, value: "Corrected Translation"),
+                .column(Translation.region, op: .equal, value: NSNull())
+            ),
+            .WHERE(
+                .column(Translation.value, op: .like, value: "%bob%")
+            )
+        )
+        
+        XCTAssertEqual(statement.render(), """
+        UPDATE translation
+        SET value = 'Corrected Translation', region_code = NULL
+        WHERE value LIKE '%bob%';
         """)
     }
 }
