@@ -22,6 +22,7 @@ public extension Keyword {
     static let create: Self = "CREATE"
     static let `default`: Self = "DEFAULT"
     static let delete: Self = "DELETE"
+    static let distinct: Self = "DISTINCT"
     static let drop: Self = "DROP"
     static let exists: Self = "EXISTS"
     static let fail: Self = "FAIL"
