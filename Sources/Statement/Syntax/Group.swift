@@ -1,5 +1,3 @@
-import Foundation
-
 public struct Group<Context> {
     public var segments: [Renderable]
     public var prefix: String
