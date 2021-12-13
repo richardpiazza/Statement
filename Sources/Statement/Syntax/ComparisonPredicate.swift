@@ -1,5 +1,3 @@
-import Foundation
-
 public struct ComparisonPredicate<Context> {
     public var op: ComparisonOperator
     public var elements: [AnyRenderable]

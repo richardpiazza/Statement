@@ -1,5 +1,3 @@
-import Foundation
-
 public enum Segment<Context> {
     case raw(String)
     case clause(Clause<Context>)

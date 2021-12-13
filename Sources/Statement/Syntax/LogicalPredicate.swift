@@ -1,5 +1,3 @@
-import Foundation
-
 public struct LogicalPredicate<Context> {
     public var op: LogicalOperator
     public var elements: [AnyRenderable]
