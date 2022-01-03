@@ -4,7 +4,11 @@ extension Field: CustomStringConvertible {
     public var description: String {
         let column = self.attribute
         var descriptors = column.descriptors
-        descriptors.insert(column.dataType.sqliteDataType, at: 1)
+        if let index = descriptors.firstIndex(where: { $0.hasPrefix("TYPE") }) {
+            descriptors[index] = column.dataType.sqliteDataType
+        } else {
+            descriptors.insert(column.dataType.sqliteDataType, at: 1)
+        }
         if let value = column.defaultValue {
             if let index = descriptors.firstIndex(where: { $0.hasPrefix("DEFAULT") }) {
                 descriptors[index] = "DEFAULT \(value.sqliteArgument)"

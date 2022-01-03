@@ -24,6 +24,7 @@ public extension Attribute {
     var descriptors: [String] {
         var descriptors: [String] = []
         descriptors.append(columnName)
+        descriptors.append("TYPE \(String(describing: dataType))")
         if notNull {
             descriptors.append("NOT NULL")
         }

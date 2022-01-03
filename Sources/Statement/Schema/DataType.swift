@@ -9,4 +9,5 @@ public indirect enum DataType {
     case string
     case uuid
     case optional(DataType)
+    case null
 }

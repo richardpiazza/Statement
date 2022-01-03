@@ -48,8 +48,8 @@ extension Optional: DataTypeConvertible {
             return .optional(.string)
         } else if self == Optional<UUID>.self {
             return .optional(.uuid)
+        } else {
+            return .null
         }
-        
-        preconditionFailure("Invalid DataType \(type(of: self))")
     }
 }
