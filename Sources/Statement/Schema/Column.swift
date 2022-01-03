@@ -1,5 +1,6 @@
 import Foundation
 
+@available(*, deprecated)
 @propertyWrapper
 public struct Column<T: Encodable>: AnyColumn {
     public var wrappedValue: T

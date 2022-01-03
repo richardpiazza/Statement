@@ -2,15 +2,8 @@ import XCTest
 import Statement
 import StatementSQLite
 
+@available(*, deprecated)
 final class EncodedValuesTests: XCTestCase {
-    
-    static var allTests = [
-        ("testNull", testNull),
-        ("testInteger", testInteger),
-        ("testDouble", testDouble),
-        ("testNonSpecialString", testNonSpecialString),
-        ("testSpecialCharacterString", testSpecialCharacterString),
-    ]
     
     func testNull() {
         let value = NSNull()
