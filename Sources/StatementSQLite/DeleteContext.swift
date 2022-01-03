@@ -45,6 +45,10 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
         )
     }
     
+    static func DELETE_FROM<E: Entity>(_ type: E.Type) -> Clause {
+        DELETE_FROM(E.init())
+    }
+    
     static func DELETE_FROM(_ table: Entity) -> Clause {
         .DELETE(
             .FROM(table)

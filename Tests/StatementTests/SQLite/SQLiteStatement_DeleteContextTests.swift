@@ -64,7 +64,7 @@ final class SQLiteStatement_DeleteContextTests: XCTestCase {
                 .FROM(CatalogExpression.self)
             ),
             .WHERE(
-                .attribute(id, op: .equal, value: 123)
+                .column(id, op: .equal, value: 123)
             )
         )
         
@@ -78,7 +78,7 @@ final class SQLiteStatement_DeleteContextTests: XCTestCase {
                 .FROM(CatalogExpression.self)
             ),
             .WHERE(
-                .attribute(CatalogExpression.self, attribute: id, op: .equal, value: 123)
+                .column(CatalogExpression.self, attribute: id, op: .equal, value: 123)
             )
         )
         

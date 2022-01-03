@@ -17,10 +17,10 @@ public extension Segment where Context == SQLiteStatement.FromContext {
     }
     
     static func TABLE<E: Entity>(_ type: E.Type) -> Segment {
-        TABLE(for: E.init())
+        TABLE(E.init())
     }
     
-    static func TABLE(for entity: Entity) -> Segment {
+    static func TABLE(_ entity: Entity) -> Segment {
         .entity(entity)
     }
     
@@ -37,7 +37,7 @@ public extension Segment where Context == SQLiteStatement.FromContext {
     }
     
     static func JOIN_ON<E: Entity, J: Entity>(_ type: E.Type, attribute a1: Attribute, on: J.Type, equals a2: Attribute) -> Segment {
-        self.JOIN_ON(E.init(), attribute: a1, on: J.init(), equals: a2)
+        JOIN_ON(E.init(), attribute: a1, on: J.init(), equals: a2)
     }
     
     static func JOIN_ON(_ e1: Entity, attribute a1: Attribute, on e2: Entity, equals a2: Attribute) -> Segment {
@@ -67,12 +67,12 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     }
     
     static func FROM_TABLE<E: Entity>(_ type: E.Type) -> Clause {
-        self.FROM_TABLE(E.init())
+        FROM_TABLE(E.init())
     }
     
     static func FROM_TABLE(_ table: Entity) -> Clause {
         .FROM(
-            .TABLE(for: table)
+            .TABLE(table)
         )
     }
     

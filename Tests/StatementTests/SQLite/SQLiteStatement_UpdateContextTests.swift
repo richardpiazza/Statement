@@ -55,7 +55,7 @@ final class SQLiteStatement_UpdateContextTests: XCTestCase {
                 .attribute(region, op: .equal, value: nullRegion)
             ),
             .WHERE(
-                .attribute(id, op: .equal, value: 123)
+                .column(id, op: .equal, value: 123)
             )
         )
         
@@ -72,7 +72,7 @@ final class SQLiteStatement_UpdateContextTests: XCTestCase {
                 .attribute(region, op: .equal, value: nullRegion)
             ),
             .WHERE(
-                .attribute(value, op: .like, value: "%bob%")
+                .column(value, op: .like, value: "%bob%")
             )
         )
         

@@ -46,12 +46,10 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     }
     
     static func UPDATE_TABLE<E: Entity>(_ type: E.Type) -> Clause {
-        .UPDATE(
-            .TABLE(type)
-        )
+        UPDATE_TABLE(E.init())
     }
     
-    static func UPDATE_TABLE(for entity: Entity) -> Clause {
+    static func UPDATE_TABLE(_ entity: Entity) -> Clause {
         .UPDATE(
             .TABLE(for: entity)
         )

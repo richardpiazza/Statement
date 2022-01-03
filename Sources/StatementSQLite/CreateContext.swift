@@ -25,7 +25,11 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
         )
     }
     
-    static func TABLE(_ table: Entity, ifNotExists: Bool = true, segments: Segment<Context>...) -> Segment {
+    static func TABLE<E: Entity>(_ type: E.Type, ifNotExists: Bool = true, segments: Segment<Context>...) -> Segment {
+        TABLE(E.init(), ifNotExists: ifNotExists, segments: segments)
+    }
+    
+    static func TABLE(_ table: Entity, ifNotExists: Bool = true, segments: [Segment<Context>]) -> Segment {
         .clause(
             Clause(
                 keyword: .table,
@@ -89,7 +93,7 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
         )
     }
     
-    static func PRIMARY_KEY(_ column: Attribute) -> Segment {
+    static func PRIMARY_KEY(_ attribute: Attribute) -> Segment {
         .clause(
             Clause(
                 keyword: .compound(.primary, .key),
@@ -97,8 +101,8 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
                     Segment.group(
                         Group<Context>(
                             segments: [
-                                Segment.raw(column.columnName),
-                                Segment.if(column.autoIncrement, .keyword(.autoIncrement))
+                                Segment.raw(attribute.columnName),
+                                Segment.if(attribute.autoIncrement, .keyword(.autoIncrement))
                             ],
                             separator: " "
                         )
@@ -131,7 +135,7 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
         )
     }
     
-    static func FOREIGN_KEY(_ column: Attribute, references reference: ForeignKey) -> Segment {
+    static func FOREIGN_KEY(_ attribute: Attribute, references reference: ForeignKey) -> Segment {
         .clause(
             Clause(
                 keyword: .compound(.foreign, .key),
@@ -139,7 +143,7 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
                     Segment.group(
                         Group<Context>(
                             segments: [
-                                Segment.raw(column.columnName)
+                                Segment.raw(attribute.columnName)
                             ]
                         )
                     ),
@@ -203,7 +207,7 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
     }
     
     static func SCHEMA<E: Entity>(_ type: E.Type, ifNotExists: Bool = true, segments: Segment<Context>...) -> Segment {
-        return SCHEMA(E.init(), ifNotExists: ifNotExists, segments: segments)
+        SCHEMA(E.init(), ifNotExists: ifNotExists, segments: segments)
     }
     
     static func SCHEMA(_ table: Entity, ifNotExists: Bool = true, segments: [Segment<Context>]) -> Segment {

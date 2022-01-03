@@ -116,7 +116,7 @@ final class SQLiteStatement_SelectContextTests: XCTestCase {
                 .TABLE(CatalogExpression.self)
             ),
             .WHERE(
-                .attribute(name, op: .equal, value: "Setup")
+                .column(name, op: .equal, value: "Setup")
             )
         )
         
@@ -152,8 +152,8 @@ final class SQLiteStatement_SelectContextTests: XCTestCase {
             ),
             .WHERE(
                 .AND(
-                    .attribute(language, entity: CatalogTranslation(), op: .equal, value: "en"),
-                    .attribute(region, entity: CatalogTranslation(), op: .equal, value: "US")
+                    .column(language, entity: CatalogTranslation(), op: .equal, value: "en"),
+                    .column(region, entity: CatalogTranslation(), op: .equal, value: "US")
                 )
             ),
             .LIMIT(1)

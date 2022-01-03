@@ -21,9 +21,7 @@ public extension Segment where Context == SQLiteStatement.InsertContext {
     }
     
     static func INTO<E: Entity>(_ type: E.Type) -> Segment {
-        .clause(keyword: .into, segments: [
-            Segment.entity(type)
-        ])
+        INTO(E.init())
     }
     
     static func INTO(_ entity: Entity) -> Segment {

@@ -14,12 +14,10 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     }
     
     static func ALTER_TABLE<E: Entity>(_ type: E.Type, _ segments: Segment<SQLiteStatement.AlterTableContext>...) -> Clause {
-        var clauseSegments = segments
-        clauseSegments.insert(.entity(type), at: 0)
-        return Clause(keyword: .compound(.alter, .table), segments: clauseSegments)
+        ALTER_TABLE(E.init(), segments)
     }
     
-    static func ALTER_TABLE(for entity: Entity, _ segments: Segment<SQLiteStatement.AlterTableContext>...) -> Clause {
+    static func ALTER_TABLE(_ entity: Entity, _ segments: [Segment<SQLiteStatement.AlterTableContext>]) -> Clause {
         var clauseSegments = segments
         clauseSegments.insert(.entity(entity), at: 0)
         return Clause(keyword: .compound(.alter, .table), segments: clauseSegments)
@@ -36,9 +34,7 @@ public extension Segment where Context == SQLiteStatement.AlterTableContext {
     }
     
     static func RENAME_TO<E: Entity>(_ type: E.Type) -> Segment {
-        .clause(keyword: .compound(.rename, .to), segments: [
-            Segment.entity(type)
-        ])
+        RENAME_TO(E.init())
     }
     
     static func RENAME_TO(_ table: Entity) -> Segment {
@@ -87,15 +83,15 @@ public extension Segment where Context == SQLiteStatement.AlterTableContext {
         )
     }
     
-    static func ADD_COLUMN(_ column: Attribute) -> Segment {
+    static func ADD_COLUMN(_ attribute: Attribute) -> Segment {
         .clause(
             keyword: .compound(.add, .column),
             segments: [
-                Segment.attribute(column),
-                Segment.raw(column.dataType.sqliteDataType),
-                .if(column.notNull, .keyword(.compound(.not, .null))),
-                .if(column.unique, .keyword(.unique)),
-                .unwrap(column.defaultValue, transform: {
+                Segment.attribute(attribute),
+                Segment.raw(attribute.dataType.sqliteDataType),
+                .if(attribute.notNull, .keyword(.compound(.not, .null))),
+                .if(attribute.unique, .keyword(.unique)),
+                .unwrap(attribute.defaultValue, transform: {
                     .raw("\(Keyword.default.rawValue) \($0.sqliteArgument)")
                 })
             ]
