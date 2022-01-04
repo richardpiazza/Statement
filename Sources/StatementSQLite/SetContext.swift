@@ -19,11 +19,11 @@ public extension Segment where Context == SQLiteStatement.SetContext {
         ])
     }
     
-    static func attribute<E: Entity>(_ type: E.Type, attribute: Attribute, op: ComparisonOperator, value: DataTypeConvertible) -> Segment {
-        self.attribute(attribute, entity: E.init(), op: op, value: value)
+    static func column<E: Entity>(_ type: E.Type, attribute: Attribute, op: ComparisonOperator, value: DataTypeConvertible) -> Segment {
+        self.column(attribute, entity: E.init(), op: op, value: value)
     }
     
-    static func attribute(_ attribute: Attribute, entity: Entity? = nil, op: ComparisonOperator, value: DataTypeConvertible) -> Segment {
+    static func column(_ attribute: Attribute, entity: Entity? = nil, op: ComparisonOperator, value: DataTypeConvertible) -> Segment {
         .comparison(op: op, segments: [
             Segment<SQLiteStatement.SetContext>.attribute(attribute, entity: entity),
             .value(value)
