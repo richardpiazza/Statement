@@ -51,8 +51,8 @@ final class SQLiteStatement_UpdateContextTests: XCTestCase {
         var statement: SQLiteStatement = .init(
             .UPDATE_TABLE(CatalogTranslation.self),
             .SET(
-                .attribute(value, op: .equal, value: "Corrected Translation"),
-                .attribute(region, op: .equal, value: nullRegion)
+                .column(value, op: .equal, value: "Corrected Translation"),
+                .column(region, op: .equal, value: nullRegion)
             ),
             .WHERE(
                 .column(id, op: .equal, value: 123)
@@ -68,8 +68,8 @@ final class SQLiteStatement_UpdateContextTests: XCTestCase {
         statement = .init(
             .UPDATE_TABLE(CatalogTranslation.self),
             .SET(
-                .attribute(value, op: .equal, value: "Corrected Translation"),
-                .attribute(region, op: .equal, value: nullRegion)
+                .column(value, op: .equal, value: "Corrected Translation"),
+                .column(region, op: .equal, value: nullRegion)
             ),
             .WHERE(
                 .column(value, op: .like, value: "%bob%")
