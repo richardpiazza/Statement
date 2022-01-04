@@ -58,16 +58,40 @@ public extension Segment {
     }
     
     /// A `Segment` that outputs the provided table name.
+    @available(*, deprecated)
     static func table<T: Table>(_ type: T.Type) -> Self {
         return .raw(T.schema.name)
     }
     
+    static func entity<E: Entity>(_ type: E.Type) -> Self {
+        entity(E.init())
+    }
+    
+    static func entity(_ entity: Entity) -> Self {
+        .raw(entity.tableName)
+    }
+    
     /// A `Segment` that outputs the provided column name with an optional table prefix.
+    @available(*, deprecated, renamed: "column(_:table:)")
     static func column(_ column: AnyColumn, tablePrefix: Bool = false) -> Self {
         .raw(tablePrefix ? column.identifier : column.name)
     }
     
+    @available(*, deprecated, renamed: "attribute(_:entity:)")
+    static func column(_ column: Attribute, table: Entity? = nil) -> Self {
+        .raw([table?.tableName, column.columnName].compactMap { $0 }.joined(separator: "."))
+    }
+    
+    static func attribute<E: Entity>(_ type: E.Type, attribute: Attribute) -> Self {
+        self.attribute(attribute, entity: E.init())
+    }
+    
+    static func attribute(_ attribute: Attribute, entity: Entity? = nil) -> Self {
+        .raw([entity?.tableName, attribute.columnName].compactMap { $0 }.joined(separator: "."))
+    }
+    
     /// Convenience wrapper that outputs the `.sqlArgument()` of the provided value.
+    @available(*, deprecated)
     static func value(_ encodable: Encodable) -> Self {
         .raw(encodable.sqlArgument())
     }

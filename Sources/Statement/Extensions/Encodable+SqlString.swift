@@ -10,6 +10,7 @@ public extension Encodable {
     /// * A `NSNull` will output _NULL_.
     /// * Integers and Doubles will be outputted as is.
     /// * Strings will be bracketed by the single _'_ quotes.
+    @available(*, deprecated)
     func sqlArgument() -> String {
         switch self {
         case is NSNull: return Keyword.null.rawValue

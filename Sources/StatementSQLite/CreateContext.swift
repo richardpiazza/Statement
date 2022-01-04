@@ -11,6 +11,7 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
 }
 
 public extension Segment where Context == SQLiteStatement.CreateContext {
+    @available(*, deprecated)
     static func TABLE<T: Table>(_ type: T.Type, ifNotExists: Bool = true, segments: Segment<Context>...) -> Segment {
         .clause(
             Clause(
@@ -24,6 +25,24 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
         )
     }
     
+    static func TABLE<E: Entity>(_ type: E.Type, ifNotExists: Bool = true, segments: Segment<Context>...) -> Segment {
+        TABLE(E.init(), ifNotExists: ifNotExists, segments: segments)
+    }
+    
+    static func TABLE(_ table: Entity, ifNotExists: Bool = true, segments: [Segment<Context>]) -> Segment {
+        .clause(
+            Clause(
+                keyword: .table,
+                segments: [
+                    Segment.if(ifNotExists, .keyword(.compound(.if, .not, .exists))),
+                    Segment.entity(table),
+                    Group<Context>(segments: segments, separator: ",\n")
+                ]
+            )
+        )
+    }
+    
+    @available(*, deprecated)
     static func COLUMN(_ column: AnyColumn, segments: Segment<Context>...) -> Segment {
         .clause(
             Clause(
@@ -38,6 +57,23 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
         )
     }
     
+    static func COLUMN(_ attribute: Attribute, segments: Segment<Context>...) -> Segment {
+        .clause(
+            Clause(
+                keyword: Keyword(stringLiteral: "\(attribute.columnName)"),
+                segments: [
+                    Segment.raw(attribute.dataType.sqliteDataType),
+                    .if(attribute.notNull, .keyword(.compound(.not, .null))),
+                    .if(attribute.unique, .keyword(.unique)),
+                    .unwrap(attribute.defaultValue, transform: {
+                        .raw("\(Keyword.default.rawValue) \($0.sqliteArgument)")
+                    })
+                ]
+            )
+        )
+    }
+    
+    @available(*, deprecated)
     static func PRIMARY_KEY(_ column: AnyColumn) -> Segment {
         .clause(
             Clause(
@@ -57,6 +93,26 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
         )
     }
     
+    static func PRIMARY_KEY(_ attribute: Attribute) -> Segment {
+        .clause(
+            Clause(
+                keyword: .compound(.primary, .key),
+                segments: [
+                    Segment.group(
+                        Group<Context>(
+                            segments: [
+                                Segment.raw(attribute.columnName),
+                                Segment.if(attribute.autoIncrement, .keyword(.autoIncrement))
+                            ],
+                            separator: " "
+                        )
+                    )
+                ]
+            )
+        )
+    }
+    
+    @available(*, deprecated)
     static func FOREIGN_KEY(_ column: AnyColumn, references reference: AnyColumn) -> Segment {
         .clause(
             Clause(
@@ -73,6 +129,28 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
                     .raw(reference.table.schema.name),
                     .group(Group<Context>(segments: [
                         Segment.raw(reference.name)
+                    ]))
+                ]
+            )
+        )
+    }
+    
+    static func FOREIGN_KEY(_ attribute: Attribute, references reference: ForeignKey) -> Segment {
+        .clause(
+            Clause(
+                keyword: .compound(.foreign, .key),
+                segments: [
+                    Segment.group(
+                        Group<Context>(
+                            segments: [
+                                Segment.raw(attribute.columnName)
+                            ]
+                        )
+                    ),
+                    .keyword(.references),
+                    .raw(reference.entity.tableName),
+                    .group(Group<Context>(segments: [
+                        Segment.raw(reference.attribute.columnName)
                     ]))
                 ]
             )
@@ -100,6 +178,7 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
     ///   .FOREIGN_KEY(Translation.CodingKeys.expressionID, references: Expression.CodingKeys.id)
     /// )
     /// ```
+    @available(*, deprecated)
     static func SCHEMA<T: Table>(_ type: T.Type, ifNotExists: Bool = true, segments: Segment<Context>...) -> Segment {
         var allSegments: [Segment] = []
         allSegments.append(Segment.if(ifNotExists, .keyword(.compound(.if, .not, .exists))))
@@ -113,6 +192,37 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
         }
         
         type.schema.columns.filter({ $0.foreignKey != nil }).forEach { (column) in
+            let segment = FOREIGN_KEY(column, references: column.foreignKey!)
+            columnSegments.append(segment)
+        }
+        
+        allSegments.append(.group(Group(segments: columnSegments, separator: ",\n")))
+        
+        return .clause(
+            Clause(
+                keyword: .table,
+                segments: allSegments
+            )
+        )
+    }
+    
+    static func SCHEMA<E: Entity>(_ type: E.Type, ifNotExists: Bool = true, segments: Segment<Context>...) -> Segment {
+        SCHEMA(E.init(), ifNotExists: ifNotExists, segments: segments)
+    }
+    
+    static func SCHEMA(_ table: Entity, ifNotExists: Bool = true, segments: [Segment<Context>]) -> Segment {
+        var allSegments: [Segment] = []
+        allSegments.append(Segment.if(ifNotExists, .keyword(.compound(.if, .not, .exists))))
+        allSegments.append(Segment.entity(table))
+        
+        var columnSegments = table.attributes.map { COLUMN($0) }
+        
+        table.attributes.filter({ $0.primaryKey }).forEach { (column) in
+            let segment = PRIMARY_KEY(column)
+            columnSegments.append(segment)
+        }
+        
+        table.attributes.filter({ $0.foreignKey != nil }).forEach { (column) in
             let segment = FOREIGN_KEY(column, references: column.foreignKey!)
             columnSegments.append(segment)
         }

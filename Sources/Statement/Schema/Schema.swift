@@ -1,5 +1,6 @@
 import Foundation
 
+@available(*, deprecated)
 public struct Schema {
     public var name: String
     public var columns: [AnyColumn]
@@ -10,6 +11,7 @@ public struct Schema {
     }
 }
 
+@available(*, deprecated)
 public extension Schema {
     subscript(columnName: String) -> AnyColumn? {
         columns.first { $0.name == columnName }
@@ -20,6 +22,7 @@ public extension Schema {
     }
 }
 
+@available(*, deprecated)
 extension Schema: CustomStringConvertible {
     public var description: String {
         """

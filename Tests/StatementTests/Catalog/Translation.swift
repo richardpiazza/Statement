@@ -1,5 +1,6 @@
 import Statement
 
+@available(*, deprecated)
 public struct Translation: Identifiable {
     
     internal var schema: Schema {
@@ -48,10 +49,12 @@ public struct Translation: Identifiable {
     }
 }
 
+@available(*, deprecated)
 extension Translation: Table {
     public static var schema: Schema = { Translation().schema }()
 }
 
+@available(*, deprecated)
 public extension Translation {
     static var id: AnyColumn = { schema[.id] }()
     static var expressionID: AnyColumn = { schema[.expressionID] }()
@@ -60,6 +63,7 @@ public extension Translation {
     static var value: AnyColumn = { schema[.value] }()
 }
 
+@available(*, deprecated)
 private extension Schema {
     subscript(codingKey: Translation.CodingKeys) -> AnyColumn {
         guard let column = columns.first(where: { $0.name == codingKey.stringValue }) else {
@@ -70,6 +74,7 @@ private extension Schema {
     }
 }
 
+@available(*, deprecated)
 private extension Column {
     init(wrappedValue: T, key: Translation.CodingKeys, notNull: Bool = false, unique: Bool = false, provideDefault: Bool = false, primaryKey: Bool = false, autoIncrement: Bool = false, foreignKey: AnyColumn? = nil) {
         switch T.self {

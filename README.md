@@ -13,20 +13,24 @@ Swift DSL for writing SQL statements.
 ## Using Swift to write SQL 🤯
 
 ```swift
+let expressionId: Int = 123
+let languageCode: LanguageCode? = .en
+let regionCode: RegionCode? = .us
+
 let statement = SQLiteStatement(
     .SELECT(
-        .column(Translation.id),
-        .column(Translation.expressionID),
-        .column(Translation.language),
-        .column(Translation.region),
-        .column(Translation.value)
+        .column(Translation["id"]!),
+        .column(Translation["expression_id"]!),
+        .column(Translation["language_code"]!),
+        .column(Translation["region_code"]!),
+        .column(Translation["value"]!)
     ),
     .FROM_TABLE(Translation.self),
     .WHERE(
         .AND(
             .comparison(Translation.expressionID, .equal(expressionID)),
-            .unwrap(languageCode, transform: { .comparison(Translation.language, .equal($0.rawValue)) }),
-            .unwrap(regionCode, transform: { .comparison(Translation.region, .equal($0.rawValue)) }),
+            .unwrap(languageCode, transform: { .comparison(Translation["language_code"]!, .equal($0.rawValue)) }),
+            .unwrap(regionCode, transform: { .comparison(Translation["region_code"]!, .equal($0.rawValue)) }),
             .if(languageCode != nil && regionCode == nil, .logical(Translation.region, .isNull))
         )
     )
@@ -41,8 +45,8 @@ FROM translation
 ...
 ```
 
-But take a closer look at the elements provided in the `.AND` block. The `lanugageCode` & `regionCode` are both optionals, and there is an 
-additional logical element clause when one is nil. With all of the optionals and logic, there are a possibilty of producing 4 separate **where** 
+But take a closer look at the elements provided in the `.AND` block. The `languageCode` & `regionCode` are both optionals, and there is an 
+additional logical element clause when one is nil. With all of the optionals and logic, there is a possibility of producing 4 separate **where** 
 clauses.
 
 ```sql
@@ -58,65 +62,51 @@ WHERE translation.expression_id = 123 AND translation.language_code = 'en' AND t
 ## Type-Safe Magic
 
 ```swift
-public struct Translation: Identifiable {
+struct Translation: Entity, Identifiable {
 
-    public enum CodingKeys: String, CodingKey {
-        case id
-        case expressionID = "expression_id"
-        case language = "language_code"
-        case region = "region_code"
-        case value
-    }
+    let tableName: String = "translation"
 
     /// Unique/Primary Key
-    @Column(key: .id, notNull: true, unique: true, primaryKey: true, autoIncrement: true)
-    public var id: Int = 0
+    @Field("id", unique: true, primaryKey: true, autoIncrement: true)
+    var id: Int = 0
 
     /// Expression (Foreign Key)
-    @Column(key: .expressionID, notNull: true, foreignKey: Expression.id)
-    public var expressionID: Expression.ID = 0
+    @Field("expression_id", foreignKey: .init("expression", "id"))
+    var expressionID: Expression.ID = 0
 
     /// Language of the translation
-    @Column(key: .language, notNull: true)
-    public var language: String = LanguageCode.default.rawValue
+    @Field("language_code")
+    var language: String = LanguageCode.default.rawValue
 
     /// Region code specifier
-    @Column(key: .region)
-    public var region: String? = nil
+    @Field("region_code")
+    var region: String? = nil
 
     /// The translated string
-    @Column(key: .value, notNull: true)
-    public var value: String = ""
+    @Field("value")
+    var value: String = ""
 }
 ```
 
 ### Automagical Epoxy
 
-```swift
-extension Translation {
-    internal var schema: Schema {
-        return Schema(
-            name: "translation",
-            columns: [_id, _expressionID, _language, _region, _value]
-        )
-    }
-    
-    public static var schema: Schema = { Translation().schema }()
-    
-    static var id: AnyColumn = { schema[.id] }()
-    static var expressionID: AnyColumn = { schema[.expressionID] }()
-    static var language: AnyColumn = { schema[.language] }()
-    static var region: AnyColumn = { schema[.region] }()
-    static var value: AnyColumn = { schema[.value] }()
-}
+Using the Swift reflection api `Mirror`, the `@Field` property's are automatically synthesized.
 
-private extension Schema {
-    subscript(codingKey: Translation.CodingKeys) -> AnyColumn {
-        guard let column = columns.first(where: { $0.name == codingKey.stringValue }) else {
-            preconditionFailure("Invalid column name '\(codingKey.stringValue)'.")
+```swift
+extension Entity {
+    var attributes: [Attribute] {
+        var _columns: [Attribute] = []
+        
+        let mirror = Mirror(reflecting: self)
+        for child in mirror.children {
+            if let column = child.value as? AttributeConvertible {
+                _columns.append(column.attribute)
+            } else if let column = child.value as? Attribute {
+                _columns.append(column)
+            }
         }
         
-        return column
+        return _columns
     }
 }
 ```
@@ -130,7 +120,7 @@ To install it into a project, add it as a dependency within your `Package.swift`
 let package = Package(
     ...
     dependencies: [
-        .package(url: "https://github.com/richardpiazza/Statement.git", .upToNextMinor(from: "0.1.0")
+        .package(url: "https://github.com/richardpiazza/Statement.git", .upToNextMinor(from: "0.5.0")
     ],
     ...
 )

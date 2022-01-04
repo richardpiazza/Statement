@@ -1,5 +1,6 @@
 import Foundation
 
+@available(*, deprecated)
 public protocol AnyColumn {
     var table: Table.Type { get set }
     var name: String { get set }
@@ -13,6 +14,7 @@ public protocol AnyColumn {
     var defaultValue: Encodable? { get }
 }
 
+@available(*, deprecated)
 public extension AnyColumn {
     var identifier: String {
         return "\(table.schema.name).\(name)"
