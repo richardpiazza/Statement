@@ -148,7 +148,7 @@ final class SQLiteStatement_SelectContextTests: XCTestCase {
             ),
             .FROM(
                 .TABLE(CatalogExpression.self),
-                .JOIN_ON(CatalogTranslation.self, attribute: expressionId, on: CatalogExpression.self, equals: id)
+                .JOIN_ON(CatalogTranslation.self, attribute: expressionId, equals: CatalogExpression.self, attribute: id)
             ),
             .WHERE(
                 .AND(
