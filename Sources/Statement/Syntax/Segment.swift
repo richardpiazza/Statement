@@ -72,14 +72,9 @@ public extension Segment {
     }
     
     /// A `Segment` that outputs the provided column name with an optional table prefix.
-    @available(*, deprecated, renamed: "column(_:table:)")
+    @available(*, deprecated, renamed: "attribute(_:entity:)")
     static func column(_ column: AnyColumn, tablePrefix: Bool = false) -> Self {
         .raw(tablePrefix ? column.identifier : column.name)
-    }
-    
-    @available(*, deprecated, renamed: "attribute(_:entity:)")
-    static func column(_ column: Attribute, table: Entity? = nil) -> Self {
-        .raw([table?.tableName, column.columnName].compactMap { $0 }.joined(separator: "."))
     }
     
     static func attribute<E: Entity>(_ type: E.Type, attribute: Attribute) -> Self {
