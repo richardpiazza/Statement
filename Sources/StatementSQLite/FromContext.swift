@@ -38,6 +38,18 @@ public extension Segment where Context == SQLiteStatement.FromContext {
     
     /// Perform a SQL 'JOIN'
     ///
+    /// The following **Statement** syntax:
+    /// ```swift
+    /// .FROM(
+    ///     .TABLE(FirstEntity.self),
+    ///     .JOIN_ON(SecondEntity.self, attribute: SecondEntityAttribute(), equals: FirstEntity.self, attribute: FirstEntityAttribute())
+    /// )
+    /// ```
+    /// Produces the SQL:
+    /// ```sql
+    /// FROM first_entity JOIN second_entity ON second_entity.attribute = first_entity.attribute
+    /// ```
+    ///
     /// - parameters:
     ///   - e1: The `Entity` type that is being joined with the existing statement.
     ///   - a1: The `Attribute` of the entity being joined used for comparison.
@@ -48,6 +60,18 @@ public extension Segment where Context == SQLiteStatement.FromContext {
     }
     
     /// Perform a SQL 'JOIN'
+    ///
+    /// The following **Statement** syntax:
+    /// ```swift
+    /// .FROM(
+    ///     .TABLE(FirstEntity.self),
+    ///     .JOIN_ON(SecondEntity(), attribute: SecondEntityAttribute(), equals: FirstEntity(), attribute: FirstEntityAttribute())
+    /// )
+    /// ```
+    /// Produces the SQL:
+    /// ```sql
+    /// FROM first_entity JOIN second_entity ON second_entity.attribute = first_entity.attribute
+    /// ```
     ///
     /// - parameters:
     ///   - e1: The `Entity` that is being joined with the existing statement.
