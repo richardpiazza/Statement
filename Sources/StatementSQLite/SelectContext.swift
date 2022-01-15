@@ -13,6 +13,3 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
         Clause(keyword: .compound(.select, .distinct), segments: segments, separator: ", ")
     }
 }
-
-public extension Segment where Context == SQLiteStatement.SelectContext {
-}

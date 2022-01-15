@@ -4,47 +4,21 @@ import StatementSQLite
 
 final class DefaultValuesTests: XCTestCase {
     
-    @available(*, deprecated)
-    private struct Entity: Table {
-        
-        private var schema: Schema {
-            .init(name: "entity", columns: [_rating])
-        }
-        
-        static var schema: Schema { Entity().schema }
-        
-        @Column(table: Self.self, name: "rating", dataType: "INTEGER", provideDefault: true)
-        var rating: Int? = nil
-        
-        var ratingDescription: String { _rating.description }
-    }
-    
-    @available(*, deprecated)
-    func testOptionalDefault() {
-        let statement = SQLiteStatement(.CREATE(.SCHEMA(Entity.self)))
-        XCTAssertEqual(statement.render(), """
-        CREATE TABLE IF NOT EXISTS entity ( rating INTEGER DEFAULT NULL );
-        """)
-    }
-    
-    @available(*, deprecated)
-    func testDescription() {
-        var entity = Entity()
-        entity.rating = 45
-        
-        XCTAssertEqual(entity.ratingDescription, """
-        rating INTEGER DEFAULT NULL VALUE: 45
-        """)
-    }
-    
     struct RelationalEntity: Statement.Entity {
+        static let identifier: String = "entity"
         let tableName: String = "entity"
         @Field("rating") var rating: Int? = nil
         var ratingDescription: String { _rating.description }
     }
     
     func testNullableDefaultValue() {
-        let statement = SQLiteStatement(.CREATE(.SCHEMA(RelationalEntity.self)))
+        let statement = SQLiteStatement(
+            .CREATE(
+                .SCHEMA(
+                    RelationalEntity()
+                )
+            )
+        )
         XCTAssertEqual(statement.render(), """
         CREATE TABLE IF NOT EXISTS entity ( rating INTEGER DEFAULT NULL );
         """)

@@ -7,6 +7,7 @@ public indirect enum DataType {
     case double
     case int
     case string
+    case url
     case uuid
     case optional(DataType)
     case null

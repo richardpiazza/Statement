@@ -4,8 +4,7 @@ import StatementSQLite
 
 final class SQLiteStatement_AlterContextTests: XCTestCase {
     
-    @available(*, deprecated)
-    func testRenameTable() {
+    func testAlterTableRenameTo() {
         let statement = SQLiteStatement(
             .ALTER_TABLE(
                 Translation.self,
@@ -18,40 +17,14 @@ final class SQLiteStatement_AlterContextTests: XCTestCase {
         """)
     }
     
-    func testAlterTableRenameTo() {
-        let statement = SQLiteStatement(
-            .ALTER_TABLE(
-                CatalogTranslation.self,
-                .RENAME_TO(CatalogExpression.self)
-            )
-        )
+    func testAlterTableRenameColumn() throws {
+        let entity = Translation()
+        let language = try XCTUnwrap(entity["language_code"])
+        let region = try XCTUnwrap(entity["region_code"])
         
-        XCTAssertEqual(statement.render(), """
-        ALTER TABLE translation RENAME TO expression;
-        """)
-    }
-    
-    @available(*, deprecated)
-    func testRenameColumn() {
         let statement = SQLiteStatement(
             .ALTER_TABLE(
                 Translation.self,
-                .RENAME_COLUMN(Translation.language, to: Translation.region)
-            )
-        )
-        
-        XCTAssertEqual(statement.render(), """
-        ALTER TABLE translation RENAME COLUMN language_code TO region_code;
-        """)
-    }
-    
-    func testAlterTableRenameColumn() throws {
-        let language = try XCTUnwrap(CatalogTranslation["language_code"])
-        let region = try XCTUnwrap(CatalogTranslation["region_code"])
-        
-        let statement = SQLiteStatement(
-            .ALTER_TABLE(
-                CatalogTranslation.self,
                 .RENAME_COLUMN(language, to: region)
             )
         )
@@ -61,26 +34,13 @@ final class SQLiteStatement_AlterContextTests: XCTestCase {
         """)
     }
     
-    @available(*, deprecated)
-    func testAddColumn() {
+    func testAlterTableAddColumn() throws {
+        let entity = Translation()
+        let language = try XCTUnwrap(entity["language_code"])
+        
         let statement = SQLiteStatement(
             .ALTER_TABLE(
                 Translation.self,
-                .ADD_COLUMN(Translation.language)
-            )
-        )
-        
-        XCTAssertEqual(statement.render(), """
-        ALTER TABLE translation ADD COLUMN language_code TEXT NOT NULL;
-        """)
-    }
-    
-    func testAlterTableAddColumn() throws {
-        let language = try XCTUnwrap(CatalogTranslation["language_code"])
-        
-        let statement = SQLiteStatement(
-            .ALTER_TABLE(
-                CatalogTranslation.self,
                 .ADD_COLUMN(language)
             )
         )
@@ -90,26 +50,13 @@ final class SQLiteStatement_AlterContextTests: XCTestCase {
         """)
     }
     
-    @available(*, deprecated)
-    func testDropColumn() {
+    func testAlterTableDropColumn() throws {
+        let entity = Translation()
+        let language = try XCTUnwrap(entity["language_code"])
+        
         let statement = SQLiteStatement(
             .ALTER_TABLE(
                 Translation.self,
-                .DROP_COLUMN(Translation.language)
-            )
-        )
-        
-        XCTAssertEqual(statement.render(), """
-        ALTER TABLE translation DROP COLUMN language_code;
-        """)
-    }
-    
-    func testAlterTableDropColumn() throws {
-        let language = try XCTUnwrap(CatalogTranslation["language_code"])
-        
-        let statement = SQLiteStatement(
-            .ALTER_TABLE(
-                CatalogTranslation.self,
                 .DROP_COLUMN(language)
             )
         )

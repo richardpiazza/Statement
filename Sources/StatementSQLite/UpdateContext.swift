@@ -11,16 +11,11 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
 }
 
 public extension Segment where Context == SQLiteStatement.UpdateContext {
-    @available(*, deprecated)
-    static func TABLE<T: Table>(_ type: T.Type) -> Segment {
-        .table(type)
-    }
-    
     static func TABLE<E: Entity>(_ type: E.Type) -> Segment {
-        TABLE(for: E.init())
+        .entity(type)
     }
     
-    static func TABLE(for entity: Entity) -> Segment {
+    static func TABLE(_ entity: Entity) -> Segment {
         .entity(entity)
     }
     
@@ -38,28 +33,15 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     ///     .TABLE(type)
     /// )
     /// ```
-    @available(*, deprecated)
-    static func UPDATE_TABLE<T: Table>(_ type: T.Type) -> Clause {
+    static func UPDATE_TABLE<E: Entity>(_ type: E.Type) -> Clause {
         .UPDATE(
             .TABLE(type)
         )
     }
     
-    static func UPDATE_TABLE<E: Entity>(_ type: E.Type) -> Clause {
-        UPDATE_TABLE(E.init())
-    }
-    
     static func UPDATE_TABLE(_ entity: Entity) -> Clause {
         .UPDATE(
-            .TABLE(for: entity)
+            .TABLE(entity)
         )
-    }
-    
-    @available(*, deprecated, renamed: "UPDATE_TABLE()")
-    static func UPDATE_TABLE<T: Table>(_ type: T.Type, _ segments: Segment<SQLiteStatement.UpdateContext>...) -> Clause {
-        let table = Segment<Context>.table(type)
-        var allSegments: [AnyRenderable] = [table]
-        allSegments.append(contentsOf: segments)
-        return Clause(keyword: .update, segments: allSegments)
     }
 }

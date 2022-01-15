@@ -1,7 +1,7 @@
 import Foundation
 
 public protocol Attribute {
-    var columnName: String { get }
+    var identifier: String { get }
     var dataType: DataType { get }
     var unique: Bool { get }
     var primaryKey: Bool { get }
@@ -23,7 +23,7 @@ public extension Attribute {
     
     var descriptors: [String] {
         var descriptors: [String] = []
-        descriptors.append(columnName)
+        descriptors.append(identifier)
         descriptors.append("TYPE \(String(describing: dataType))")
         if notNull {
             descriptors.append("NOT NULL")
@@ -41,7 +41,7 @@ public extension Attribute {
             descriptors.append("AUTOINCREMENT")
         }
         if let value = foreignKey {
-            descriptors.append("REFERENCES \(value.entity.tableName).\(value.attribute.columnName)")
+            descriptors.append("REFERENCES \(value.entity.identifier).\(value.attribute.identifier)")
         }
         return descriptors
     }

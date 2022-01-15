@@ -1,16 +1,16 @@
 import Foundation
 
 public struct ForeignKey {
-    public var entity: Entity
+    public var entity: Entity.Type
     public var attribute: Attribute
     
-    public init(_ tableName: String, _ columnName: String) {
-        entity = AnyEntity(tableName: tableName)
-        attribute = AnyAttribute(columnName: columnName)
+    public init(_ type: Entity.Type, attribute: Attribute) {
+        self.entity = type
+        self.attribute = attribute
     }
     
-    public init(entity: Entity, attribute: Attribute) {
-        self.entity = entity
-        self.attribute = attribute
+    public init(_ type: Entity.Type, _ identifier: String) {
+        self.entity = type
+        self.attribute = AnyAttribute(identifier: identifier)
     }
 }

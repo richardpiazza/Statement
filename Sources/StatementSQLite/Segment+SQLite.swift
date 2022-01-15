@@ -2,11 +2,11 @@ import Statement
 
 public extension Segment {
     static func column<E: Entity>(_ type: E.Type, attribute: Attribute) -> Self {
-        column(attribute, entity: E.init())
+        .attribute(type, attribute: attribute)
     }
     
     static func column(_ attribute: Attribute, entity: Entity? = nil) -> Self {
-        .raw([entity?.tableName, attribute.columnName].compactMap { $0 }.joined(separator: "."))
+        .attribute(attribute, entity: entity)
     }
     
     static func value(_ convertible: DataTypeConvertible) -> Self {
