@@ -1,20 +1,20 @@
-struct LogicalFragment {
-    let logicalOperator: LogicalOperator
-    let fragments: [Fragment]
+public struct LogicalFragment {
+    public let logicalOperator: LogicalOperator
+    public let fragments: [Fragment]
     
-    init(logicalOperator: LogicalOperator, @FragmentsBuilder fragments: () -> [Fragment]) {
+    public init(logicalOperator: LogicalOperator, @FragmentsBuilder fragments: () -> [Fragment]) {
         self.logicalOperator = logicalOperator
         self.fragments = fragments()
     }
     
-    init(logicalOperator: LogicalOperator, fragments: [Fragment]) {
+    public init(logicalOperator: LogicalOperator, fragments: [Fragment]) {
         self.logicalOperator = logicalOperator
         self.fragments = fragments
     }
 }
 
 extension LogicalFragment: FragmentRenderable {
-    func render() -> String {
+    public func render() -> String {
         if fragments.count == 1 {
             return [fragments.map { $0.render() }.joined(), logicalOperator.rawValue].joined(separator: " ")
         } else {

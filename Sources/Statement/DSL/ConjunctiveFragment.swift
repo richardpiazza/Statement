@@ -1,20 +1,20 @@
-struct ConjunctiveFragment {
-    let conjunctiveOperator: ConjunctiveOperator
-    let fragments: [Fragment]
+public struct ConjunctiveFragment {
+    public let conjunctiveOperator: ConjunctiveOperator
+    public let fragments: [Fragment]
     
-    init(conjunctiveOperator: ConjunctiveOperator, @FragmentsBuilder fragments: () -> [Fragment]) {
+    public init(conjunctiveOperator: ConjunctiveOperator, @FragmentsBuilder fragments: () -> [Fragment]) {
         self.conjunctiveOperator = conjunctiveOperator
         self.fragments = fragments()
     }
     
-    init(conjunctiveOperator: ConjunctiveOperator, fragments: [Fragment]) {
+    public init(conjunctiveOperator: ConjunctiveOperator, fragments: [Fragment]) {
         self.conjunctiveOperator = conjunctiveOperator
         self.fragments = fragments
     }
 }
 
 extension ConjunctiveFragment: FragmentRenderable {
-    func render() -> String {
+    public func render() -> String {
         if fragments.count == 1 {
             return fragments[0].render()
         } else {

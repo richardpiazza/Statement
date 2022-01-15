@@ -1,25 +1,25 @@
 import Foundation
 
-typealias Statement = FragmentGroup
+public typealias Statement = FragmentGroup
 
-struct FragmentGroup {
-    let id: UUID
-    let fragments: [Fragment]
+public struct FragmentGroup {
+    public let id: UUID
+    public let fragments: [Fragment]
     
-    init(id: UUID = UUID(), @FragmentsBuilder fragments: () -> [Fragment]) {
+    public init(id: UUID = UUID(), @FragmentsBuilder fragments: () -> [Fragment]) {
         self.id = id
         self.fragments = fragments()
     }
 }
 
 extension FragmentGroup: FragmentRenderable {
-    func render() -> String {
+    public func render() -> String {
         fragments.map { $0.render() }.joined(separator: " ")
     }
 }
 
 extension FragmentGroup: FragmentConvertible {
-    func asFragments() -> [Fragment] {
+    public func asFragments() -> [Fragment] {
         [Fragment(value: .group(GroupFragment(fragments: fragments)))]
     }
 }

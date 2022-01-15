@@ -4,7 +4,7 @@ import StatementSQLite
 
 final class DefaultValuesTests: XCTestCase {
     
-    struct RelationalEntity: Statement.Entity {
+    struct RelationalEntity: Entity {
         static let identifier: String = "entity"
         let tableName: String = "entity"
         @Field("rating") var rating: Int? = nil

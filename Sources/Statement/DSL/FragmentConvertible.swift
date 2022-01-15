@@ -1,3 +1,3 @@
-protocol FragmentConvertible {
+public protocol FragmentConvertible {
     func asFragments() -> [Fragment]
 }

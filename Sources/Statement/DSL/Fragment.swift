@@ -1,6 +1,6 @@
 import Foundation
 
-struct Fragment {
+public struct Fragment {
     public enum Value {
         case raw(String)
         case clause(ClauseFragment)
@@ -11,23 +11,23 @@ struct Fragment {
         case empty
     }
     
-    let id: UUID
-    let value: Value
+    public let id: UUID
+    public let value: Value
     
-    init(id: UUID = UUID(), value: Value) {
+    public init(id: UUID = UUID(), value: Value) {
         self.id = id
         self.value = value
     }
     
-    struct Empty: FragmentConvertible {
-        func asFragments() -> [Fragment] {
+    public struct Empty: FragmentConvertible {
+        public func asFragments() -> [Fragment] {
             []
         }
     }
 }
 
 extension Fragment: FragmentRenderable {
-    func render() -> String {
+    public func render() -> String {
         switch value {
         case .raw(let raw):
             return raw
@@ -48,13 +48,13 @@ extension Fragment: FragmentRenderable {
 }
 
 extension Fragment: FragmentConvertible {
-    func asFragments() -> [Fragment] {
+    public func asFragments() -> [Fragment] {
         [self]
     }
 }
 
 extension Array: FragmentConvertible where Element == Fragment {
-    func asFragments() -> [Fragment] {
+    public func asFragments() -> [Fragment] {
         self
     }
 }

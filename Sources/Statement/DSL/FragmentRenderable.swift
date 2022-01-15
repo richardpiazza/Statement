@@ -1,3 +1,3 @@
-protocol FragmentRenderable {
+public protocol FragmentRenderable {
     func render() -> String
 }
