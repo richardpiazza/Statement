@@ -1,7 +1,7 @@
 import Foundation
 
 public struct AnyAttribute: Attribute {
-    public var columnName: String = ""
+    public var identifier: String = ""
     public var dataType: DataType = .null
     public var unique: Bool = false
     public var primaryKey: Bool = false
@@ -10,7 +10,7 @@ public struct AnyAttribute: Attribute {
     public var defaultValue: DataTypeConvertible?
     
     public init(
-        columnName: String = "",
+        identifier: String = "",
         dataType: DataType = .null,
         unique: Bool = false,
         primaryKey: Bool = false,
@@ -18,7 +18,7 @@ public struct AnyAttribute: Attribute {
         foreignKey: ForeignKey? = nil,
         defaultValue: DataTypeConvertible? = nil
     ) {
-        self.columnName = columnName
+        self.identifier = identifier
         self.dataType = dataType
         self.unique = unique
         self.primaryKey = primaryKey

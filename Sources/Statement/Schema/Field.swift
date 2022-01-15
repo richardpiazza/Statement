@@ -1,7 +1,7 @@
 import Foundation
 
 @propertyWrapper public struct Field<T: DataTypeConvertible>: AttributeConvertible {
-    var name: String = ""
+    var identifier: String = ""
     
     public var wrappedValue: T
     private var initialValue: T
@@ -10,9 +10,9 @@ import Foundation
     private var autoIncrement: Bool
     private var foreignKey: ForeignKey?
     
-    public init(wrappedValue: T, _ name: String = "", unique: Bool = false, primaryKey: Bool = false, autoIncrement: Bool = false, foreignKey: ForeignKey? = nil) {
+    public init(wrappedValue: T, _ identifier: String = "", unique: Bool = false, primaryKey: Bool = false, autoIncrement: Bool = false, foreignKey: ForeignKey? = nil) {
         self.wrappedValue = wrappedValue
-        self.name = name
+        self.identifier = identifier
         self.initialValue = wrappedValue
         self.unique = unique
         self.primaryKey = primaryKey
@@ -22,7 +22,7 @@ import Foundation
     
     public var attribute: Attribute {
         AnyAttribute(
-            columnName: name,
+            identifier: identifier,
             dataType: T.dataType,
             unique: unique,
             primaryKey: primaryKey,

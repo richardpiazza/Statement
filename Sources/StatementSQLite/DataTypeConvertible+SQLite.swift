@@ -22,6 +22,8 @@ public extension DataTypeConvertible {
             return "\(value)"
         case let value as String:
             return .singleQuote + value.replacingOccurrences(of: String.singleQuote, with: String.doubleQuote) + .singleQuote
+        case let value as URL:
+            return .singleQuote + value.absoluteString.replacingOccurrences(of: String.singleQuote, with: String.doubleQuote) + .singleQuote
         case let value as UUID:
             return .singleQuote + value.uuidString + .singleQuote
         case let value as Optional<Bool>:
@@ -58,6 +60,8 @@ public extension Optional where Wrapped == DataTypeConvertible {
         case let value as Optional<Int>:
             return value?.sqliteArgument ?? Keyword.null.rawValue
         case let value as Optional<String>:
+            return value?.sqliteArgument ?? Keyword.null.rawValue
+        case let value as Optional<URL>:
             return value?.sqliteArgument ?? Keyword.null.rawValue
         case let value as Optional<UUID>:
             return value?.sqliteArgument ?? Keyword.null.rawValue

@@ -28,6 +28,10 @@ extension String: DataTypeConvertible {
     public static var dataType: DataType { .string }
 }
 
+extension URL: DataTypeConvertible {
+    public static var dataType: DataType { .url }
+}
+
 extension UUID: DataTypeConvertible {
     public static var dataType: DataType { .uuid }
 }
@@ -46,6 +50,8 @@ extension Optional: DataTypeConvertible {
             return .optional(.int)
         } else if self == Optional<String>.self {
             return .optional(.string)
+        } else if self == Optional<URL>.self {
+            return .optional(.url)
         } else if self == Optional<UUID>.self {
             return .optional(.uuid)
         } else {

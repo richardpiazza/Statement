@@ -4,91 +4,23 @@ import StatementSQLite
 
 final class SQLiteStatement_SelectContextTests: XCTestCase {
     
-    @available(*, deprecated)
-    func testSelect() {
-        var statement: SQLiteStatement = .init(
-            .SELECT(
-                .column(Expression.id),
-                .column(Expression.name),
-                .column(Expression.defaultLanguage),
-                .column(Expression.comment),
-                .column(Expression.feature)
-            ),
-            .FROM_TABLE(Expression.self)
-        )
-        
-        XCTAssertEqual(statement.render(), """
-        SELECT id, name, default_language, comment, feature
-        FROM expression;
-        """)
-        
-        statement = .init(
-            .SELECT(
-                .column(Expression.id, tablePrefix: true),
-                .column(Expression.name),
-                .column(Expression.defaultLanguage),
-                .column(Expression.comment),
-                .column(Expression.feature)
-            ),
-            .FROM(
-                .TABLE(Expression.self)
-            ),
-            .WHERE(
-                .column(Expression.name, op: .equal, value: "Setup")
-            )
-        )
-        
-        XCTAssertEqual(statement.render(), """
-        SELECT expression.id, name, default_language, comment, feature
-        FROM expression
-        WHERE name = 'Setup';
-        """)
-        
-        statement = .init(
-            .SELECT(
-                .column(Expression.id, tablePrefix: true),
-                .column(Expression.name),
-                .column(Expression.defaultLanguage),
-                .column(Expression.comment),
-                .column(Expression.feature)
-            ),
-            .FROM(
-                .TABLE(Expression.self),
-                .JOIN(Translation.self, on: Expression.id, equals: Translation.expressionID)
-            ),
-            .WHERE(
-                .AND(
-                    .column(Translation.language, tablePrefix: true, op: .equal, value: "en"),
-                    .column(Translation.region, tablePrefix: true, op: .equal, value: "US")
-                )
-            ),
-            .LIMIT(1)
-        )
-        
-        XCTAssertEqual(statement.render(), """
-        SELECT expression.id, name, default_language, comment, feature
-        FROM expression JOIN translation ON expression.id = translation.expression_id
-        WHERE translation.language_code = 'en' AND translation.region_code = 'US'
-        LIMIT 1;
-        """)
-    }
-    
     func testSelectFromTable() throws {
-        let id = try XCTUnwrap(CatalogExpression["id"])
-        let name = try XCTUnwrap(CatalogExpression["name"])
-        let defaultLanguage = try XCTUnwrap(CatalogExpression["default_language"])
-        let comment = try XCTUnwrap(CatalogExpression["comment"])
-        let feature = try XCTUnwrap(CatalogExpression["feature"])
+        let entity = Expression()
+        let id = try XCTUnwrap(entity["id"])
+        let name = try XCTUnwrap(entity["name"])
+        let defaultLanguage = try XCTUnwrap(entity["default_language"])
+        let comment = try XCTUnwrap(entity["comment"])
+        let feature = try XCTUnwrap(entity["feature"])
         
         let statement: SQLiteStatement = .init(
             .SELECT(
-                .attribute(id),
-                .attribute(name),
-                .attribute(defaultLanguage),
-                .attribute(comment),
-                .attribute(feature)
+                .column(id),
+                .column(name),
+                .column(defaultLanguage),
+                .column(comment),
+                .column(feature)
             ),
-            .FROM_TABLE(CatalogExpression.self)
+            .FROM_TABLE(Expression.self)
         )
         
         XCTAssertEqual(statement.render(), """
@@ -98,22 +30,23 @@ final class SQLiteStatement_SelectContextTests: XCTestCase {
     }
     
     func testSelectFromWhere() throws {
-        let id = try XCTUnwrap(CatalogExpression["id"])
-        let name = try XCTUnwrap(CatalogExpression["name"])
-        let defaultLanguage = try XCTUnwrap(CatalogExpression["default_language"])
-        let comment = try XCTUnwrap(CatalogExpression["comment"])
-        let feature = try XCTUnwrap(CatalogExpression["feature"])
+        let entity = Expression()
+        let id = try XCTUnwrap(entity["id"])
+        let name = try XCTUnwrap(entity["name"])
+        let defaultLanguage = try XCTUnwrap(entity["default_language"])
+        let comment = try XCTUnwrap(entity["comment"])
+        let feature = try XCTUnwrap(entity["feature"])
         
         let statement: SQLiteStatement = .init(
             .SELECT(
-                .attribute(CatalogExpression.self, attribute: id),
-                .attribute(name),
-                .attribute(defaultLanguage),
-                .attribute(comment),
-                .attribute(feature)
+                .column(Expression.self, attribute: id),
+                .column(name),
+                .column(defaultLanguage),
+                .column(comment),
+                .column(feature)
             ),
             .FROM(
-                .TABLE(CatalogExpression.self)
+                .TABLE(Expression.self)
             ),
             .WHERE(
                 .column(name, op: .equal, value: "Setup")
@@ -128,32 +61,34 @@ final class SQLiteStatement_SelectContextTests: XCTestCase {
     }
     
     func testSelectFromWhereLimit() throws {
-        let id = try XCTUnwrap(CatalogExpression["id"])
-        let name = try XCTUnwrap(CatalogExpression["name"])
-        let defaultLanguage = try XCTUnwrap(CatalogExpression["default_language"])
-        let comment = try XCTUnwrap(CatalogExpression["comment"])
-        let feature = try XCTUnwrap(CatalogExpression["feature"])
+        let expressionEntity = Expression()
+        let id = try XCTUnwrap(expressionEntity["id"])
+        let name = try XCTUnwrap(expressionEntity["name"])
+        let defaultLanguage = try XCTUnwrap(expressionEntity["default_language"])
+        let comment = try XCTUnwrap(expressionEntity["comment"])
+        let feature = try XCTUnwrap(expressionEntity["feature"])
         
-        let expressionId = try XCTUnwrap(CatalogTranslation["expression_id"])
-        let language = try XCTUnwrap(CatalogTranslation["language_code"])
-        let region = try XCTUnwrap(CatalogTranslation["region_code"])
+        let translationEntity = Translation()
+        let expressionId = try XCTUnwrap(translationEntity["expression_id"])
+        let language = try XCTUnwrap(translationEntity["language_code"])
+        let region = try XCTUnwrap(translationEntity["region_code"])
         
         let statement: SQLiteStatement = .init(
             .SELECT(
-                .attribute(CatalogExpression.self, attribute: id),
+                .attribute(Expression.self, attribute: id),
                 .attribute(name),
                 .attribute(defaultLanguage),
                 .attribute(comment),
                 .attribute(feature)
             ),
             .FROM(
-                .TABLE(CatalogExpression.self),
-                .JOIN_ON(CatalogTranslation.self, attribute: expressionId, equals: CatalogExpression.self, attribute: id)
+                .TABLE(Expression.self),
+                .JOIN_ON(Translation.self, attribute: expressionId, equals: Expression.self, attribute: id)
             ),
             .WHERE(
                 .AND(
-                    .column(language, entity: CatalogTranslation(), op: .equal, value: "en"),
-                    .column(region, entity: CatalogTranslation(), op: .equal, value: "US")
+                    .column(language, entity: Translation(), op: .equal, value: "en"),
+                    .column(region, entity: Translation(), op: .equal, value: "US")
                 )
             ),
             .LIMIT(1)

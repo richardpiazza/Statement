@@ -2,8 +2,6 @@ import Statement
 
 public extension SQLiteStatement {
     enum InsertContext {}
-    @available(*, deprecated, renamed: "InsertContext")
-    enum InsertIntoContext {}
 }
 
 public extension Clause where Context == SQLiteStatement.StatementContext {
@@ -13,15 +11,10 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
 }
 
 public extension Segment where Context == SQLiteStatement.InsertContext {
-    @available(*, deprecated)
-    static func INTO<T: Table>(_ type: T.Type) -> Segment {
-        .clause(keyword: .into, segments: [
-            Segment.table(type)
-        ])
-    }
-    
     static func INTO<E: Entity>(_ type: E.Type) -> Segment {
-        INTO(E.init())
+        .clause(keyword: .into, segments: [
+            Segment.entity(type)
+        ])
     }
     
     static func INTO(_ entity: Entity) -> Segment {
@@ -44,32 +37,17 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     ///     .group(segments)
     /// )
     /// ```
-    @available(*, deprecated)
-    static func INSERT_INTO<T: Table>(_ type: T.Type, _ segments: Segment<SQLiteStatement.InsertContext>...) -> Clause {
+    static func INSERT_INTO<E: Entity>(_ type: E.Type, _ segments: Segment<SQLiteStatement.InsertContext>...) -> Clause {
         .INSERT(
             .INTO(type),
             .group(segments: segments)
         )
     }
     
-    static func INSERT_INTO<E: Entity>(_ type: E.Type, _ segments: Segment<SQLiteStatement.InsertContext>...) -> Clause {
-        INSERT_INTO(type.init(), segments)
-    }
-    
-    static func INSERT_INTO(_ table: Entity, _ segments: [Segment<SQLiteStatement.InsertContext>]) -> Clause {
+    static func INSERT_INTO(_ entity: Entity, _ segments: Segment<SQLiteStatement.InsertContext>...) -> Clause {
         .INSERT(
-            .INTO(table),
+            .INTO(entity),
             .group(segments: segments)
         )
-    }
-    
-    @available(*, deprecated, renamed: "INSERT_INTO()")
-    static func INSERT_INTO_TABLE<T: Table>(_ type: T.Type, _ segments: Segment<SQLiteStatement.InsertIntoContext>...) -> Clause {
-        let table = Segment<Context>.table(type)
-        let group = Group<Context>(segments: segments)
-        let into = Clause(keyword: .into, segments: [table, group])
-        return Clause(keyword: .insert, segments: [
-            Segment.clause(into)
-        ])
     }
 }
