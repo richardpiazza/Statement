@@ -1,20 +1,20 @@
-struct ComparisonFragment {
-    let comparisonOperator: ComparisonOperator
-    let fragments: [Fragment]
+public struct ComparisonFragment {
+    public let comparisonOperator: ComparisonOperator
+    public let fragments: [Fragment]
     
-    init(comparisonOperator: ComparisonOperator, @FragmentsBuilder fragments: () -> [Fragment]) {
+    public init(comparisonOperator: ComparisonOperator, @FragmentsBuilder fragments: () -> [Fragment]) {
         self.comparisonOperator = comparisonOperator
         self.fragments = fragments()
     }
     
-    init(comparisonOperator: ComparisonOperator, fragments: [Fragment]) {
+    public init(comparisonOperator: ComparisonOperator, fragments: [Fragment]) {
         self.comparisonOperator = comparisonOperator
         self.fragments = fragments
     }
 }
 
 extension ComparisonFragment: FragmentRenderable {
-    func render() -> String {
+    public func render() -> String {
         guard fragments.count > 1 else {
             return ""
         }

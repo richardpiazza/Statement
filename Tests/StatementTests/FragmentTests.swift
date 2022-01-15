@@ -1,5 +1,6 @@
 import XCTest
 @testable import Statement
+@testable import StatementSQLite
 
 final class FragmentTests: XCTestCase {
     

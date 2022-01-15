@@ -1,6 +1,6 @@
 import XCTest
-import Statement
-import StatementSQLite
+@testable import Statement
+@testable import StatementSQLite
 
 final class SQLiteStatement_AlterContextTests: XCTestCase {
     
@@ -15,6 +15,16 @@ final class SQLiteStatement_AlterContextTests: XCTestCase {
         XCTAssertEqual(statement.render(), """
         ALTER TABLE translation RENAME TO expression;
         """)
+    }
+    
+    func testAlterTableRenameToResultBuild() {
+        let statement = Statement {
+            AlterTable(Translation.self) {
+            }
+        }
+        
+        let sql = statement.render()
+        XCTAssertEqual(sql, "ALTER TABLE translation")
     }
     
     func testAlterTableRenameColumn() throws {
