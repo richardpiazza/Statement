@@ -45,7 +45,7 @@ final class SQLiteDataTypeConvertibleTests: XCTestCase {
         let date = try XCTUnwrap(components.date)
         
         let nonOptional: Date = date
-        XCTAssertEqual(nonOptional.sqliteArgument, "1579545242")
+        XCTAssertEqual(nonOptional.sqliteArgument, "1579545242.0")
         let optional: Date? = nil
         XCTAssertEqual(optional.sqliteArgument, "NULL")
     }
