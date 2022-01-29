@@ -8,6 +8,10 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     static func WHERE(_ segments: Segment<SQLiteStatement.WhereContext>...) -> Clause {
         Clause(keyword: .where, segments: segments)
     }
+    
+    static func WHERE(_ segments: [Segment<SQLiteStatement.WhereContext>]) -> Clause {
+        Clause(keyword: .where, segments: segments)
+    }
 }
 
 public extension Segment where Context == SQLiteStatement.WhereContext {
@@ -16,8 +20,16 @@ public extension Segment where Context == SQLiteStatement.WhereContext {
         .conjunctive(op: .and, segments: segments)
     }
     
+    static func AND(_ segments: [Segment<Context>]) -> Segment {
+        .conjunctive(op: .and, segments: segments)
+    }
+    
     /// Performs a conjunctive 'and'.
     static func OR(_ segments: Segment<Context>...) -> Segment {
+        .conjunctive(op: .or, segments: segments)
+    }
+    
+    static func OR(_ segments: [Segment<Context>]) -> Segment {
         .conjunctive(op: .or, segments: segments)
     }
     

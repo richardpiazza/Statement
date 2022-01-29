@@ -5,9 +5,9 @@ public extension DataType {
         switch self {
         case .string, .optional(.string), .url, .optional(.url):
             return "TEXT"
-        case .int, .optional(.int), .bool, .optional(.bool), .date, .optional(.date):
+        case .int, .optional(.int), .bool, .optional(.bool):
             return "INTEGER"
-        case .double, .optional(.double):
+        case .double, .optional(.double), .date, .optional(.date):
             return "REAL"
         case .data, .optional(.data):
             return "BLOB"

@@ -15,7 +15,7 @@ public extension DataTypeConvertible {
         case let value as Data:
             return String(data: value, encoding: .utf8) ?? ""
         case let value as Date:
-            return Int(value.timeIntervalSince1970).sqliteArgument
+            return "\(value.timeIntervalSince1970)"
         case let value as Double:
             return "\(value)"
         case let value as Int:

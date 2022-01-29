@@ -120,7 +120,7 @@ To install it into a project, add it as a dependency within your `Package.swift`
 let package = Package(
     ...
     dependencies: [
-        .package(url: "https://github.com/richardpiazza/Statement.git", .upToNextMinor(from: "0.5.0")
+        .package(url: "https://github.com/richardpiazza/Statement.git", .upToNextMinor(from: "0.6.0")
     ],
     ...
 )
