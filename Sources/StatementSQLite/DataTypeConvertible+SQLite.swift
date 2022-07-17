@@ -13,7 +13,7 @@ public extension DataTypeConvertible {
         case let value as Bool:
             return value ? "1" : "0"
         case let value as Data:
-            return String(data: value, encoding: .utf8) ?? ""
+            return .singleQuote + (String(data: value, encoding: .utf8) ?? "") + .singleQuote
         case let value as Date:
             return "\(value.timeIntervalSince1970)"
         case let value as Double:
