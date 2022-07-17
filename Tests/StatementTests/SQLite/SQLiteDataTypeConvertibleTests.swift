@@ -24,11 +24,11 @@ final class SQLiteDataTypeConvertibleTests: XCTestCase {
         
         let data = try XCTUnwrap("A Bag Of Bytes".data(using: .utf8))
         let nonOptional: Data = data
-        XCTAssertEqual(nonOptional.sqliteArgument, "A Bag Of Bytes")
+        XCTAssertEqual(nonOptional.sqliteArgument, "X(4120426167204f66204279746573)")
         var optional: Data? = nil
         XCTAssertEqual(optional.sqliteArgument, "NULL")
         optional = try JSONEncoder().encode(User(name: "Merlin"))
-        XCTAssertEqual(optional.sqliteArgument, "{\"name\":\"Merlin\"}")
+        XCTAssertEqual(optional.sqliteArgument, "X(7b226e616d65223a224d65726c696e227d)")
     }
     
     func testDateSqliteArgument() throws {

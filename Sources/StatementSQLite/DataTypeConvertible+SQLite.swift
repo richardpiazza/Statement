@@ -13,7 +13,8 @@ public extension DataTypeConvertible {
         case let value as Bool:
             return value ? "1" : "0"
         case let value as Data:
-            return String(data: value, encoding: .utf8) ?? ""
+            let hex = value.map { String(format: "%02hhx", $0) }.joined()
+            return "X(" + hex + ")"
         case let value as Date:
             return "\(value.timeIntervalSince1970)"
         case let value as Double:
