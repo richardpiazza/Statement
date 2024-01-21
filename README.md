@@ -5,9 +5,6 @@ Swift DSL for writing SQL statements.
 <p>
     <img src="https://github.com/richardpiazza/Statement/workflows/Swift/badge.svg?branch=main" />
     <img src="https://img.shields.io/badge/Swift-5.3-orange.svg" />
-    <a href="https://twitter.com/richardpiazza">
-        <img src="https://img.shields.io/badge/twitter-@richardpiazza-blue.svg?style=flat" alt="Twitter: @richardpiazza" />
-    </a>
 </p>
 
 ## Using Swift to write SQL 🤯
@@ -120,7 +117,7 @@ To install it into a project, add it as a dependency within your `Package.swift`
 let package = Package(
     ...
     dependencies: [
-        .package(url: "https://github.com/richardpiazza/Statement.git", .upToNextMinor(from: "0.6.0")
+        .package(url: "https://github.com/richardpiazza/Statement.git", .upToNextMinor(from: "0.7.2")
     ],
     ...
 )
