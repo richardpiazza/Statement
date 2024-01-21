@@ -1,6 +1,6 @@
 import Statement
 
-public extension DataType {
+extension DataType {
     var sqliteDataType: String {
         switch self {
         case .string, .optional(.string), .url, .optional(.url):
