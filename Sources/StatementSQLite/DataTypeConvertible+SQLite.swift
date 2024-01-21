@@ -1,7 +1,7 @@
 import Statement
 import Foundation
 
-public extension DataTypeConvertible {
+extension DataTypeConvertible {
     /// A string representation the instance, suitable for using as an argument in SQL statements.
     ///
     /// Rules apply to various types:
@@ -46,7 +46,7 @@ public extension DataTypeConvertible {
     }
 }
 
-public extension Optional where Wrapped == DataTypeConvertible {
+extension Optional where Wrapped == DataTypeConvertible {
     var sqliteArgument: String {
         switch self {
         case let value as Optional<Bool>:
@@ -71,7 +71,7 @@ public extension Optional where Wrapped == DataTypeConvertible {
     }
 }
 
-private extension String {
+extension String {
     static var singleQuote: String { "'" }
     static var doubleQuote: String { "''" }
 }
