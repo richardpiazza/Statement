@@ -1,4 +1,4 @@
-public struct Keyword: ExpressibleByStringLiteral, Equatable, Codable {
+public struct Keyword: ExpressibleByStringLiteral, Equatable, Codable, Sendable {
     public let rawValue: String
     
     public init(stringLiteral value: String) {

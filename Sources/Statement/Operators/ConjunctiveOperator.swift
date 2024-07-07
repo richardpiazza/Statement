@@ -1,4 +1,4 @@
-public struct ConjunctiveOperator: ExpressibleByStringLiteral, Equatable {
+public struct ConjunctiveOperator: ExpressibleByStringLiteral, Equatable, Sendable {
     public let rawValue: String
     
     public init(stringLiteral value: String) {

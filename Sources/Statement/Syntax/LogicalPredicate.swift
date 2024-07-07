@@ -2,9 +2,9 @@ import Foundation
 
 public struct LogicalPredicate<Context> {
     public var op: LogicalOperator
-    public var elements: [AnyRenderable]
+    public var elements: [Renderable]
     
-    public init(_ op: LogicalOperator, elements: [AnyRenderable]) {
+    public init(_ op: LogicalOperator, elements: [Renderable]) {
         self.op = op
         self.elements = elements
     }
@@ -18,7 +18,7 @@ public extension LogicalPredicate {
     }
 }
 
-extension LogicalPredicate: AnyRenderable {
+extension LogicalPredicate: Renderable {
     public func render(into renderer: Renderer) {
         renderer.addLogicalPredicate(self)
     }

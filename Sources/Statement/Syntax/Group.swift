@@ -1,12 +1,12 @@
 import Foundation
 
 public struct Group<Context> {
-    public var segments: [AnyRenderable]
+    public var segments: [Renderable]
     public var prefix: String
     public var suffix: String
     public var separator: String
     
-    public init(segments: [AnyRenderable], prefix: String = "(", suffix: String = ")", separator: String = ", ") {
+    public init(segments: [Renderable], prefix: String = "(", suffix: String = ")", separator: String = ", ") {
         self.segments = segments
         self.prefix = prefix
         self.suffix = suffix
@@ -22,7 +22,7 @@ public extension Group {
     }
 }
 
-extension Group: AnyRenderable {
+extension Group: Renderable {
     public func render(into renderer: Renderer) {
         renderer.addGroup(self)
     }

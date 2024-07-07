@@ -1,12 +1,12 @@
 import Foundation
 
-public struct Clause<Context> {
+public struct Clause<Context>: Sendable {
     
     public var keyword: Keyword
-    public var segments: [AnyRenderable]
+    public var segments: [Renderable]
     public var separator: String
     
-    public init(keyword: Keyword, segments: [AnyRenderable], separator: String = " ") {
+    public init(keyword: Keyword, segments: [Renderable], separator: String = " ") {
         self.keyword = keyword
         self.segments = segments
         self.separator = separator
