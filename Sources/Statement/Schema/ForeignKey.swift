@@ -1,6 +1,6 @@
 import Foundation
 
-public struct ForeignKey {
+public struct ForeignKey: Sendable {
     public var entity: Entity.Type
     public var attribute: Attribute
     

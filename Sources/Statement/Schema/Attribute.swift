@@ -1,13 +1,13 @@
 import Foundation
 
-public protocol Attribute {
+public protocol Attribute: Sendable {
     var identifier: String { get }
     var dataType: DataType { get }
     var unique: Bool { get }
     var primaryKey: Bool { get }
     var autoIncrement: Bool { get }
     var foreignKey: ForeignKey? { get }
-    var defaultValue: DataTypeConvertible? { get }
+    var defaultValue: (DataTypeConvertible & Sendable)? { get }
 }
 
 public extension Attribute {

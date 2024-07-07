@@ -1,6 +1,6 @@
 import Foundation
 
-public indirect enum DataType {
+public indirect enum DataType: Sendable {
     case bool
     case data
     case date
