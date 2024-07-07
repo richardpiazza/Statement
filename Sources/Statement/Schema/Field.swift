@@ -1,6 +1,6 @@
 import Foundation
 
-@propertyWrapper public struct Field<T: DataTypeConvertible>: AttributeConvertible {
+@propertyWrapper public struct Field<T: DataTypeConvertible & Sendable>: AttributeConvertible, Sendable {
     var identifier: String = ""
     
     public var wrappedValue: T
