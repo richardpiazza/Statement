@@ -1,4 +1,4 @@
-public struct LogicalOperator: ExpressibleByStringLiteral, Equatable {
+public struct LogicalOperator: ExpressibleByStringLiteral, Equatable, Sendable {
     public let rawValue: String
     
     public init(stringLiteral value: String) {

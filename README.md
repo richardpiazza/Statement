@@ -2,10 +2,8 @@
 
 Swift DSL for writing SQL statements.
 
-<p>
-    <img src="https://github.com/richardpiazza/Statement/workflows/Swift/badge.svg?branch=main" />
-    <img src="https://img.shields.io/badge/Swift-5.3-orange.svg" />
-</p>
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Frichardpiazza%2FStatement%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/richardpiazza/Statement)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Frichardpiazza%2FStatement%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/richardpiazza/Statement)
 
 ## Using Swift to write SQL 🤯
 
@@ -34,7 +32,7 @@ let statement = SQLiteStatement(
 )
 ```
 
-The first part of the _statement_ is rather clear:
+The first part of the _statement_ should be clear:
 
 ```sql
 SELECT translation.id, translation.expression_id, translation.language_code, translation.region_code, translation.value
@@ -117,7 +115,7 @@ To install it into a project, add it as a dependency within your `Package.swift`
 let package = Package(
     ...
     dependencies: [
-        .package(url: "https://github.com/richardpiazza/Statement.git", .upToNextMinor(from: "0.7.2")
+        .package(url: "https://github.com/richardpiazza/Statement.git", .upToNextMinor(from: "0.8.0")
     ],
     ...
 )

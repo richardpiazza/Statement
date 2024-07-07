@@ -2,9 +2,9 @@ import Foundation
 
 public struct ComparisonPredicate<Context> {
     public var op: ComparisonOperator
-    public var elements: [AnyRenderable]
+    public var elements: [Renderable]
     
-    public init(_ op: ComparisonOperator, elements: [AnyRenderable]) {
+    public init(_ op: ComparisonOperator, elements: [Renderable]) {
         self.op = op
         self.elements = elements
     }
@@ -26,7 +26,7 @@ public extension ComparisonPredicate {
     }
 }
 
-extension ComparisonPredicate: AnyRenderable {
+extension ComparisonPredicate: Renderable {
     public func render(into renderer: Renderer) {
         renderer.addComparisonPredicate(self)
     }

@@ -1,4 +1,4 @@
-public struct ComparisonOperator: ExpressibleByStringLiteral, Equatable {
+public struct ComparisonOperator: ExpressibleByStringLiteral, Equatable, Sendable {
     public let rawValue: String
     
     public init(stringLiteral value: String) {

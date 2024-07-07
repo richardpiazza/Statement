@@ -1,6 +1,6 @@
 import Foundation
 
-public enum Segment<Context> {
+public enum Segment<Context>: Sendable {
     case raw(String)
     case clause(Clause<Context>)
     case comparisonPredicate(ComparisonPredicate<Context>)
@@ -10,7 +10,7 @@ public enum Segment<Context> {
     case empty
 }
 
-extension Segment: AnyRenderable {
+extension Segment: Renderable {
     public func render(into renderer: Renderer) {
         switch self {
         case .raw(let identifier):

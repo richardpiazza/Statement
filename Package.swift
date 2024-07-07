@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.8
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -24,12 +24,24 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "Statement",
-            dependencies: []),
+            dependencies: [],
+            swiftSettings: [
+                .enableExperimentalFeature("StrictConcurrency")
+            ]
+        ),
         .target(
             name: "StatementSQLite",
-            dependencies: ["Statement"]),
+            dependencies: ["Statement"],
+            swiftSettings: [
+                .enableExperimentalFeature("StrictConcurrency")
+            ]
+        ),
         .testTarget(
             name: "StatementTests",
-            dependencies: ["Statement", "StatementSQLite"]),
+            dependencies: [
+                "Statement",
+                "StatementSQLite"
+            ]
+        ),
     ]
 )
