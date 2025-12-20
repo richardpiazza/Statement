@@ -11,7 +11,7 @@ final class SQLiteStatement_SelectContextTests: XCTestCase {
         let defaultLanguage = try XCTUnwrap(entity["default_language"])
         let comment = try XCTUnwrap(entity["comment"])
         let feature = try XCTUnwrap(entity["feature"])
-        
+
         let statement: SQLiteStatement = .init(
             .SELECT(
                 .column(id),

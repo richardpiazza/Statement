@@ -10,3 +10,17 @@ struct Select: ClauseFragment, FragmentConvertible {
         self.fragments = fragments()
     }
 }
+
+struct Column: FragmentConvertible {
+    let name: String
+    
+    init(_ name: String) {
+        self.name = name
+    }
+    
+    func asFragments() -> [Fragment] {
+        [
+            Fragment(value: .raw(name))
+        ]
+    }
+}

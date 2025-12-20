@@ -10,7 +10,14 @@ import Foundation
     private var autoIncrement: Bool
     private var foreignKey: ForeignKey?
     
-    public init(wrappedValue: T, _ identifier: String = "", unique: Bool = false, primaryKey: Bool = false, autoIncrement: Bool = false, foreignKey: ForeignKey? = nil) {
+    public init(
+        wrappedValue: T,
+        _ identifier: String = "",
+        unique: Bool = false,
+        primaryKey: Bool = false,
+        autoIncrement: Bool = false,
+        foreignKey: ForeignKey? = nil
+    ) {
         self.wrappedValue = wrappedValue
         self.identifier = identifier
         self.initialValue = wrappedValue

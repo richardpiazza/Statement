@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol Entity {
+public protocol Entity: Sendable {
     static var identifier: String { get }
     var attributes: [Attribute] { get }
 }

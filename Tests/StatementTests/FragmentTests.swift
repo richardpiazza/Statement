@@ -20,4 +20,16 @@ final class FragmentTests: XCTestCase {
         let sql = statement.render()
         XCTAssertEqual(sql, "SELECT all")
     }
+    
+    func testSelect2Statement() {
+        let statement = Statement {
+            Select {
+                Column("whatever")
+            }
+        }
+        let sql = statement.render()
+        var entity = Expression()
+        entity[keyPath: \.name] = ""
+        XCTAssertEqual(sql, "SELECT whatever")
+    }
 }
