@@ -1,24 +1,24 @@
 import Statement
 import StatementSQLite
-import XCTest
+import Testing
 
-final class SQLiteStatement_OrderContextTests: XCTestCase {
+struct SQLiteStatement_OrderContextTests {
 
-    func testSelectOrderBy() throws {
+    @Test func testSelectOrderBy() throws {
         let entity = Expression()
-        let name = try XCTUnwrap(entity["name"])
+        let name = try #require(entity["name"])
 
         let statement = SQLiteStatement(
             .SELECT(
-                .column(name)
+                .column(name),
             ),
             .FROM_TABLE(Expression.self),
             .ORDER_BY(
-                .column(name, op: .desc)
-            )
+                .column(name, op: .desc),
+            ),
         )
 
-        XCTAssertEqual(statement.render(), """
+        #expect(statement.render() == """
         SELECT name
         FROM expression
         ORDER BY name DESC;

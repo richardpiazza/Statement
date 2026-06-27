@@ -1,6 +1,6 @@
 # Compiler
 --languagemode 5
---swiftversion 5.8
+--swiftversion 6.1
 
 # Options
 --exclude derivedData
@@ -11,6 +11,7 @@
 --disable blankLinesAtStartOfScope
 --disable hoistPatternLet
 --disable redundantType
+--disable swiftTestingTestCaseNames
 --disable unusedArguments
 --disable wrapArguments
 --disable wrapPropertyBodies

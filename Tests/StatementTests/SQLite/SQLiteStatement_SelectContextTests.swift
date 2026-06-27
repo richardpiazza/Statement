@@ -1,100 +1,100 @@
 import Statement
 import StatementSQLite
-import XCTest
+import Testing
 
-final class SQLiteStatement_SelectContextTests: XCTestCase {
+struct SQLiteStatement_SelectContextTests {
 
-    func testSelectFromTable() throws {
+    @Test func testSelectFromTable() throws {
         let entity = Expression()
-        let id = try XCTUnwrap(entity["id"])
-        let name = try XCTUnwrap(entity["name"])
-        let defaultLanguage = try XCTUnwrap(entity["default_language"])
-        let comment = try XCTUnwrap(entity["comment"])
-        let feature = try XCTUnwrap(entity["feature"])
+        let id = try #require(entity["id"])
+        let name = try #require(entity["name"])
+        let defaultLanguage = try #require(entity["default_language"])
+        let comment = try #require(entity["comment"])
+        let feature = try #require(entity["feature"])
 
-        let statement: SQLiteStatement = .init(
+        let statement: SQLiteStatement = SQLiteStatement(
             .SELECT(
                 .column(id),
                 .column(name),
                 .column(defaultLanguage),
                 .column(comment),
-                .column(feature)
+                .column(feature),
             ),
-            .FROM_TABLE(Expression.self)
+            .FROM_TABLE(Expression.self),
         )
 
-        XCTAssertEqual(statement.render(), """
+        #expect(statement.render() == """
         SELECT id, name, default_language, comment, feature
         FROM expression;
         """)
     }
 
-    func testSelectFromWhere() throws {
+    @Test func testSelectFromWhere() throws {
         let entity = Expression()
-        let id = try XCTUnwrap(entity["id"])
-        let name = try XCTUnwrap(entity["name"])
-        let defaultLanguage = try XCTUnwrap(entity["default_language"])
-        let comment = try XCTUnwrap(entity["comment"])
-        let feature = try XCTUnwrap(entity["feature"])
+        let id = try #require(entity["id"])
+        let name = try #require(entity["name"])
+        let defaultLanguage = try #require(entity["default_language"])
+        let comment = try #require(entity["comment"])
+        let feature = try #require(entity["feature"])
 
-        let statement: SQLiteStatement = .init(
+        let statement: SQLiteStatement = SQLiteStatement(
             .SELECT(
                 .column(Expression.self, attribute: id),
                 .column(name),
                 .column(defaultLanguage),
                 .column(comment),
-                .column(feature)
+                .column(feature),
             ),
             .FROM(
-                .TABLE(Expression.self)
+                .TABLE(Expression.self),
             ),
             .WHERE(
-                .column(name, op: .equal, value: "Setup")
-            )
+                .column(name, op: .equal, value: "Setup"),
+            ),
         )
 
-        XCTAssertEqual(statement.render(), """
+        #expect(statement.render() == """
         SELECT expression.id, name, default_language, comment, feature
         FROM expression
         WHERE name = 'Setup';
         """)
     }
 
-    func testSelectFromWhereLimit() throws {
+    @Test func testSelectFromWhereLimit() throws {
         let expressionEntity = Expression()
-        let id = try XCTUnwrap(expressionEntity["id"])
-        let name = try XCTUnwrap(expressionEntity["name"])
-        let defaultLanguage = try XCTUnwrap(expressionEntity["default_language"])
-        let comment = try XCTUnwrap(expressionEntity["comment"])
-        let feature = try XCTUnwrap(expressionEntity["feature"])
+        let id = try #require(expressionEntity["id"])
+        let name = try #require(expressionEntity["name"])
+        let defaultLanguage = try #require(expressionEntity["default_language"])
+        let comment = try #require(expressionEntity["comment"])
+        let feature = try #require(expressionEntity["feature"])
 
         let translationEntity = Translation()
-        let expressionId = try XCTUnwrap(translationEntity["expression_id"])
-        let language = try XCTUnwrap(translationEntity["language_code"])
-        let region = try XCTUnwrap(translationEntity["region_code"])
+        let expressionId = try #require(translationEntity["expression_id"])
+        let language = try #require(translationEntity["language_code"])
+        let region = try #require(translationEntity["region_code"])
 
-        let statement: SQLiteStatement = .init(
+        let statement: SQLiteStatement = SQLiteStatement(
             .SELECT(
                 .attribute(Expression.self, attribute: id),
                 .attribute(name),
                 .attribute(defaultLanguage),
                 .attribute(comment),
-                .attribute(feature)
+                .attribute(feature),
             ),
             .FROM(
                 .TABLE(Expression.self),
-                .JOIN_ON(Translation.self, attribute: expressionId, equals: Expression.self, attribute: id)
+                .JOIN_ON(Translation.self, attribute: expressionId, equals: Expression.self, attribute: id),
             ),
             .WHERE(
                 .AND(
                     .column(language, entity: Translation(), op: .equal, value: "en"),
-                    .column(region, entity: Translation(), op: .equal, value: "US")
-                )
+                    .column(region, entity: Translation(), op: .equal, value: "US"),
+                ),
             ),
-            .LIMIT(1)
+            .LIMIT(1),
         )
 
-        XCTAssertEqual(statement.render(), """
+        #expect(statement.render() == """
         SELECT expression.id, name, default_language, comment, feature
         FROM expression JOIN translation ON translation.expression_id = expression.id
         WHERE translation.language_code = 'en' AND translation.region_code = 'US'

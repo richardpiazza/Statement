@@ -40,14 +40,14 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     static func INSERT_INTO(_ type: (some Entity).Type, _ segments: Segment<SQLiteStatement.InsertContext>...) -> Clause {
         .INSERT(
             .INTO(type),
-            .group(segments: segments)
+            .group(segments: segments),
         )
     }
 
     static func INSERT_INTO(_ entity: any Entity, _ segments: Segment<SQLiteStatement.InsertContext>...) -> Clause {
         .INSERT(
             .INTO(entity),
-            .group(segments: segments)
+            .group(segments: segments),
         )
     }
 }

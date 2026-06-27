@@ -15,7 +15,7 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
 
     static func ORDER_BY(_ segments: Segment<SQLiteStatement.OrderContext>...) -> Clause {
         ORDER(
-            .BY(segments)
+            .BY(segments),
         )
     }
 }

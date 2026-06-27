@@ -1,4 +1,4 @@
-// swift-tools-version:5.8
+// swift-tools-version:6.1
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -8,11 +8,11 @@ let package = Package(
     products: [
         .library(
             name: "Statement",
-            targets: ["Statement"]
+            targets: ["Statement"],
         ),
         .library(
             name: "StatementSQLite",
-            targets: ["StatementSQLite"]
+            targets: ["StatementSQLite"],
         ),
     ],
     dependencies: [
@@ -24,20 +24,20 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "Statement",
-            dependencies: []
+            dependencies: [],
         ),
         .target(
             name: "StatementSQLite",
-            dependencies: ["Statement"]
+            dependencies: ["Statement"],
         ),
         .testTarget(
             name: "StatementTests",
             dependencies: [
                 "Statement",
                 "StatementSQLite",
-            ]
+            ],
         ),
-    ]
+    ],
 )
 
 for target in package.targets {

@@ -13,9 +13,9 @@ public protocol Attribute: Sendable {
 public extension Attribute {
     var isOptional: Bool {
         if case .optional = dataType {
-            return true
+            true
         } else {
-            return false
+            false
         }
     }
 

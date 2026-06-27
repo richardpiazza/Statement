@@ -39,23 +39,23 @@ extension UUID: DataTypeConvertible {
 extension Optional: DataTypeConvertible {
     public static var dataType: DataType {
         if self == Bool?.self {
-            return .optional(.bool)
+            .optional(.bool)
         } else if self == Data?.self {
-            return .optional(.data)
+            .optional(.data)
         } else if self == Date?.self {
-            return .optional(.date)
+            .optional(.date)
         } else if self == Double?.self {
-            return .optional(.double)
+            .optional(.double)
         } else if self == Int?.self {
-            return .optional(.int)
+            .optional(.int)
         } else if self == String?.self {
-            return .optional(.string)
+            .optional(.string)
         } else if self == URL?.self {
-            return .optional(.url)
+            .optional(.url)
         } else if self == UUID?.self {
-            return .optional(.uuid)
+            .optional(.uuid)
         } else {
-            return .null
+            .null
         }
     }
 }

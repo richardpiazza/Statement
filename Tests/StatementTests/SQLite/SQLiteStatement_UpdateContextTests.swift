@@ -1,46 +1,46 @@
 import Statement
 import StatementSQLite
-import XCTest
+import Testing
 
-final class SQLiteStatement_UpdateContextTests: XCTestCase {
+struct SQLiteStatement_UpdateContextTests {
 
-    func testUpdateTable() throws {
+    @Test func testUpdateTable() throws {
         let entity = Translation()
-        let value = try XCTUnwrap(entity["value"])
-        let region = try XCTUnwrap(entity["region_code"])
-        let id = try XCTUnwrap(entity["id"])
+        let value = try #require(entity["value"])
+        let region = try #require(entity["region_code"])
+        let id = try #require(entity["id"])
 
         let nullRegion: String? = nil
 
-        var statement: SQLiteStatement = .init(
+        var statement: SQLiteStatement = SQLiteStatement(
             .UPDATE_TABLE(Translation.self),
             .SET(
                 .column(value, op: .equal, value: "Corrected Translation"),
-                .column(region, op: .equal, value: nullRegion)
+                .column(region, op: .equal, value: nullRegion),
             ),
             .WHERE(
-                .column(id, op: .equal, value: 123)
-            )
+                .column(id, op: .equal, value: 123),
+            ),
         )
 
-        XCTAssertEqual(statement.render(), """
+        #expect(statement.render() == """
         UPDATE translation
         SET value = 'Corrected Translation', region_code = NULL
         WHERE id = 123;
         """)
 
-        statement = .init(
+        statement = SQLiteStatement(
             .UPDATE_TABLE(Translation.self),
             .SET(
                 .column(value, op: .equal, value: "Corrected Translation"),
-                .column(region, op: .equal, value: nullRegion)
+                .column(region, op: .equal, value: nullRegion),
             ),
             .WHERE(
-                .column(value, op: .like, value: "%bob%")
-            )
+                .column(value, op: .like, value: "%bob%"),
+            ),
         )
 
-        XCTAssertEqual(statement.render(), """
+        #expect(statement.render() == """
         UPDATE translation
         SET value = 'Corrected Translation', region_code = NULL
         WHERE value LIKE '%bob%';

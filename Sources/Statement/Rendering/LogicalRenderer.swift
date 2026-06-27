@@ -12,9 +12,9 @@ class LogicalRenderer: Renderer {
 
     func render() -> String {
         if components.count == 1 {
-            return components.joined() + " " + op.rawValue
+            components.joined() + " " + op.rawValue
         } else {
-            return components.joined(separator: separator)
+            components.joined(separator: separator)
         }
     }
 }

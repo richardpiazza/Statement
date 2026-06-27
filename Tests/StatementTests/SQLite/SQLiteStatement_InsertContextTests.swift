@@ -1,47 +1,47 @@
 import Statement
 import StatementSQLite
-import XCTest
+import Testing
 
-final class SQLiteStatement_InsertContextTests: XCTestCase {
+struct SQLiteStatement_InsertContextTests {
 
-    func testInsertInto() throws {
+    @Test func testInsertInto() throws {
         let entity = Translation()
-        let language = try XCTUnwrap(entity["language_code"])
-        let region = try XCTUnwrap(entity["region_code"])
+        let language = try #require(entity["language_code"])
+        let region = try #require(entity["region_code"])
 
-        var statement: SQLiteStatement = .init(
+        var statement: SQLiteStatement = SQLiteStatement(
             .INSERT_INTO(
                 Translation.self,
                 .column(language),
-                .column(region)
+                .column(region),
             ),
             .VALUES(
                 .value(LanguageCode.en.rawValue as any DataTypeConvertible),
-                .value(RegionCode.US.rawValue as any DataTypeConvertible)
-            )
+                .value(RegionCode.US.rawValue as any DataTypeConvertible),
+            ),
         )
 
-        XCTAssertEqual(statement.render(), """
+        #expect(statement.render() == """
         INSERT INTO translation ( language_code, region_code )
         VALUES ( 'en', 'US' );
         """)
 
         let expressionEntity = Expression()
-        let name = try XCTUnwrap(expressionEntity["name"])
-        let comment = try XCTUnwrap(expressionEntity["comment"])
+        let name = try #require(expressionEntity["name"])
+        let comment = try #require(expressionEntity["comment"])
 
-        statement = .init(
+        statement = SQLiteStatement(
             .INSERT(
                 .OR_ROLLBACK,
                 .INTO(Expression.self),
                 .group(segments: [
                     Segment<SQLiteStatement.InsertContext>.attribute(name),
                     .column(comment),
-                ])
-            )
+                ]),
+            ),
         )
 
-        XCTAssertEqual(statement.render(), """
+        #expect(statement.render() == """
         INSERT OR ROLLBACK INTO expression ( name, comment );
         """)
     }

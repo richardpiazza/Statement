@@ -1,8 +1,8 @@
 import Statement
 import StatementSQLite
-import XCTest
+import Testing
 
-final class DefaultValuesTests: XCTestCase {
+struct DefaultValuesTests {
 
     struct RelationalEntity: Statement.Entity {
         static let identifier: String = "entity"
@@ -11,23 +11,23 @@ final class DefaultValuesTests: XCTestCase {
         var ratingDescription: String { _rating.description }
     }
 
-    func testNullableDefaultValue() {
+    @Test func testNullableDefaultValue() {
         let statement = SQLiteStatement(
             .CREATE(
                 .SCHEMA(
-                    RelationalEntity()
-                )
-            )
+                    RelationalEntity(),
+                ),
+            ),
         )
-        XCTAssertEqual(statement.render(), """
+        #expect(statement.render() == """
         CREATE TABLE IF NOT EXISTS entity ( rating INTEGER DEFAULT NULL );
         """)
     }
 
-    func testColumnDescription() {
+    @Test func testColumnDescription() {
         var table = RelationalEntity()
         table.rating = 45
-        XCTAssertEqual(table.ratingDescription, """
+        #expect(table.ratingDescription == """
         rating INTEGER DEFAULT NULL VALUE: 45
         """)
     }

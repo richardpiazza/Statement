@@ -89,13 +89,13 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     /// ```
     static func FROM_TABLE(_ type: (some Entity).Type) -> Clause {
         .FROM(
-            .TABLE(type)
+            .TABLE(type),
         )
     }
 
     static func FROM_TABLE(_ entity: any Entity) -> Clause {
         .FROM(
-            .TABLE(entity)
+            .TABLE(entity),
         )
     }
 }

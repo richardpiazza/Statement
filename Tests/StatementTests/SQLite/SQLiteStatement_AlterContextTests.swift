@@ -1,67 +1,67 @@
 import Statement
 import StatementSQLite
-import XCTest
+import Testing
 
-final class SQLiteStatement_AlterContextTests: XCTestCase {
+struct SQLiteStatement_AlterContextTests {
 
-    func testAlterTableRenameTo() {
+    @Test func testAlterTableRenameTo() {
         let statement = SQLiteStatement(
             .ALTER_TABLE(
                 Translation.self,
-                .RENAME_TO(Expression.self)
-            )
+                .RENAME_TO(Expression.self),
+            ),
         )
 
-        XCTAssertEqual(statement.render(), """
+        #expect(statement.render() == """
         ALTER TABLE translation RENAME TO expression;
         """)
     }
 
-    func testAlterTableRenameColumn() throws {
+    @Test func testAlterTableRenameColumn() throws {
         let entity = Translation()
-        let language = try XCTUnwrap(entity["language_code"])
-        let region = try XCTUnwrap(entity["region_code"])
+        let language = try #require(entity["language_code"])
+        let region = try #require(entity["region_code"])
 
         let statement = SQLiteStatement(
             .ALTER_TABLE(
                 Translation.self,
-                .RENAME_COLUMN(language, to: region)
-            )
+                .RENAME_COLUMN(language, to: region),
+            ),
         )
 
-        XCTAssertEqual(statement.render(), """
+        #expect(statement.render() == """
         ALTER TABLE translation RENAME COLUMN language_code TO region_code;
         """)
     }
 
-    func testAlterTableAddColumn() throws {
+    @Test func testAlterTableAddColumn() throws {
         let entity = Translation()
-        let language = try XCTUnwrap(entity["language_code"])
+        let language = try #require(entity["language_code"])
 
         let statement = SQLiteStatement(
             .ALTER_TABLE(
                 Translation.self,
-                .ADD_COLUMN(language)
-            )
+                .ADD_COLUMN(language),
+            ),
         )
 
-        XCTAssertEqual(statement.render(), """
+        #expect(statement.render() == """
         ALTER TABLE translation ADD COLUMN language_code TEXT NOT NULL DEFAULT 'en';
         """)
     }
 
-    func testAlterTableDropColumn() throws {
+    @Test func testAlterTableDropColumn() throws {
         let entity = Translation()
-        let language = try XCTUnwrap(entity["language_code"])
+        let language = try #require(entity["language_code"])
 
         let statement = SQLiteStatement(
             .ALTER_TABLE(
                 Translation.self,
-                .DROP_COLUMN(language)
-            )
+                .DROP_COLUMN(language),
+            ),
         )
 
-        XCTAssertEqual(statement.render(), """
+        #expect(statement.render() == """
         ALTER TABLE translation DROP COLUMN language_code;
         """)
     }
