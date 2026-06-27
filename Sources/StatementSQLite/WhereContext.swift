@@ -34,14 +34,14 @@ public extension Segment where Context == SQLiteStatement.WhereContext {
     }
 
     /// Convenience that builds a comparison predicate.
-    static func column(_ type: (some Entity).Type, attribute: Attribute, op: ComparisonOperator, value: DataTypeConvertible) -> Segment {
+    static func column(_ type: (some Entity).Type, attribute: any Attribute, op: ComparisonOperator, value: any DataTypeConvertible) -> Segment {
         .comparison(op: op, segments: [
             Segment<Context>.attribute(type, attribute: attribute),
             .value(value),
         ])
     }
 
-    static func column(_ attribute: Attribute, entity: Entity? = nil, op: ComparisonOperator, value: DataTypeConvertible) -> Segment {
+    static func column(_ attribute: any Attribute, entity: (any Entity)? = nil, op: ComparisonOperator, value: any DataTypeConvertible) -> Segment {
         .comparison(op: op, segments: [
             Segment<Context>.attribute(attribute, entity: entity),
             .value(value),
@@ -49,14 +49,14 @@ public extension Segment where Context == SQLiteStatement.WhereContext {
     }
 
     /// Convenience that builds a logical predicate.
-    static func column(_ type: (some Entity).Type, attribute: Attribute, op: LogicalOperator, value: DataTypeConvertible) -> Segment {
+    static func column(_ type: (some Entity).Type, attribute: any Attribute, op: LogicalOperator, value: any DataTypeConvertible) -> Segment {
         .logical(op: op, segments: [
             Segment<Context>.attribute(type, attribute: attribute),
             .value(value),
         ])
     }
 
-    static func column(_ attribute: Attribute, entity: Entity? = nil, op: LogicalOperator, value: DataTypeConvertible) -> Segment {
+    static func column(_ attribute: any Attribute, entity: (any Entity)? = nil, op: LogicalOperator, value: any DataTypeConvertible) -> Segment {
         .logical(op: op, segments: [
             Segment<Context>.attribute(attribute, entity: entity),
             .value(value),

@@ -7,7 +7,7 @@ public struct AnyAttribute: Attribute {
     public var primaryKey: Bool = false
     public var autoIncrement: Bool = false
     public var foreignKey: ForeignKey?
-    public var defaultValue: (DataTypeConvertible & Sendable)?
+    public var defaultValue: (any DataTypeConvertible & Sendable)?
 
     public init(
         identifier: String = "",
@@ -16,7 +16,7 @@ public struct AnyAttribute: Attribute {
         primaryKey: Bool = false,
         autoIncrement: Bool = false,
         foreignKey: ForeignKey? = nil,
-        defaultValue: (DataTypeConvertible & Sendable)? = nil
+        defaultValue: (any DataTypeConvertible & Sendable)? = nil
     ) {
         self.identifier = identifier
         self.dataType = dataType

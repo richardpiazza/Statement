@@ -15,7 +15,7 @@ public extension Segment where Context == SQLiteStatement.UpdateContext {
         .entity(type)
     }
 
-    static func TABLE(_ entity: Entity) -> Segment {
+    static func TABLE(_ entity: any Entity) -> Segment {
         .entity(entity)
     }
 
@@ -39,7 +39,7 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
         )
     }
 
-    static func UPDATE_TABLE(_ entity: Entity) -> Clause {
+    static func UPDATE_TABLE(_ entity: any Entity) -> Clause {
         .UPDATE(
             .TABLE(entity)
         )

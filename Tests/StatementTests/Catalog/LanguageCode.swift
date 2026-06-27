@@ -1,7 +1,7 @@
 /// ISO 639 Standardized Language Classification.
 ///
 /// Each language is assigned a two-letter (639-1) and three-letter (639-2 and 639-3) lowercase abbreviation.
-public enum LanguageCode: String, Codable {
+public enum LanguageCode: String, Codable, Sendable {
     case aa
     case ab
     case ace
@@ -599,5 +599,5 @@ public enum LanguageCode: String, Codable {
     case zxx
     case zza
 
-    public static var `default`: Self = .en
+    public static let `default`: Self = .en
 }

@@ -24,7 +24,7 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
         )
     }
 
-    static func TABLE(_ entity: Entity, ifNotExists: Bool = true, segments: Segment<Context>...) -> Segment {
+    static func TABLE(_ entity: any Entity, ifNotExists: Bool = true, segments: Segment<Context>...) -> Segment {
         .clause(
             Clause(
                 keyword: .table,
@@ -37,7 +37,7 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
         )
     }
 
-    static func COLUMN(_ attribute: Attribute, segments: Segment<Context>...) -> Segment {
+    static func COLUMN(_ attribute: any Attribute, segments: Segment<Context>...) -> Segment {
         .clause(
             Clause(
                 keyword: Keyword(stringLiteral: "\(attribute.identifier)"),
@@ -53,7 +53,7 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
         )
     }
 
-    static func PRIMARY_KEY(_ attribute: Attribute) -> Segment {
+    static func PRIMARY_KEY(_ attribute: any Attribute) -> Segment {
         .clause(
             Clause(
                 keyword: .compound(.primary, .key),
@@ -72,7 +72,7 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
         )
     }
 
-    static func FOREIGN_KEY(_ attribute: Attribute, references reference: ForeignKey) -> Segment {
+    static func FOREIGN_KEY(_ attribute: any Attribute, references reference: ForeignKey) -> Segment {
         .clause(
             Clause(
                 keyword: .compound(.foreign, .key),
@@ -116,7 +116,7 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
     ///   .FOREIGN_KEY(Translation.CodingKeys.expressionID, references: Expression.CodingKeys.id)
     /// )
     /// ```
-    static func SCHEMA(_ entity: Entity, ifNotExists: Bool = true, segments: Segment<Context>...) -> Segment {
+    static func SCHEMA(_ entity: any Entity, ifNotExists: Bool = true, segments: Segment<Context>...) -> Segment {
         var allSegments: [Segment] = []
         allSegments.append(Segment.if(ifNotExists, .keyword(.compound(.if, .not, .exists))))
         allSegments.append(Segment.entity(entity))

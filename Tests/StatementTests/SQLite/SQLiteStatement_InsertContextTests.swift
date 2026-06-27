@@ -16,8 +16,8 @@ final class SQLiteStatement_InsertContextTests: XCTestCase {
                 .column(region)
             ),
             .VALUES(
-                .value(LanguageCode.en.rawValue as DataTypeConvertible),
-                .value(RegionCode.US.rawValue as DataTypeConvertible)
+                .value(LanguageCode.en.rawValue as any DataTypeConvertible),
+                .value(RegionCode.US.rawValue as any DataTypeConvertible)
             )
         )
 

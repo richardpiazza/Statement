@@ -7,7 +7,7 @@ public protocol Attribute: Sendable {
     var primaryKey: Bool { get }
     var autoIncrement: Bool { get }
     var foreignKey: ForeignKey? { get }
-    var defaultValue: (DataTypeConvertible & Sendable)? { get }
+    var defaultValue: (any DataTypeConvertible & Sendable)? { get }
 }
 
 public extension Attribute {

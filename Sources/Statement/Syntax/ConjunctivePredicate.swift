@@ -1,8 +1,8 @@
 public struct ConjunctivePredicate<Context> {
     public var op: ConjunctiveOperator
-    public var elements: [Renderable]
+    public var elements: [any Renderable]
 
-    public init(_ op: ConjunctiveOperator, elements: [Renderable]) {
+    public init(_ op: ConjunctiveOperator, elements: [any Renderable]) {
         self.op = op
         self.elements = elements
     }
@@ -17,7 +17,7 @@ public extension ConjunctivePredicate {
 }
 
 extension ConjunctivePredicate: Renderable {
-    public func render(into renderer: Renderer) {
+    public func render(into renderer: any Renderer) {
         renderer.addConjunctivePredicate(self)
     }
 }

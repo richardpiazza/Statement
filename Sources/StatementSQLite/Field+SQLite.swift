@@ -1,6 +1,6 @@
 import Statement
 
-extension Field: CustomStringConvertible {
+extension Field: @retroactive CustomStringConvertible {
     public var description: String {
         let column = attribute
         var descriptors = column.descriptors

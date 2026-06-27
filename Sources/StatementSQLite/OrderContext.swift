@@ -29,13 +29,13 @@ public extension Segment where Context == SQLiteStatement.OrderContext {
         .clause(keyword: .by, segments: segments)
     }
 
-    static func column(_ type: (some Entity).Type, attribute: Attribute, op: LogicalOperator) -> Segment {
+    static func column(_ type: (some Entity).Type, attribute: any Attribute, op: LogicalOperator) -> Segment {
         .logical(op: op, segments: [
             Segment<Context>.attribute(type, attribute: attribute),
         ])
     }
 
-    static func column(_ attribute: Attribute, entity: Entity? = nil, op: LogicalOperator) -> Segment {
+    static func column(_ attribute: any Attribute, entity: (any Entity)? = nil, op: LogicalOperator) -> Segment {
         .logical(op: op, segments: [
             Segment<Context>.attribute(attribute, entity: entity),
         ])

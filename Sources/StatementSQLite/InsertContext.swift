@@ -17,7 +17,7 @@ public extension Segment where Context == SQLiteStatement.InsertContext {
         ])
     }
 
-    static func INTO(_ entity: Entity) -> Segment {
+    static func INTO(_ entity: any Entity) -> Segment {
         .clause(keyword: .into, segments: [
             Segment.entity(entity),
         ])
@@ -44,7 +44,7 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
         )
     }
 
-    static func INSERT_INTO(_ entity: Entity, _ segments: Segment<SQLiteStatement.InsertContext>...) -> Clause {
+    static func INSERT_INTO(_ entity: any Entity, _ segments: Segment<SQLiteStatement.InsertContext>...) -> Clause {
         .INSERT(
             .INTO(entity),
             .group(segments: segments)

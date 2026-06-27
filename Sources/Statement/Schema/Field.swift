@@ -20,7 +20,7 @@ import Foundation
         self.foreignKey = foreignKey
     }
 
-    public var attribute: Attribute {
+    public var attribute: any Attribute {
         AnyAttribute(
             identifier: identifier,
             dataType: T.dataType,

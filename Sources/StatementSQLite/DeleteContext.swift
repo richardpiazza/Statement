@@ -17,7 +17,7 @@ public extension Segment where Context == SQLiteStatement.DeleteContext {
         ])
     }
 
-    static func FROM(_ entity: Entity) -> Segment {
+    static func FROM(_ entity: any Entity) -> Segment {
         .clause(keyword: .from, segments: [
             Segment.entity(entity),
         ])
@@ -39,7 +39,7 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
         )
     }
 
-    static func DELETE_FROM(_ entity: Entity) -> Clause {
+    static func DELETE_FROM(_ entity: any Entity) -> Clause {
         .DELETE(
             .FROM(entity)
         )

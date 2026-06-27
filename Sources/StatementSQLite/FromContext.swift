@@ -15,7 +15,7 @@ public extension Segment where Context == SQLiteStatement.FromContext {
         .entity(type)
     }
 
-    static func TABLE(_ entity: Entity) -> Segment {
+    static func TABLE(_ entity: any Entity) -> Segment {
         .entity(entity)
     }
 
@@ -36,9 +36,9 @@ public extension Segment where Context == SQLiteStatement.FromContext {
     /// - parameters:
     ///   - e1: The `Entity` type that is being joined with the existing statement.
     ///   - a1: The `Attribute` of the entity being joined used for comparison.
-    ///   - e2: The `Entity` type prexisting in the statement.
+    ///   - e2: The `Entity` type preexisting in the statement.
     ///   - a2: The `Attribute` of the entity used to compare with joining.
-    static func JOIN_ON(_ e1: (some Entity).Type, attribute a1: Attribute, equals e2: (some Entity).Type, attribute a2: Attribute) -> Segment {
+    static func JOIN_ON(_ e1: (some Entity).Type, attribute a1: any Attribute, equals e2: (some Entity).Type, attribute a2: any Attribute) -> Segment {
         .clause(keyword: .join, segments: [
             Segment<Context>.entity(e1),
             .keyword(.on),
@@ -66,9 +66,9 @@ public extension Segment where Context == SQLiteStatement.FromContext {
     /// - parameters:
     ///   - e1: The `Entity` that is being joined with the existing statement.
     ///   - a1: The `Attribute` of the entity being joined used for comparison.
-    ///   - e2: The `Entity` prexisting in the statement.
+    ///   - e2: The `Entity` preexisting in the statement.
     ///   - a2: The `Attribute` of the entity used to compare with joining.
-    static func JOIN_ON(_ e1: Entity, attribute a1: Attribute, equals e2: Entity, attribute a2: Attribute) -> Segment {
+    static func JOIN_ON(_ e1: any Entity, attribute a1: any Attribute, equals e2: any Entity, attribute a2: any Attribute) -> Segment {
         .clause(keyword: .join, segments: [
             Segment<Context>.entity(e1),
             .keyword(.on),
@@ -93,7 +93,7 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
         )
     }
 
-    static func FROM_TABLE(_ entity: Entity) -> Clause {
+    static func FROM_TABLE(_ entity: any Entity) -> Clause {
         .FROM(
             .TABLE(entity)
         )

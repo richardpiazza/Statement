@@ -3,10 +3,10 @@ import Foundation
 public struct Clause<Context>: Sendable {
 
     public var keyword: Keyword
-    public var segments: [Renderable]
+    public var segments: [any Renderable]
     public var separator: String
 
-    public init(keyword: Keyword, segments: [Renderable], separator: String = " ") {
+    public init(keyword: Keyword, segments: [any Renderable], separator: String = " ") {
         self.keyword = keyword
         self.segments = segments
         self.separator = separator
