@@ -12,7 +12,7 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
         return Clause(keyword: .compound(.alter, .table), segments: clauseSegments)
     }
 
-    static func ALTER_TABLE(_ entity: Entity, _ segments: Segment<SQLiteStatement.AlterTableContext>...) -> Clause {
+    static func ALTER_TABLE(_ entity: any Entity, _ segments: Segment<SQLiteStatement.AlterTableContext>...) -> Clause {
         var clauseSegments = segments
         clauseSegments.insert(.entity(entity), at: 0)
         return Clause(keyword: .compound(.alter, .table), segments: clauseSegments)
@@ -27,14 +27,14 @@ public extension Segment where Context == SQLiteStatement.AlterTableContext {
         ])
     }
 
-    static func RENAME_TO(_ table: Entity) -> Segment {
+    static func RENAME_TO(_ table: any Entity) -> Segment {
         .clause(keyword: .compound(.rename, .to), segments: [
             Segment.entity(table),
         ])
     }
 
     /// Change the name of a single column in a table.
-    static func RENAME_COLUMN(_ from: Attribute, to: Attribute) -> Segment {
+    static func RENAME_COLUMN(_ from: any Attribute, to: any Attribute) -> Segment {
         .clause(keyword: .compound(.rename, .column), segments: [
             Segment.attribute(from),
             .keyword(.to),
@@ -50,7 +50,7 @@ public extension Segment where Context == SQLiteStatement.AlterTableContext {
     /// * `ADD COLUMN language_code TEXT NOT NULL`
     ///
     /// - parameter attribute: The column (`Attribute`) to add to the table.
-    static func ADD_COLUMN(_ attribute: Attribute) -> Segment {
+    static func ADD_COLUMN(_ attribute: any Attribute) -> Segment {
         .clause(
             keyword: .compound(.add, .column),
             segments: [
@@ -71,7 +71,7 @@ public extension Segment where Context == SQLiteStatement.AlterTableContext {
     /// * `DROP COLUMN language_code`
     ///
     /// - parameter attribute: The column (`Attribute`) to remove from the table.
-    static func DROP_COLUMN(_ attribute: Attribute) -> Segment {
+    static func DROP_COLUMN(_ attribute: any Attribute) -> Segment {
         .clause(
             keyword: .compound(.drop, .column),
             segments: [

@@ -11,14 +11,14 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
 }
 
 public extension Segment where Context == SQLiteStatement.SetContext {
-    static func column(_ type: (some Entity).Type, attribute: Attribute, op: ComparisonOperator, value: DataTypeConvertible) -> Segment {
+    static func column(_ type: (some Entity).Type, attribute: any Attribute, op: ComparisonOperator, value: any DataTypeConvertible) -> Segment {
         .comparison(op: op, segments: [
             Segment<SQLiteStatement.SetContext>.attribute(type, attribute: attribute),
             .value(value),
         ])
     }
 
-    static func column(_ attribute: Attribute, entity: Entity? = nil, op: ComparisonOperator, value: DataTypeConvertible) -> Segment {
+    static func column(_ attribute: any Attribute, entity: (any Entity)? = nil, op: ComparisonOperator, value: any DataTypeConvertible) -> Segment {
         .comparison(op: op, segments: [
             Segment<SQLiteStatement.SetContext>.attribute(attribute, entity: entity),
             .value(value),

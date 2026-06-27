@@ -11,7 +11,7 @@ public enum Segment<Context>: Sendable {
 }
 
 extension Segment: Renderable {
-    public func render(into renderer: Renderer) {
+    public func render(into renderer: any Renderer) {
         switch self {
         case .raw(let identifier):
             renderer.addRaw(identifier)
@@ -62,17 +62,17 @@ public extension Segment {
         .raw(E.identifier)
     }
 
-    static func entity(_ entity: Entity) -> Self {
+    static func entity(_ entity: any Entity) -> Self {
         .raw(type(of: entity).identifier)
     }
 
     /// A `Segment` that outputs the provided `Attribute` identifier prefixed by the `Entity` identifier.
-    static func attribute<E: Entity>(_ type: E.Type, attribute: Attribute) -> Self {
+    static func attribute<E: Entity>(_ type: E.Type, attribute: any Attribute) -> Self {
         .raw([E.identifier, attribute.identifier].compactMap { $0 }.joined(separator: "."))
     }
 
     /// A `Segment` that outputs the provided `Attribute` identifier with an optional `Entity` identifier prefix.
-    static func attribute(_ attribute: Attribute, entity: Entity? = nil) -> Self {
+    static func attribute(_ attribute: any Attribute, entity: (any Entity)? = nil) -> Self {
         let entityIdentifier: String? = (entity != nil) ? type(of: entity!).identifier : nil
         return .raw([entityIdentifier, attribute.identifier].compactMap { $0 }.joined(separator: "."))
     }

@@ -2,7 +2,7 @@
 ///
 /// Codes for the names of countries, dependent territories, special areas of geographical interest, and their principal
 /// subdivisions.
-public enum RegionCode: String, Codable {
+public enum RegionCode: String, Codable, Sendable {
     case AC
     case AD
     case AE
@@ -260,5 +260,5 @@ public enum RegionCode: String, Codable {
     case ZM
     case ZW
 
-    public static var `default`: Self = .US
+    public static let `default`: Self = .US
 }

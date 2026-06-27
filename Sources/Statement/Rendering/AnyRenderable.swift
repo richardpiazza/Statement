@@ -4,5 +4,5 @@ import Foundation
 public typealias AnyRenderable = Renderable
 
 public protocol Renderable: Sendable {
-    func render(into renderer: Renderer)
+    func render(into renderer: any Renderer)
 }
