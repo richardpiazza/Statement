@@ -9,24 +9,24 @@ public extension Renderer {
     func addRaw(_ text: String) {
         components.append(text)
     }
-    
-    func addClause<C>(_ clause: Clause<C>) {
+
+    func addClause(_ clause: Clause<some Any>) {
         components.append(clause.render())
     }
-    
-    func addComparisonPredicate<C>(_ predicate: ComparisonPredicate<C>) {
+
+    func addComparisonPredicate(_ predicate: ComparisonPredicate<some Any>) {
         components.append(predicate.render())
     }
-    
-    func addLogicalPredicate<C>(_ predicate: LogicalPredicate<C>) {
+
+    func addLogicalPredicate(_ predicate: LogicalPredicate<some Any>) {
         components.append(predicate.render())
     }
-    
-    func addConjunctivePredicate<C>(_ predicate: ConjunctivePredicate<C>) {
+
+    func addConjunctivePredicate(_ predicate: ConjunctivePredicate<some Any>) {
         components.append(predicate.render())
     }
-    
-    func addGroup<C>(_ group: Group<C>) {
+
+    func addGroup(_ group: Group<some Any>) {
         components.append(group.render())
     }
 }

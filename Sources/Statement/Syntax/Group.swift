@@ -5,7 +5,7 @@ public struct Group<Context> {
     public var prefix: String
     public var suffix: String
     public var separator: String
-    
+
     public init(segments: [Renderable], prefix: String = "(", suffix: String = ")", separator: String = ", ") {
         self.segments = segments
         self.prefix = prefix

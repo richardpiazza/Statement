@@ -9,7 +9,7 @@ struct Expression: Entity, Identifiable {
     @Field("comment") var comment: String? = nil
     @Field("feature") var feature: String? = nil
     var translations: [Translation] = []
-    
+
     var languageCode: LanguageCode {
         get { LanguageCode(rawValue: defaultLanguage) ?? .en }
         set { defaultLanguage = newValue.rawValue }

@@ -1,17 +1,17 @@
 public struct Keyword: ExpressibleByStringLiteral, Equatable, Codable, Sendable {
     public let rawValue: String
-    
+
     public init(stringLiteral value: String) {
-        self.rawValue = value
+        rawValue = value
     }
 }
 
 public extension Keyword {
     /// Creates a multi-word keyword (separated by spaces).
     static func compound(_ keywords: Keyword...) -> Keyword {
-        Keyword(stringLiteral: keywords.map { $0.rawValue }.joined(separator: " "))
+        Keyword(stringLiteral: keywords.map(\.rawValue).joined(separator: " "))
     }
-    
+
     static let abort: Self = "ABORT"
     static let add: Self = "ADD"
     static let alter: Self = "ALTER"

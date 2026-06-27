@@ -24,24 +24,28 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "Statement",
-            dependencies: [],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
-            ]
+            dependencies: []
         ),
         .target(
             name: "StatementSQLite",
-            dependencies: ["Statement"],
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
-            ]
+            dependencies: ["Statement"]
         ),
         .testTarget(
             name: "StatementTests",
             dependencies: [
                 "Statement",
-                "StatementSQLite"
+                "StatementSQLite",
             ]
         ),
     ]
 )
+
+for target in package.targets {
+    var settings = target.swiftSettings ?? []
+    settings.append(contentsOf: [
+        .enableUpcomingFeature("ExistentialAny"),
+        .enableUpcomingFeature("MemberImportVisibility"),
+        .enableUpcomingFeature("StrictConcurrency=complete"),
+    ])
+    target.swiftSettings = settings
+}

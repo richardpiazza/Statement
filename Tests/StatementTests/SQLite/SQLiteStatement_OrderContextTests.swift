@@ -1,13 +1,13 @@
-import XCTest
 import Statement
 import StatementSQLite
+import XCTest
 
 final class SQLiteStatement_OrderContextTests: XCTestCase {
-    
+
     func testSelectOrderBy() throws {
         let entity = Expression()
         let name = try XCTUnwrap(entity["name"])
-        
+
         let statement = SQLiteStatement(
             .SELECT(
                 .column(name)
@@ -17,7 +17,7 @@ final class SQLiteStatement_OrderContextTests: XCTestCase {
                 .column(name, op: .desc)
             )
         )
-        
+
         XCTAssertEqual(statement.render(), """
         SELECT name
         FROM expression

@@ -1,4 +1,4 @@
-///ISO 3166 Country/Subdivision Code
+/// ISO 3166 Country/Subdivision Code
 ///
 /// Codes for the names of countries, dependent territories, special areas of geographical interest, and their principal
 /// subdivisions.
@@ -259,6 +259,6 @@ public enum RegionCode: String, Codable {
     case ZA
     case ZM
     case ZW
-    
+
     public static var `default`: Self = .US
 }

@@ -1,9 +1,9 @@
-import XCTest
 import Statement
 import StatementSQLite
+import XCTest
 
 final class SQLiteStatement_SelectContextTests: XCTestCase {
-    
+
     func testSelectFromTable() throws {
         let entity = Expression()
         let id = try XCTUnwrap(entity["id"])
@@ -11,7 +11,7 @@ final class SQLiteStatement_SelectContextTests: XCTestCase {
         let defaultLanguage = try XCTUnwrap(entity["default_language"])
         let comment = try XCTUnwrap(entity["comment"])
         let feature = try XCTUnwrap(entity["feature"])
-        
+
         let statement: SQLiteStatement = .init(
             .SELECT(
                 .column(id),
@@ -22,13 +22,13 @@ final class SQLiteStatement_SelectContextTests: XCTestCase {
             ),
             .FROM_TABLE(Expression.self)
         )
-        
+
         XCTAssertEqual(statement.render(), """
         SELECT id, name, default_language, comment, feature
         FROM expression;
         """)
     }
-    
+
     func testSelectFromWhere() throws {
         let entity = Expression()
         let id = try XCTUnwrap(entity["id"])
@@ -36,7 +36,7 @@ final class SQLiteStatement_SelectContextTests: XCTestCase {
         let defaultLanguage = try XCTUnwrap(entity["default_language"])
         let comment = try XCTUnwrap(entity["comment"])
         let feature = try XCTUnwrap(entity["feature"])
-        
+
         let statement: SQLiteStatement = .init(
             .SELECT(
                 .column(Expression.self, attribute: id),
@@ -52,14 +52,14 @@ final class SQLiteStatement_SelectContextTests: XCTestCase {
                 .column(name, op: .equal, value: "Setup")
             )
         )
-        
+
         XCTAssertEqual(statement.render(), """
         SELECT expression.id, name, default_language, comment, feature
         FROM expression
         WHERE name = 'Setup';
         """)
     }
-    
+
     func testSelectFromWhereLimit() throws {
         let expressionEntity = Expression()
         let id = try XCTUnwrap(expressionEntity["id"])
@@ -67,12 +67,12 @@ final class SQLiteStatement_SelectContextTests: XCTestCase {
         let defaultLanguage = try XCTUnwrap(expressionEntity["default_language"])
         let comment = try XCTUnwrap(expressionEntity["comment"])
         let feature = try XCTUnwrap(expressionEntity["feature"])
-        
+
         let translationEntity = Translation()
         let expressionId = try XCTUnwrap(translationEntity["expression_id"])
         let language = try XCTUnwrap(translationEntity["language_code"])
         let region = try XCTUnwrap(translationEntity["region_code"])
-        
+
         let statement: SQLiteStatement = .init(
             .SELECT(
                 .attribute(Expression.self, attribute: id),
@@ -93,7 +93,7 @@ final class SQLiteStatement_SelectContextTests: XCTestCase {
             ),
             .LIMIT(1)
         )
-        
+
         XCTAssertEqual(statement.render(), """
         SELECT expression.id, name, default_language, comment, feature
         FROM expression JOIN translation ON translation.expression_id = expression.id

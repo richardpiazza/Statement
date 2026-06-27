@@ -1,10 +1,10 @@
-import XCTest
 @testable import Statement
 @testable import StatementSQLite
+import XCTest
 
 final class SQLiteDataTypeConvertibleTests: XCTestCase {
-    
-    func testBoolSqliteArgument() throws {
+
+    func testBoolSqliteArgument() {
         var nonOptionalBool: Bool = true
         XCTAssertEqual(nonOptionalBool.sqliteArgument, "1")
         nonOptionalBool = false
@@ -16,12 +16,12 @@ final class SQLiteDataTypeConvertibleTests: XCTestCase {
         optionalBool = false
         XCTAssertEqual(optionalBool.sqliteArgument, "0")
     }
-    
+
     func testDataSqliteArgument() throws {
         struct User: Encodable {
             let name: String
         }
-        
+
         let data = try XCTUnwrap("A Bag Of Bytes".data(using: .utf8))
         let nonOptional: Data = data
         XCTAssertEqual(nonOptional.sqliteArgument, "'A Bag Of Bytes'")
@@ -30,7 +30,7 @@ final class SQLiteDataTypeConvertibleTests: XCTestCase {
         optional = try JSONEncoder().encode(User(name: "Merlin"))
         XCTAssertEqual(optional.sqliteArgument, "'{\"name\":\"Merlin\"}'")
     }
-    
+
     func testDateSqliteArgument() throws {
         let components = DateComponents(
             calendar: Calendar(identifier: .gregorian),
@@ -43,14 +43,14 @@ final class SQLiteDataTypeConvertibleTests: XCTestCase {
             second: 02
         )
         let date = try XCTUnwrap(components.date)
-        
+
         let nonOptional: Date = date
         XCTAssertEqual(nonOptional.sqliteArgument, "1579545242.0")
         let optional: Date? = nil
         XCTAssertEqual(optional.sqliteArgument, "NULL")
     }
-    
-    func testDoubleSqliteArgument() throws {
+
+    func testDoubleSqliteArgument() {
         let nonOptional: Double = 12.5
         XCTAssertEqual(nonOptional.sqliteArgument, "12.5")
         var optional: Double? = nil
@@ -58,8 +58,8 @@ final class SQLiteDataTypeConvertibleTests: XCTestCase {
         optional = 0.24
         XCTAssertEqual(optional.sqliteArgument, "0.24")
     }
-    
-    func testIntSqliteArgument() throws {
+
+    func testIntSqliteArgument() {
         let nonOptional: Int = 42
         XCTAssertEqual(nonOptional.sqliteArgument, "42")
         var optional: Int? = nil
@@ -67,8 +67,8 @@ final class SQLiteDataTypeConvertibleTests: XCTestCase {
         optional = 1123
         XCTAssertEqual(optional.sqliteArgument, "1123")
     }
-    
-    func testStringSqliteArgument() throws {
+
+    func testStringSqliteArgument() {
         let nonOptionalPlain: String = "A Non-Special String"
         XCTAssertEqual(nonOptionalPlain.sqliteArgument, "'A Non-Special String'")
         let nonOptionalSpecial: String = """
@@ -81,9 +81,9 @@ final class SQLiteDataTypeConvertibleTests: XCTestCase {
         optional = "Hello World!"
         XCTAssertEqual(optional.sqliteArgument, "'Hello World!'")
     }
-    
+
     func testUUIDSqliteArgument() throws {
-        let nonOptional: UUID = UUID(uuidString: "C9653570-3958-45C0-84C8-BC4A7449BE2C")!
+        let nonOptional: UUID = try XCTUnwrap(UUID(uuidString: "C9653570-3958-45C0-84C8-BC4A7449BE2C"))
         XCTAssertEqual(nonOptional.sqliteArgument, "'C9653570-3958-45C0-84C8-BC4A7449BE2C'")
         var optional: UUID? = nil
         XCTAssertEqual(optional.sqliteArgument, "NULL")

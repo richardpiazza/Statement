@@ -7,7 +7,7 @@ public extension SQLiteStatement {
 public extension Clause where Context == SQLiteStatement.StatementContext {
     static func LIMIT(_ limit: Int) -> Clause {
         Clause(keyword: .limit, segments: [
-            Segment<SQLiteStatement.LimitContext>.raw("\(limit)")
+            Segment<SQLiteStatement.LimitContext>.raw("\(limit)"),
         ])
     }
 }

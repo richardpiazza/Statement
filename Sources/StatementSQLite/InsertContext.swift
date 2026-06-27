@@ -11,18 +11,18 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
 }
 
 public extension Segment where Context == SQLiteStatement.InsertContext {
-    static func INTO<E: Entity>(_ type: E.Type) -> Segment {
+    static func INTO(_ type: (some Entity).Type) -> Segment {
         .clause(keyword: .into, segments: [
-            Segment.entity(type)
+            Segment.entity(type),
         ])
     }
-    
+
     static func INTO(_ entity: Entity) -> Segment {
         .clause(keyword: .into, segments: [
-            Segment.entity(entity)
+            Segment.entity(entity),
         ])
     }
-    
+
     static let OR_ABORT: Segment = .keyword(.compound(.or, .abort))
     static let OR_FAIL: Segment = .keyword(.compound(.or, .fail))
     static let OR_IGNORE: Segment = .keyword(.compound(.or, .ignore))
@@ -37,13 +37,13 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     ///     .group(segments)
     /// )
     /// ```
-    static func INSERT_INTO<E: Entity>(_ type: E.Type, _ segments: Segment<SQLiteStatement.InsertContext>...) -> Clause {
+    static func INSERT_INTO(_ type: (some Entity).Type, _ segments: Segment<SQLiteStatement.InsertContext>...) -> Clause {
         .INSERT(
             .INTO(type),
             .group(segments: segments)
         )
     }
-    
+
     static func INSERT_INTO(_ entity: Entity, _ segments: Segment<SQLiteStatement.InsertContext>...) -> Clause {
         .INSERT(
             .INTO(entity),

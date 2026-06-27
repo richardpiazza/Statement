@@ -1,7 +1,7 @@
 public struct ConjunctivePredicate<Context> {
     public var op: ConjunctiveOperator
     public var elements: [Renderable]
-    
+
     public init(_ op: ConjunctiveOperator, elements: [Renderable]) {
         self.op = op
         self.elements = elements

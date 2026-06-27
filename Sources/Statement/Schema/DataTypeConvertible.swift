@@ -38,21 +38,21 @@ extension UUID: DataTypeConvertible {
 
 extension Optional: DataTypeConvertible {
     public static var dataType: DataType {
-        if self == Optional<Bool>.self {
+        if self == Bool?.self {
             return .optional(.bool)
-        } else if self == Optional<Data>.self {
-                return .optional(.data)
-        } else if self == Optional<Date>.self {
+        } else if self == Data?.self {
+            return .optional(.data)
+        } else if self == Date?.self {
             return .optional(.date)
-        } else if self == Optional<Double>.self {
+        } else if self == Double?.self {
             return .optional(.double)
-        } else if self == Optional<Int>.self {
+        } else if self == Int?.self {
             return .optional(.int)
-        } else if self == Optional<String>.self {
+        } else if self == String?.self {
             return .optional(.string)
-        } else if self == Optional<URL>.self {
+        } else if self == URL?.self {
             return .optional(.url)
-        } else if self == Optional<UUID>.self {
+        } else if self == UUID?.self {
             return .optional(.uuid)
         } else {
             return .null

@@ -3,14 +3,14 @@ import Foundation
 public struct ForeignKey: Sendable {
     public var entity: Entity.Type
     public var attribute: Attribute
-    
+
     public init(_ type: Entity.Type, attribute: Attribute) {
-        self.entity = type
+        entity = type
         self.attribute = attribute
     }
-    
+
     public init(_ type: Entity.Type, _ identifier: String) {
-        self.entity = type
-        self.attribute = AnyAttribute(identifier: identifier)
+        entity = type
+        attribute = AnyAttribute(identifier: identifier)
     }
 }

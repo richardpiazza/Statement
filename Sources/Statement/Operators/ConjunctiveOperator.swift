@@ -1,8 +1,8 @@
 public struct ConjunctiveOperator: ExpressibleByStringLiteral, Equatable, Sendable {
     public let rawValue: String
-    
+
     public init(stringLiteral value: String) {
-        self.rawValue = value
+        rawValue = value
     }
 }
 
