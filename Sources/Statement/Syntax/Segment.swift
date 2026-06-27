@@ -32,45 +32,45 @@ extension Segment: Renderable {
 }
 
 public extension Segment {
-    static func clause<C>(keyword: Keyword, segments: [Segment<C>]) -> Segment {
+    static func clause(keyword: Keyword, segments: [Segment<some Any>]) -> Segment {
         .clause(Clause(keyword: keyword, segments: segments))
     }
-    
-    static func comparison<C>(op: ComparisonOperator, segments: [Segment<C>]) -> Segment {
+
+    static func comparison(op: ComparisonOperator, segments: [Segment<some Any>]) -> Segment {
         .comparisonPredicate(ComparisonPredicate(op, elements: segments))
     }
-    
-    static func logical<C>(op: LogicalOperator, segments: [Segment<C>]) -> Segment {
+
+    static func logical(op: LogicalOperator, segments: [Segment<some Any>]) -> Segment {
         .logicalPredicate(LogicalPredicate(op, elements: segments))
     }
-    
-    static func conjunctive<C>(op: ConjunctiveOperator, segments: [Segment<C>]) -> Segment {
+
+    static func conjunctive(op: ConjunctiveOperator, segments: [Segment<some Any>]) -> Segment {
         .conjunctivePredicate(ConjunctivePredicate(op, elements: segments))
     }
-    
-    static func group<C>(segments: [Segment<C>]) -> Segment {
+
+    static func group(segments: [Segment<some Any>]) -> Segment {
         .group(Group(segments: segments))
     }
-    
+
     /// A `Segment` that represents a SQL keyword.
     static func keyword(_ keyword: Keyword) -> Self {
         .raw(keyword.rawValue)
     }
-    
+
     /// A `Segment` that outputs the provided entity identifier.
     static func entity<E: Entity>(_ type: E.Type) -> Self {
         .raw(E.identifier)
     }
-    
+
     static func entity(_ entity: Entity) -> Self {
         .raw(type(of: entity).identifier)
     }
-    
+
     /// A `Segment` that outputs the provided `Attribute` identifier prefixed by the `Entity` identifier.
     static func attribute<E: Entity>(_ type: E.Type, attribute: Attribute) -> Self {
         .raw([E.identifier, attribute.identifier].compactMap { $0 }.joined(separator: "."))
     }
-    
+
     /// A `Segment` that outputs the provided `Attribute` identifier with an optional `Entity` identifier prefix.
     static func attribute(_ attribute: Attribute, entity: Entity? = nil) -> Self {
         let entityIdentifier: String? = (entity != nil) ? type(of: entity!).identifier : nil
@@ -84,15 +84,15 @@ public extension Segment {
         guard condition else {
             return fallback ?? .empty
         }
-        
+
         return segment
     }
-    
+
     /// Unwraps and transforms the provided value.
     static func unwrap<T>(_ optional: T?, transform: (T) throws -> Segment, else fallback: Segment = .empty) rethrows -> Segment {
         try optional.map(transform) ?? fallback
     }
-    
+
     /// Processes a sequence into a `Group`
     static func forEach<S: Sequence>(_ sequence: S, _ transform: (S.Element) throws -> Segment) rethrows -> Segment {
         try .group(Group(segments: sequence.map(transform)))

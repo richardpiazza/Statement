@@ -598,6 +598,6 @@ public enum LanguageCode: String, Codable {
     case zun
     case zxx
     case zza
-    
+
     public static var `default`: Self = .en
 }

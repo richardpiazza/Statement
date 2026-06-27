@@ -6,12 +6,12 @@ public extension SQLiteStatement {
 
 public extension Clause where Context == SQLiteStatement.StatementContext {
     /// Change the name of a table or column.
-    static func ALTER_TABLE<E: Entity>(_ type: E.Type, _ segments: Segment<SQLiteStatement.AlterTableContext>...) -> Clause {
+    static func ALTER_TABLE(_ type: (some Entity).Type, _ segments: Segment<SQLiteStatement.AlterTableContext>...) -> Clause {
         var clauseSegments = segments
         clauseSegments.insert(.entity(type), at: 0)
         return Clause(keyword: .compound(.alter, .table), segments: clauseSegments)
     }
-    
+
     static func ALTER_TABLE(_ entity: Entity, _ segments: Segment<SQLiteStatement.AlterTableContext>...) -> Clause {
         var clauseSegments = segments
         clauseSegments.insert(.entity(entity), at: 0)
@@ -21,27 +21,27 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
 
 public extension Segment where Context == SQLiteStatement.AlterTableContext {
     /// Change the name of a table.
-    static func RENAME_TO<E: Entity>(_ type: E.Type) -> Segment {
+    static func RENAME_TO(_ type: (some Entity).Type) -> Segment {
         .clause(keyword: .compound(.rename, .to), segments: [
-            Segment.entity(type)
+            Segment.entity(type),
         ])
     }
-    
+
     static func RENAME_TO(_ table: Entity) -> Segment {
         .clause(keyword: .compound(.rename, .to), segments: [
-            Segment.entity(table)
+            Segment.entity(table),
         ])
     }
-    
+
     /// Change the name of a single column in a table.
     static func RENAME_COLUMN(_ from: Attribute, to: Attribute) -> Segment {
         .clause(keyword: .compound(.rename, .column), segments: [
             Segment.attribute(from),
             .keyword(.to),
-            .attribute(to)
+            .attribute(to),
         ])
     }
-    
+
     /// Add a column to the table.
     ///
     /// SQLite will automatically append columns to the end of a table.
@@ -60,11 +60,11 @@ public extension Segment where Context == SQLiteStatement.AlterTableContext {
                 .if(attribute.unique, .keyword(.unique)),
                 .unwrap(attribute.defaultValue, transform: {
                     .raw("\(Keyword.default.rawValue) \($0.sqliteArgument)")
-                })
+                }),
             ]
         )
     }
-    
+
     /// Removes a column from a table.
     ///
     /// ## Examples
@@ -75,7 +75,7 @@ public extension Segment where Context == SQLiteStatement.AlterTableContext {
         .clause(
             keyword: .compound(.drop, .column),
             segments: [
-                Segment.attribute(attribute)
+                Segment.attribute(attribute),
             ]
         )
     }

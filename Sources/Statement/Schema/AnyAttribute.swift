@@ -8,7 +8,7 @@ public struct AnyAttribute: Attribute {
     public var autoIncrement: Bool = false
     public var foreignKey: ForeignKey?
     public var defaultValue: (DataTypeConvertible & Sendable)?
-    
+
     public init(
         identifier: String = "",
         dataType: DataType = .null,

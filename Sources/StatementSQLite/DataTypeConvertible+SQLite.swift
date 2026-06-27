@@ -1,5 +1,5 @@
-import Statement
 import Foundation
+import Statement
 
 extension DataTypeConvertible {
     /// A string representation the instance, suitable for using as an argument in SQL statements.
@@ -46,7 +46,7 @@ extension DataTypeConvertible {
     }
 }
 
-extension Optional where Wrapped == DataTypeConvertible {
+extension DataTypeConvertible? {
     var sqliteArgument: String {
         switch self {
         case let value as Optional<Bool>:

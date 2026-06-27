@@ -3,7 +3,7 @@ import Foundation
 public struct StructuredStatement<Syntax: StatementSyntax> {
     public var clauses: [Clause<Syntax.StatementContext>]
     private let separator: String = "\n"
-    
+
     public init(clauses: [Clause<Syntax.StatementContext>]) {
         self.clauses = clauses
     }

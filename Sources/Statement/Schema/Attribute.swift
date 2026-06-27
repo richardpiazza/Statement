@@ -18,9 +18,9 @@ public extension Attribute {
             return false
         }
     }
-    
+
     var notNull: Bool { !isOptional }
-    
+
     var descriptors: [String] {
         var descriptors: [String] = []
         descriptors.append(identifier)

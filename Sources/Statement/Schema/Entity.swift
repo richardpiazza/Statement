@@ -8,7 +8,7 @@ public protocol Entity {
 public extension Entity {
     var attributes: [Attribute] {
         var _attributes: [Attribute] = []
-        
+
         let mirror = Mirror(reflecting: self)
         for child in mirror.children {
             if let column = child.value as? AttributeConvertible {
@@ -17,10 +17,10 @@ public extension Entity {
                 _attributes.append(column)
             }
         }
-        
+
         return _attributes
     }
-    
+
     subscript(attributeIdentifier: String) -> Attribute? {
         attributes.first(where: { $0.identifier == attributeIdentifier })
     }

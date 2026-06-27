@@ -11,14 +11,14 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
 }
 
 public extension Segment where Context == SQLiteStatement.UpdateContext {
-    static func TABLE<E: Entity>(_ type: E.Type) -> Segment {
+    static func TABLE(_ type: (some Entity).Type) -> Segment {
         .entity(type)
     }
-    
+
     static func TABLE(_ entity: Entity) -> Segment {
         .entity(entity)
     }
-    
+
     static let OR_ABORT: Segment = .keyword(.compound(.or, .abort))
     static let OR_FAIL: Segment = .keyword(.compound(.or, .fail))
     static let OR_IGNORE: Segment = .keyword(.compound(.or, .ignore))
@@ -33,12 +33,12 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
     ///     .TABLE(type)
     /// )
     /// ```
-    static func UPDATE_TABLE<E: Entity>(_ type: E.Type) -> Clause {
+    static func UPDATE_TABLE(_ type: (some Entity).Type) -> Clause {
         .UPDATE(
             .TABLE(type)
         )
     }
-    
+
     static func UPDATE_TABLE(_ entity: Entity) -> Clause {
         .UPDATE(
             .TABLE(entity)

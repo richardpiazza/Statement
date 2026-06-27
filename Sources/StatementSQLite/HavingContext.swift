@@ -9,4 +9,3 @@ public extension Clause where Context == SQLiteStatement.StatementContext {
         Clause(keyword: .having, segments: segments)
     }
 }
-
