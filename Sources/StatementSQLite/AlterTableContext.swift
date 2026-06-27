@@ -61,7 +61,7 @@ public extension Segment where Context == SQLiteStatement.AlterTableContext {
                 .unwrap(attribute.defaultValue, transform: {
                     .raw("\(Keyword.default.rawValue) \($0.sqliteArgument)")
                 }),
-            ]
+            ],
         )
     }
 
@@ -76,7 +76,7 @@ public extension Segment where Context == SQLiteStatement.AlterTableContext {
             keyword: .compound(.drop, .column),
             segments: [
                 Segment.attribute(attribute),
-            ]
+            ],
         )
     }
 }

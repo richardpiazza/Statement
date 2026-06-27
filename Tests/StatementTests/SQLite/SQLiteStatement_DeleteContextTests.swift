@@ -1,47 +1,47 @@
 import Statement
 import StatementSQLite
-import XCTest
+import Testing
 
-final class SQLiteStatement_DeleteContextTests: XCTestCase {
+struct SQLiteStatement_DeleteContextTests {
 
-    func testDeleteFrom() {
-        let statement: SQLiteStatement = .init(
+    @Test func testDeleteFrom() {
+        let statement: SQLiteStatement = SQLiteStatement(
             .DELETE(
-                .FROM(Expression.self)
-            )
+                .FROM(Expression.self),
+            ),
         )
 
-        XCTAssertEqual(statement.render(), "DELETE FROM expression;")
+        #expect(statement.render() == "DELETE FROM expression;")
     }
 
-    func testDeleteWhere() throws {
+    @Test func testDeleteWhere() throws {
         let entity = Expression()
-        let id = try XCTUnwrap(entity["id"])
+        let id = try #require(entity["id"])
 
-        var statement: SQLiteStatement = .init(
+        var statement: SQLiteStatement = SQLiteStatement(
             .DELETE(
-                .FROM(Expression.self)
+                .FROM(Expression.self),
             ),
             .WHERE(
-                .column(id, op: .equal, value: 123)
-            )
+                .column(id, op: .equal, value: 123),
+            ),
         )
 
-        XCTAssertEqual(statement.render(), """
+        #expect(statement.render() == """
         DELETE FROM expression
         WHERE id = 123;
         """)
 
-        statement = .init(
+        statement = SQLiteStatement(
             .DELETE(
-                .FROM(Expression.self)
+                .FROM(Expression.self),
             ),
             .WHERE(
-                .column(Expression.self, attribute: id, op: .equal, value: 123)
-            )
+                .column(Expression.self, attribute: id, op: .equal, value: 123),
+            ),
         )
 
-        XCTAssertEqual(statement.render(), """
+        #expect(statement.render() == """
         DELETE FROM expression
         WHERE expression.id = 123;
         """)

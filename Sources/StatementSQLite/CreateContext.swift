@@ -19,8 +19,8 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
                     Segment.if(ifNotExists, .keyword(.compound(.if, .not, .exists))),
                     Segment.entity(type),
                     Group<Context>(segments: segments, separator: ",\n"),
-                ]
-            )
+                ],
+            ),
         )
     }
 
@@ -32,8 +32,8 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
                     Segment.if(ifNotExists, .keyword(.compound(.if, .not, .exists))),
                     Segment.entity(entity),
                     Group<Context>(segments: segments, separator: ",\n"),
-                ]
-            )
+                ],
+            ),
         )
     }
 
@@ -48,8 +48,8 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
                     .unwrap(attribute.defaultValue, transform: {
                         .raw("\(Keyword.default.rawValue) \($0.sqliteArgument)")
                     }),
-                ]
-            )
+                ],
+            ),
         )
     }
 
@@ -64,11 +64,11 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
                                 Segment.raw(attribute.identifier),
                                 Segment.if(attribute.autoIncrement, .keyword(.autoIncrement)),
                             ],
-                            separator: " "
-                        )
+                            separator: " ",
+                        ),
                     ),
-                ]
-            )
+                ],
+            ),
         )
     }
 
@@ -81,16 +81,16 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
                         Group<Context>(
                             segments: [
                                 Segment.raw(attribute.identifier),
-                            ]
-                        )
+                            ],
+                        ),
                     ),
                     .keyword(.references),
                     .raw(reference.entity.identifier),
                     .group(Group<Context>(segments: [
                         Segment.raw(reference.attribute.identifier),
                     ])),
-                ]
-            )
+                ],
+            ),
         )
     }
 }
@@ -138,8 +138,8 @@ public extension Segment where Context == SQLiteStatement.CreateContext {
         return .clause(
             Clause(
                 keyword: .table,
-                segments: allSegments
-            )
+                segments: allSegments,
+            ),
         )
     }
 }

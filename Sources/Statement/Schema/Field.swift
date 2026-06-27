@@ -28,7 +28,7 @@ import Foundation
             primaryKey: primaryKey,
             autoIncrement: autoIncrement,
             foreignKey: foreignKey,
-            defaultValue: initialValue
+            defaultValue: initialValue,
         )
     }
 }

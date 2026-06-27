@@ -10,9 +10,9 @@ class ConjunctiveRenderer: Renderer {
 
     func render() -> String {
         if components.count == 1 {
-            return components[0]
+            components[0]
         } else {
-            return components.joined(separator: separator)
+            components.joined(separator: separator)
         }
     }
 }

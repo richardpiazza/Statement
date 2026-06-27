@@ -4,15 +4,15 @@ extension DataType {
     var sqliteDataType: String {
         switch self {
         case .string, .optional(.string), .url, .optional(.url):
-            return "TEXT"
+            "TEXT"
         case .int, .optional(.int), .bool, .optional(.bool):
-            return "INTEGER"
+            "INTEGER"
         case .double, .optional(.double), .date, .optional(.date):
-            return "REAL"
+            "REAL"
         case .data, .optional(.data):
-            return "BLOB"
+            "BLOB"
         default:
-            return "NULL"
+            "NULL"
         }
     }
 }
